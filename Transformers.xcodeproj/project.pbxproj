@@ -8,10 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8FDBB6CA24A2FF720015E182 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDBB6C924A2FF720015E182 /* AppDelegate.swift */; };
-		8FDBB6CC24A2FF720015E182 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDBB6CB24A2FF720015E182 /* SceneDelegate.swift */; };
-		8FDBB6CE24A2FF720015E182 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDBB6CD24A2FF720015E182 /* ContentView.swift */; };
 		8FDBB6D024A2FF760015E182 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FDBB6CF24A2FF760015E182 /* Assets.xcassets */; };
-		8FDBB6D324A2FF760015E182 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FDBB6D224A2FF760015E182 /* Preview Assets.xcassets */; };
 		8FDBB6D624A2FF760015E182 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8FDBB6D424A2FF760015E182 /* LaunchScreen.storyboard */; };
 		8FDBB6E124A2FF760015E182 /* TransformersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDBB6E024A2FF760015E182 /* TransformersTests.swift */; };
 /* End PBXBuildFile section */
@@ -29,10 +26,7 @@
 /* Begin PBXFileReference section */
 		8FDBB6C624A2FF720015E182 /* Transformers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Transformers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FDBB6C924A2FF720015E182 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		8FDBB6CB24A2FF720015E182 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		8FDBB6CD24A2FF720015E182 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8FDBB6CF24A2FF760015E182 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		8FDBB6D224A2FF760015E182 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8FDBB6D524A2FF760015E182 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8FDBB6D724A2FF760015E182 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8FDBB6DC24A2FF760015E182 /* TransformersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TransformersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,22 +74,11 @@
 			isa = PBXGroup;
 			children = (
 				8FDBB6C924A2FF720015E182 /* AppDelegate.swift */,
-				8FDBB6CB24A2FF720015E182 /* SceneDelegate.swift */,
-				8FDBB6CD24A2FF720015E182 /* ContentView.swift */,
 				8FDBB6CF24A2FF760015E182 /* Assets.xcassets */,
 				8FDBB6D424A2FF760015E182 /* LaunchScreen.storyboard */,
 				8FDBB6D724A2FF760015E182 /* Info.plist */,
-				8FDBB6D124A2FF760015E182 /* Preview Content */,
 			);
 			path = Transformers;
-			sourceTree = "<group>";
-		};
-		8FDBB6D124A2FF760015E182 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				8FDBB6D224A2FF760015E182 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		8FDBB6DF24A2FF760015E182 /* TransformersTests */ = {
@@ -189,7 +172,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FDBB6D624A2FF760015E182 /* LaunchScreen.storyboard in Resources */,
-				8FDBB6D324A2FF760015E182 /* Preview Assets.xcassets in Resources */,
 				8FDBB6D024A2FF760015E182 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -209,8 +191,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FDBB6CA24A2FF720015E182 /* AppDelegate.swift in Sources */,
-				8FDBB6CC24A2FF720015E182 /* SceneDelegate.swift in Sources */,
-				8FDBB6CE24A2FF720015E182 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,7 +274,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -348,7 +328,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -363,7 +343,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Transformers/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Transformers/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -373,7 +352,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = tech.bananameter.Transformers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -382,7 +361,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Transformers/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Transformers/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -392,7 +370,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = tech.bananameter.Transformers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
