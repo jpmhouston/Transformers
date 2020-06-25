@@ -12,19 +12,19 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window : UIWindow?
-    var rootViewController: UIViewController!
+    var flowController: FlowController?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        rootViewController = UIViewController()
-        
         window = UIWindow()
         window?.bounds = UIScreen.main.bounds
         window?.backgroundColor = .white
-        window?.rootViewController = rootViewController
+        
+        flowController = FlowController()
+        window?.rootViewController = flowController?.rootViewController
+        
         window?.makeKeyAndVisible()
         
         return true
     }
 
 }
-
