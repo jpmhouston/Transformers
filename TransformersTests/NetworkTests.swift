@@ -28,12 +28,17 @@ class NetworkAuthorizationTests: XCTestCase {
         // if we tested against adding, updating, deleting, then would need these overrides too
         override func addItem(_ data: TransformerInput, completion: @escaping (Result<Transformer, Error>) -> ()) {
             DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
-                completion(.success(Transformer()))
+                var t = data
+                t.id = "abcxyz"
+                t.teamIcon = "https://image.flaticon.com/icons/svg/3094/3094213.svg"
+                completion(.success(t))
             }
         }
         override func updateItem(_ data: TransformerInput, completion: @escaping (Result<Transformer, Error>) -> ()) {
             DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
-                completion(.success(Transformer()))
+                var t = data
+                t.teamIcon = "https://image.flaticon.com/icons/svg/3094/3094213.svg"
+                completion(.success(t))
             }
         }
         override func deleteItem(_ id: String, completion: @escaping (Result<String, Error>) -> ()) {
@@ -87,57 +92,100 @@ class NetworkConnectionTests: XCTestCase {
         networkUtility = NetworkUtility()
     }
     
-    // todo: enable these tests when real networking finally connected
-    
-    func ztestLoadAuthorization() {
+    func testLoadAuthorization() {
         let expectation = XCTestExpectation(description: "Receive allSpark authorization string")
         networkUtility.loadAuthorization() { result in
-            XCTAssertNoThrow(try result.get())
+            // would use XCTAssertNoThrow here but it causes this closure to be throwing & thus error "Invalid conversion from throwing function"
+            do {
+                let _ = try result.get()
+            } catch {
+                XCTFail("loadAuthorization failed with error \(error)")
+            }
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 1.0)
     }
     
-    func ztestLoadTransformerList() {
+    func getAuthorization() -> Bool {
+        var ok = true
+        let expectation = XCTestExpectation(description: "Receive allSpark authorization string")
+        networkUtility.loadAuthorization() { result in
+            // would use XCTAssertNoThrow here but it causes this closure to be throwing & thus error "Invalid conversion from throwing function"
+            do {
+                self.networkUtility.token = try result.get()
+            } catch {
+                ok = false
+            }
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1.0)
+        return ok
+    }
+    
+    func testLoadTransformerList() {
+        guard getAuthorization() else {
+            XCTFail("Unabled to get API authorization")
+            return
+        }
+        
         let expectation = XCTestExpectation(description: "Receive current transformers list")
         networkUtility.loadList() { result in
-            XCTAssertNoThrow(try result.get())
+            // would use XCTAssertNoThrow here but it causes this closure to be throwing & thus error "Invalid conversion from throwing function"
+            do {
+                let _ = try result.get()
+            } catch {
+                XCTFail("loadList failed with error \(error)")
+            }
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 1.0)
     }
     
-    func ztestAddUpdateDeleteTransformer() {
-        let testTransformerInput = TransformerInput() // todo: build from dummy data
+    func testAddUpdateDeleteTransformer() {
+        guard getAuthorization() else {
+            XCTFail("Unabled to get API authorization")
+            return
+        }
+        
+        let testTransformerInput = TransformerInput(name: "Dummy", team: .autobots, rank: 1, strength: 1, intellegence: 1, speek: 1, endurance: 1, courage: 1, firepower: 1, skill: 1)
         var resultTransformer: Transformer?
         let addExpectation = XCTestExpectation(description: "Send new test transformer")
         networkUtility.addItem(testTransformerInput) { result in
             do {
                 resultTransformer = try result.get()
             } catch {
-                XCTFail()
+                XCTFail("addItem failed with error \(error)")
             }
             addExpectation.fulfill()
         }
         wait(for: [addExpectation], timeout: 1.0)
         XCTAssertNotNil(resultTransformer)
         
-        let updateTransformerInput = TransformerInput() // todo: duplicate from resultTransformer! and modify
+        guard resultTransformer != nil else { return }
+        
+        let updateTransformerInput = TransformerInput(from: resultTransformer!)
         let updateExpectation = XCTestExpectation(description: "Send test transformer update")
         networkUtility.updateItem(updateTransformerInput) { result in
+            do {
+                _ = try result.get()
+            } catch {
+                XCTFail("updateItem failed with error \(error)")
+            }
             updateExpectation.fulfill()
         }
         wait(for: [updateExpectation], timeout: 1.0)
         
+        guard let transformerId = resultTransformer?.id else { return }
+        
         let deleteExpectation = XCTestExpectation(description: "Send test transformer deletion")
         var returnedId: String?
-        networkUtility.deleteItem("xyz") { result in // todo: pass resultTransformer.id instead of this string
+        networkUtility.deleteItem(transformerId) { result in
             do {
                 returnedId = try result.get()
             } catch {
-                XCTFail()
+                XCTFail("deleteItem failed with error \(error)")
             }
-            XCTAssertEqual(returnedId, "xyz") //XCTAssertEqual(returnedId, resultTransformer.id)
+            XCTAssertEqual(returnedId, transformerId)
             deleteExpectation.fulfill()
         }
         wait(for: [deleteExpectation], timeout: 1.0)

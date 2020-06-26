@@ -8,10 +8,6 @@
 
 import Foundation
 
-// todo: create these model structs
-struct TransformerInput { }
-struct Transformer { }
-
 protocol NetworkUtilityProtocol {
     func loadTransformerList(completion: @escaping (Error?) -> ())
     func addTransformer(_ data: TransformerInput, completion: @escaping (Error?) -> ())
@@ -186,7 +182,7 @@ class NetworkUtility: NetworkUtilityProtocol {
         }
     }
     
-    func operationRequest() throws -> URLRequest {
+    func buildOperationRequest() throws -> URLRequest {
         guard let token = token else {
             throw NetworkError.noAuthorization
         }
@@ -202,7 +198,7 @@ class NetworkUtility: NetworkUtilityProtocol {
     func loadList(completion: @escaping (Result<[Transformer], Error>) -> ()) {
         let request: URLRequest
         do {
-            request = try operationRequest()
+            request = try buildOperationRequest()
         } catch {
             completion(.failure(error))
             return
@@ -219,7 +215,7 @@ class NetworkUtility: NetworkUtilityProtocol {
     func addItem(_ data: TransformerInput, completion: @escaping (Result<Transformer, Error>) -> ()) {
         let request: URLRequest
         do {
-            request = try operationRequest()
+            request = try buildOperationRequest()
         } catch {
             completion(.failure(error))
             return
@@ -229,14 +225,17 @@ class NetworkUtility: NetworkUtilityProtocol {
         // todo: finish this
         
         DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
-            completion(.success(Transformer()))
+            var t = data
+            t.id = "abcxyz"
+            t.teamIcon = "https://image.flaticon.com/icons/svg/3094/3094213.svg"
+            completion(.success(t))
         }
     }
     
     func updateItem(_ data: TransformerInput, completion: @escaping (Result<Transformer, Error>) -> ()) {
         let request: URLRequest
         do {
-            request = try operationRequest()
+            request = try buildOperationRequest()
         } catch {
             completion(.failure(error))
             return
@@ -246,14 +245,16 @@ class NetworkUtility: NetworkUtilityProtocol {
         // todo: finish this
         
         DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
-            completion(.success(Transformer()))
+            var t = data
+            t.teamIcon = "https://image.flaticon.com/icons/svg/3094/3094213.svg"
+            completion(.success(t))
         }
     }
     
     func deleteItem(_ id: String, completion: @escaping (Result<String, Error>) -> ()) {
         let request: URLRequest
         do {
-            request = try operationRequest()
+            request = try buildOperationRequest()
         } catch {
             completion(.failure(error))
             return
