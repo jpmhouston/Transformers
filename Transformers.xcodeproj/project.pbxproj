@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		8FA9560A24A3D5D900990BD7 /* FlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9560924A3D5D900990BD7 /* FlowController.swift */; };
+		8FA9560F24A529A300990BD7 /* NetworkUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9560E24A529A300990BD7 /* NetworkUtility.swift */; };
+		8FA9561024A529A300990BD7 /* NetworkUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9560E24A529A300990BD7 /* NetworkUtility.swift */; };
+		8FA9561324A5B61400990BD7 /* NetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9561224A5B61400990BD7 /* NetworkTests.swift */; };
 		8FDBB6CA24A2FF720015E182 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDBB6C924A2FF720015E182 /* AppDelegate.swift */; };
 		8FDBB6D024A2FF760015E182 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FDBB6CF24A2FF760015E182 /* Assets.xcassets */; };
 		8FDBB6D624A2FF760015E182 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8FDBB6D424A2FF760015E182 /* LaunchScreen.storyboard */; };
@@ -26,6 +29,9 @@
 
 /* Begin PBXFileReference section */
 		8FA9560924A3D5D900990BD7 /* FlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowController.swift; sourceTree = "<group>"; };
+		8FA9560E24A529A300990BD7 /* NetworkUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUtility.swift; sourceTree = "<group>"; };
+		8FA9561124A5573200990BD7 /* Aequilibrium_-_Mobile_Developer_Technical_Test.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "Aequilibrium_-_Mobile_Developer_Technical_Test.pdf"; path = "../Aequilibrium_-_Mobile_Developer_Technical_Test.pdf"; sourceTree = "<group>"; };
+		8FA9561224A5B61400990BD7 /* NetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTests.swift; sourceTree = "<group>"; };
 		8FDBB6C624A2FF720015E182 /* Transformers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Transformers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FDBB6C924A2FF720015E182 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8FDBB6CF24A2FF760015E182 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -71,6 +77,7 @@
 		8FDBB6BD24A2FF720015E182 = {
 			isa = PBXGroup;
 			children = (
+				8FA9561124A5573200990BD7 /* Aequilibrium_-_Mobile_Developer_Technical_Test.pdf */,
 				8FDBB6C824A2FF720015E182 /* Transformers */,
 				8FA9560724A3D58300990BD7 /* Model */,
 				8FA9560824A3D58E00990BD7 /* Views */,
@@ -93,6 +100,7 @@
 			children = (
 				8FDBB6C924A2FF720015E182 /* AppDelegate.swift */,
 				8FA9560924A3D5D900990BD7 /* FlowController.swift */,
+				8FA9560E24A529A300990BD7 /* NetworkUtility.swift */,
 				8FDBB6CF24A2FF760015E182 /* Assets.xcassets */,
 				8FDBB6D424A2FF760015E182 /* LaunchScreen.storyboard */,
 				8FDBB6D724A2FF760015E182 /* Info.plist */,
@@ -104,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				8FDBB6E024A2FF760015E182 /* TransformersTests.swift */,
+				8FA9561224A5B61400990BD7 /* NetworkTests.swift */,
 				8FDBB6E224A2FF760015E182 /* Info.plist */,
 			);
 			path = TransformersTests;
@@ -210,6 +219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FDBB6CA24A2FF720015E182 /* AppDelegate.swift in Sources */,
+				8FA9560F24A529A300990BD7 /* NetworkUtility.swift in Sources */,
 				8FA9560A24A3D5D900990BD7 /* FlowController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -218,7 +228,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8FA9561324A5B61400990BD7 /* NetworkTests.swift in Sources */,
 				8FDBB6E124A2FF760015E182 /* TransformersTests.swift in Sources */,
+				8FA9561024A529A300990BD7 /* NetworkUtility.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
