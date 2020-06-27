@@ -15,8 +15,8 @@ class ModelTests: XCTestCase {
     var t2: Transformer!
     
     override func setUp() {
-        t1 = Transformer(id: "abc", name: "Dumbo", team: .autobots, rank: 1, strength: 1, intellegence: 1, speek: 1, endurance: 1, courage: 1, firepower: 1, skill: 1)
-        t2 = Transformer(name: "Dumdum", team: .decepticons, rank: 1, strength: 1, intellegence: 1, speek: 1, endurance: 1, courage: 1, firepower: 1, skill: 1)
+        t1 = Transformer(id: "abc", name: "Dumbo", team: .autobots, rank: 1, strength: 1, intelligence: 1, speed: 1, endurance: 1, courage: 1, firepower: 1, skill: 1)
+        t2 = Transformer(name: "Dumdum", team: .decepticons, rank: 1, strength: 1, intelligence: 1, speed: 1, endurance: 1, courage: 1, firepower: 1, skill: 1)
     }
     
     func testModelCreation() {
@@ -40,7 +40,7 @@ class ModelTests: XCTestCase {
         let x3 = TransformerInput(from: t2)
         XCTAssertNil(x3.teamIcon)
         
-        let x4 = TransformerInput(name: "Dummy", team: .autobots, rank: 1, strength: 1, intellegence: 1, speek: 1, endurance: 1, courage: 1, firepower: 1, skill: 1)
+        let x4 = TransformerInput(name: "Dummy", team: .autobots, rank: 1, strength: 1, intelligence: 1, speed: 1, endurance: 1, courage: 1, firepower: 1, skill: 1)
         XCTAssertNil(x4.id)
     }
     

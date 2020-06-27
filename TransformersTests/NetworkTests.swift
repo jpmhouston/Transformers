@@ -147,7 +147,7 @@ class NetworkConnectionTests: XCTestCase {
             return
         }
         
-        let testTransformerInput = TransformerInput(name: "Dummy", team: .autobots, rank: 1, strength: 1, intellegence: 1, speek: 1, endurance: 1, courage: 1, firepower: 1, skill: 1)
+        let testTransformerInput = TransformerInput(name: "Dummy", team: .autobots, rank: 1, strength: 1, intelligence: 1, speed: 1, endurance: 1, courage: 1, firepower: 1, skill: 1)
         var resultTransformer: Transformer?
         let addExpectation = XCTestExpectation(description: "Send new test transformer")
         networkUtility.addItem(testTransformerInput) { result in

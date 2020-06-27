@@ -20,8 +20,8 @@ struct Transformer: Codable {
     var teamIcon: String?
     var rank: Int
     var strength: Int
-    var intellegence: Int
-    var speek: Int
+    var intelligence: Int
+    var speed: Int
     var endurance: Int
     var courage: Int
     var firepower: Int
@@ -30,14 +30,14 @@ struct Transformer: Codable {
 
 extension Transformer {
     // custom initializer that omits teamIcon and optionally id from the parameter list
-    init(id: String? = nil, name: String, team: Team, rank: Int, strength: Int, intellegence: Int, speek: Int, endurance: Int, courage: Int, firepower: Int, skill: Int) {
+    init(id: String? = nil, name: String, team: Team, rank: Int, strength: Int, intelligence: Int, speed: Int, endurance: Int, courage: Int, firepower: Int, skill: Int) {
         self.id = id
         self.name = name
         self.team = team
         self.rank = rank
         self.strength = strength
-        self.intellegence = intellegence
-        self.speek = speek
+        self.intelligence = intelligence
+        self.speed = speed
         self.endurance = endurance
         self.courage = courage
         self.firepower = firepower
@@ -56,8 +56,8 @@ extension TransformerInput {
         self.team = source.team
         self.rank = source.rank
         self.strength = source.strength
-        self.intellegence = source.intellegence
-        self.speek = source.speek
+        self.intelligence = source.intelligence
+        self.speed = source.speed
         self.endurance = source.endurance
         self.courage = source.courage
         self.firepower = source.firepower
