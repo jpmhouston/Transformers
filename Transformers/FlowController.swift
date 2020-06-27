@@ -38,25 +38,3 @@ class FlowController {
     
     // ...
 }
-
-
-// todo: create data controller, something like
-class DataController: NetworkUtilityDelegate {
-
-    func transformerListReceived(_ data: [Transformer]) {
-
-    }
-
-    func transformerAdded(_ newTransformer: Transformer) {
-
-    }
-
-    func transformerUpdated(_ updatedTransformer: Transformer) {
-
-    }
-
-    func transformerDeleted(_ id: String) {
-
-    }
-
-}

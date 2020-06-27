@@ -8,12 +8,13 @@
 
 import Foundation
 
-enum Team: String, Codable {
-    case autobots = "A"
-    case decepticons = "D"
-}
-
-struct Transformer: Codable {
+struct Transformer: Codable, Hashable {
+    
+    enum Team: String, Codable {
+        case autobots = "A"
+        case decepticons = "D"
+    }
+    
     var id: String?
     var name: String
     var team: Team
@@ -26,6 +27,92 @@ struct Transformer: Codable {
     var courage: Int
     var firepower: Int
     var skill: Int
+    
+    var rating: Int {
+        strength + intelligence + speed + endurance + firepower
+    }
+    
+    var teamName: String {
+        // TODO: possibly localize teamName?
+        //(team == .autobots) ? NSLocalizedString("Autobots", comment: "") : NSLocalizedString("Decepticons", comment: "")
+        (team == .autobots) ? "Autobots" : "Decepticons"
+    }
+    
+    var nameIncludingTeam: String {
+        // TODO: probably localize this string concatination
+        //let formatStr = (team == .autobots) ? NSLocalizedString("Autobot %@", comment: "") : NSLocalizedString("Decepticon %@", comment: "")
+        let formatStr = (team == .autobots) ? "Autobot %@" : "Decepticon %@"
+        return String(format: formatStr, name)
+    }
+    
+    var isSpecial: Bool {
+        // TODO: possibly localize these special transformer names?
+        hasMatchingName("Optimus Prime") || hasMatchingName("Predaking")
+    }
+    
+    func hasMatchingName(_ name: String) -> Bool {
+        self.name.caseInsensitiveCompare(name) == ComparisonResult.orderedSame
+    }
+    
+    func hasMatchingId(_ id: String) -> Bool {
+        self.id == id
+    }
+    
+    enum Sorting: String {
+        case name, team, rank, rating
+    }
+    
+    static func comparisonWithCriteria(_ criteria: [Sorting], ascending: Bool = true) -> (Transformer, Transformer) -> Bool {
+        return { lhs, rhs in
+            for criterion in criteria {                 // yes, criterion is the singluar of criteria
+                let comparison: ComparisonResult
+                switch criterion {
+                case .name:
+                    comparison = lhs.name.compare(rhs.name)
+                case .team:
+                    switch (lhs.team, rhs.team) { // when ascending sort autobots first
+                    case (Team.autobots, Team.autobots), (Team.decepticons, Team.decepticons): comparison = .orderedSame
+                    case (Team.autobots, Team.decepticons): comparison = .orderedAscending
+                    case (Team.decepticons, Team.autobots): comparison = .orderedDescending
+                    }
+                case .rank:
+                    let lhsRank = lhs.rank
+                    let rhsRank = rhs.rank
+                    comparison = lhsRank == rhsRank ? .orderedSame : (lhsRank < rhsRank ? .orderedAscending : .orderedDescending)
+                case .rating:
+                    let lhsRating = lhs.rating
+                    let rhsRating = rhs.rating
+                    comparison = lhsRating == rhsRating ? .orderedSame : (lhsRating < rhsRating ? .orderedAscending : .orderedDescending)
+                }
+                
+                // when comparison is ascending, result true if sort order ascending, false if sort is descending
+                // and similarly if comparison is descending, result false if sort order ascending, ...
+                switch comparison {
+                case .orderedAscending:
+                    return ascending
+                case .orderedDescending:
+                    return !ascending
+                default:
+                    continue // compare by next criterion
+                }
+            }
+            
+            // if everything equal, compare id's
+            if lhs.id != rhs.id {
+                if lhs.id != nil && rhs.id == nil {
+                    return ascending
+                } else if lhs.id == nil && rhs.id != nil {
+                    return !ascending
+                } else if lhs.id! < rhs.id! { // all cases of either one or the other nil are detected above
+                    return ascending
+                }
+            }
+            
+            // if id's equal too, who cares pick either t or f
+            return ascending // will returning this do anything regarding consistency?
+        }
+    }
+    
 }
 
 extension Transformer {
@@ -43,17 +130,33 @@ extension Transformer {
         self.firepower = firepower
         self.skill = skill
     }
+    
+    init(copiedFrom source: Transformer, includingId: Bool = false) {
+        self.id = includingId ? source.id : nil
+        self.name = source.name
+        self.team = source.team
+        self.teamIcon = source.teamIcon
+        self.rank = source.rank
+        self.strength = source.strength
+        self.intelligence = source.intelligence
+        self.speed = source.speed
+        self.endurance = source.endurance
+        self.courage = source.courage
+        self.firepower = source.firepower
+        self.skill = source.skill
+    }
+    
 }
 
 
 typealias TransformerInput = Transformer
 
 extension TransformerInput {
-    init(from source: Transformer, excludingId: Bool = false) {
-        self.teamIcon = nil
-        self.id = excludingId ? nil : source.id
+    init(sourcedFrom source: Transformer, includingId: Bool = true) {
+        self.id = includingId ? source.id : nil
         self.name = source.name
         self.team = source.team
+        self.teamIcon = nil         // always nil
         self.rank = source.rank
         self.strength = source.strength
         self.intelligence = source.intelligence

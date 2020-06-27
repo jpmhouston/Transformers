@@ -16,10 +16,12 @@
 		8FA9561824A6A52100990BD7 /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9561724A6A52100990BD7 /* ModelTests.swift */; };
 		8FA9561A24A6A57500990BD7 /* Fight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9561924A6A57500990BD7 /* Fight.swift */; };
 		8FA9561B24A6A57500990BD7 /* Fight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9561924A6A57500990BD7 /* Fight.swift */; };
+		8FA9561D24A7ABA300990BD7 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9561C24A7ABA300990BD7 /* DataController.swift */; };
+		8FA9561E24A7ABA300990BD7 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9561C24A7ABA300990BD7 /* DataController.swift */; };
+		8FA9562024A7DCAB00990BD7 /* FightTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9561F24A7DCAB00990BD7 /* FightTests.swift */; };
 		8FDBB6CA24A2FF720015E182 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDBB6C924A2FF720015E182 /* AppDelegate.swift */; };
 		8FDBB6D024A2FF760015E182 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FDBB6CF24A2FF760015E182 /* Assets.xcassets */; };
 		8FDBB6D624A2FF760015E182 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8FDBB6D424A2FF760015E182 /* LaunchScreen.storyboard */; };
-		8FDBB6E124A2FF760015E182 /* TransformersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FDBB6E024A2FF760015E182 /* TransformersTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,13 +42,14 @@
 		8FA9561424A69DE000990BD7 /* Transformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transformer.swift; sourceTree = "<group>"; };
 		8FA9561724A6A52100990BD7 /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
 		8FA9561924A6A57500990BD7 /* Fight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fight.swift; sourceTree = "<group>"; };
+		8FA9561C24A7ABA300990BD7 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		8FA9561F24A7DCAB00990BD7 /* FightTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FightTests.swift; sourceTree = "<group>"; };
 		8FDBB6C624A2FF720015E182 /* Transformers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Transformers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FDBB6C924A2FF720015E182 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8FDBB6CF24A2FF760015E182 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8FDBB6D524A2FF760015E182 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8FDBB6D724A2FF760015E182 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8FDBB6DC24A2FF760015E182 /* TransformersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TransformersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8FDBB6E024A2FF760015E182 /* TransformersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformersTests.swift; sourceTree = "<group>"; };
 		8FDBB6E224A2FF760015E182 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -110,6 +113,7 @@
 			children = (
 				8FDBB6C924A2FF720015E182 /* AppDelegate.swift */,
 				8FA9560924A3D5D900990BD7 /* FlowController.swift */,
+				8FA9561C24A7ABA300990BD7 /* DataController.swift */,
 				8FA9560E24A529A300990BD7 /* NetworkUtility.swift */,
 				8FDBB6CF24A2FF760015E182 /* Assets.xcassets */,
 				8FDBB6D424A2FF760015E182 /* LaunchScreen.storyboard */,
@@ -121,9 +125,9 @@
 		8FDBB6DF24A2FF760015E182 /* TransformersTests */ = {
 			isa = PBXGroup;
 			children = (
-				8FDBB6E024A2FF760015E182 /* TransformersTests.swift */,
 				8FA9561224A5B61400990BD7 /* NetworkTests.swift */,
 				8FA9561724A6A52100990BD7 /* ModelTests.swift */,
+				8FA9561F24A7DCAB00990BD7 /* FightTests.swift */,
 				8FDBB6E224A2FF760015E182 /* Info.plist */,
 			);
 			path = TransformersTests;
@@ -230,6 +234,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FDBB6CA24A2FF720015E182 /* AppDelegate.swift in Sources */,
+				8FA9561D24A7ABA300990BD7 /* DataController.swift in Sources */,
 				8FA9561A24A6A57500990BD7 /* Fight.swift in Sources */,
 				8FA9560F24A529A300990BD7 /* NetworkUtility.swift in Sources */,
 				8FA9560A24A3D5D900990BD7 /* FlowController.swift in Sources */,
@@ -241,9 +246,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8FA9562024A7DCAB00990BD7 /* FightTests.swift in Sources */,
+				8FA9561E24A7ABA300990BD7 /* DataController.swift in Sources */,
 				8FA9561B24A6A57500990BD7 /* Fight.swift in Sources */,
 				8FA9561324A5B61400990BD7 /* NetworkTests.swift in Sources */,
-				8FDBB6E124A2FF760015E182 /* TransformersTests.swift in Sources */,
 				8FA9561024A529A300990BD7 /* NetworkUtility.swift in Sources */,
 				8FA9561824A6A52100990BD7 /* ModelTests.swift in Sources */,
 				8FA9561624A69DE000990BD7 /* Transformer.swift in Sources */,

@@ -163,7 +163,7 @@ class NetworkConnectionTests: XCTestCase {
         
         guard resultTransformer != nil else { return }
         
-        let updateTransformerInput = TransformerInput(from: resultTransformer!)
+        let updateTransformerInput = TransformerInput(sourcedFrom: resultTransformer!)
         let updateExpectation = XCTestExpectation(description: "Send test transformer update")
         networkUtility.updateItem(updateTransformerInput) { result in
             do {

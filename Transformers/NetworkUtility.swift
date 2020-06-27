@@ -222,8 +222,9 @@ class NetworkUtility: NetworkUtilityProtocol {
         }
         _ = request
         
-        // todo: finish this
-        
+        // TODO: finish this
+        // TODO: wrap in a background task to mostly ensure transaction completes if app backgrounded
+
         DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
             var t = data
             t.id = "abcxyz"
@@ -242,7 +243,8 @@ class NetworkUtility: NetworkUtilityProtocol {
         }
         _ = request
         
-        // todo: finish this
+        // TODO: finish this
+        // TODO: wrap in a background task to mostly ensure transaction completes if app backgrounded
         
         DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
             var t = data
@@ -261,7 +263,8 @@ class NetworkUtility: NetworkUtilityProtocol {
         }
         _ = request
         
-        // todo: finish this
+        // TODO: finish this
+        // TODO: wrap in a background task to mostly ensure transaction completes if app backgrounded
         
         DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
             completion(.success(id))
