@@ -33,20 +33,15 @@ struct Transformer: Codable, Hashable {
     }
     
     var teamName: String {
-        // TODO: possibly localize teamName?
-        //(team == .autobots) ? NSLocalizedString("Autobots", comment: "") : NSLocalizedString("Decepticons", comment: "")
         (team == .autobots) ? "Autobots" : "Decepticons"
     }
     
     var nameIncludingTeam: String {
-        // TODO: probably localize this string concatination
-        //let formatStr = (team == .autobots) ? NSLocalizedString("Autobot %@", comment: "") : NSLocalizedString("Decepticon %@", comment: "")
         let formatStr = (team == .autobots) ? "Autobot %@" : "Decepticon %@"
         return String(format: formatStr, name)
     }
     
     var isSpecial: Bool {
-        // TODO: possibly localize these special transformer names?
         hasMatchingName("Optimus Prime") || hasMatchingName("Predaking")
     }
     
@@ -59,57 +54,76 @@ struct Transformer: Codable, Hashable {
     }
     
     enum Sorting: String {
-        case name, team, rank, rating
+        case name, nameDescending
+        case team, teamDescending
+        case rank, rankDescending
+        case rating, ratingDescending
     }
     
-    static func comparisonWithCriteria(_ criteria: [Sorting], ascending: Bool = true) -> (Transformer, Transformer) -> Bool {
-        return { lhs, rhs in
-            for criterion in criteria {                 // yes, criterion is the singluar of criteria
-                let comparison: ComparisonResult
-                switch criterion {
-                case .name:
-                    comparison = lhs.name.compare(rhs.name)
-                case .team:
-                    switch (lhs.team, rhs.team) { // when ascending sort autobots first
-                    case (Team.autobots, Team.autobots), (Team.decepticons, Team.decepticons): comparison = .orderedSame
-                    case (Team.autobots, Team.decepticons): comparison = .orderedAscending
-                    case (Team.decepticons, Team.autobots): comparison = .orderedDescending
-                    }
-                case .rank:
-                    let lhsRank = lhs.rank
-                    let rhsRank = rhs.rank
-                    comparison = lhsRank == rhsRank ? .orderedSame : (lhsRank < rhsRank ? .orderedAscending : .orderedDescending)
-                case .rating:
-                    let lhsRating = lhs.rating
-                    let rhsRating = rhs.rating
-                    comparison = lhsRating == rhsRating ? .orderedSame : (lhsRating < rhsRating ? .orderedAscending : .orderedDescending)
+    static func orderWithCriteria(_ criteria: [Sorting]) -> (Transformer, Transformer) -> Bool {
+        // return a function that's `(Transformer, Transformer) -> Bool` which can be passed to `sort(by:)`
+        return {
+            compareWithCriteria(criteria, lhs: $0, rhs: $1) != .orderedDescending
+        }
+    }
+    
+    static func compareWithCriteria(_ criteria: [Sorting], lhs: Transformer, rhs: Transformer) -> ComparisonResult {
+        for criterion in criteria {                 // yes, criterion is the singluar of criteria
+            let comparison: ComparisonResult
+            var reverse = false
+            switch criterion {
+            case .nameDescending:
+                reverse = true
+                fallthrough
+            case .name:
+                comparison = lhs.name.compare(rhs.name)
+                
+            case .teamDescending:
+                reverse = true
+                fallthrough
+            case .team:
+                switch (lhs.team, rhs.team) { // when ascending sort autobots first
+                case (Team.autobots, Team.autobots), (Team.decepticons, Team.decepticons): comparison = .orderedSame
+                case (Team.autobots, Team.decepticons): comparison = .orderedAscending
+                case (Team.decepticons, Team.autobots): comparison = .orderedDescending
                 }
                 
-                // when comparison is ascending, result true if sort order ascending, false if sort is descending
-                // and similarly if comparison is descending, result false if sort order ascending, ...
-                switch comparison {
-                case .orderedAscending:
-                    return ascending
-                case .orderedDescending:
-                    return !ascending
-                default:
-                    continue // compare by next criterion
-                }
+            case .rankDescending:
+                reverse = true
+                fallthrough
+            case .rank:
+                let lhsRank = lhs.rank
+                let rhsRank = rhs.rank
+                comparison = lhsRank == rhsRank ? .orderedSame : (lhsRank < rhsRank ? .orderedAscending : .orderedDescending)
+                
+            case .ratingDescending:
+                reverse = true
+                fallthrough
+            case .rating:
+                let lhsRating = lhs.rating
+                let rhsRating = rhs.rating
+                comparison = lhsRating == rhsRating ? .orderedSame : (lhsRating < rhsRating ? .orderedAscending : .orderedDescending)
             }
             
-            // if everything equal, compare id's
-            if lhs.id != rhs.id {
-                if lhs.id != nil && rhs.id == nil {
-                    return ascending
-                } else if lhs.id == nil && rhs.id != nil {
-                    return !ascending
-                } else if lhs.id! < rhs.id! { // all cases of either one or the other nil are detected above
-                    return ascending
-                }
+            switch comparison {
+            case .orderedAscending:
+                return reverse ? .orderedDescending : .orderedAscending
+            case .orderedDescending:
+                return reverse ? .orderedAscending : .orderedDescending
+            default:
+                continue // compare by next criterion
             }
-            
-            // if id's equal too, who cares pick either t or f
-            return ascending // will returning this do anything regarding consistency?
+        }
+        
+        // if everything equal, compare id's
+        if lhs.id != nil && rhs.id == nil {
+            return .orderedAscending
+        } else if lhs.id == nil && rhs.id != nil {
+            return .orderedDescending
+        } else if lhs.id! != rhs.id! { // all cases of either one or the other nil are detected above
+            return lhs.id! < rhs.id! ? .orderedAscending : .orderedDescending
+        } else {
+            return .orderedSame // if id's equal too, then who cares pick either t or f
         }
     }
     

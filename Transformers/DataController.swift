@@ -12,12 +12,12 @@ class DataController: NetworkUtilityDelegate {
     
     var runtimeStorage = Set<Transformer>()
     
-    func transformerList(sortedBy: [Transformer.Sorting], ascending: Bool = true) -> [Transformer] {
+    func transformerList(sortedBy: [Transformer.Sorting]) -> [Transformer] {
         var sortCriteria = sortedBy
         if sortedBy.contains(.name) == false {
             sortCriteria.append(.name)
         }
-        return runtimeStorage.sorted(by: Transformer.comparisonWithCriteria(sortCriteria, ascending: ascending))
+        return runtimeStorage.sorted(by: Transformer.orderWithCriteria(sortCriteria))
     }
     
     func transformerNameUnique(_ name: String) -> Bool {
