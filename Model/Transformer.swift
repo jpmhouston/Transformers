@@ -33,15 +33,20 @@ struct Transformer: Codable, Hashable {
     }
     
     var teamName: String {
+        // decided team names shouldn't be localized, but if so would use code like this:
+        // (team == .autobots) ? NSLocalizedString("Autobots", comment: "") : NSLocalizedString("Decepticons", comment: "")
         (team == .autobots) ? "Autobots" : "Decepticons"
     }
     
     var nameIncludingTeam: String {
+        // would localize this string concatination if it was used in the UI not just assertions:
+        // let formatStr = (team == .autobots) ? NSLocalizedString("Autobot %@", comment: "") : NSLocalizedString("Decepticon %@", comment: "")
         let formatStr = (team == .autobots) ? "Autobot %@" : "Decepticon %@"
         return String(format: formatStr, name)
     }
     
     var isSpecial: Bool {
+        // decided these special transformer names shouldn't be localized either
         hasMatchingName("Optimus Prime") || hasMatchingName("Predaking")
     }
     

@@ -20,21 +20,70 @@ import UIKit
 
 class FlowController {
     
-    var rootViewController: UIViewController
     var dataController: DataController
     var networkUtility: NetworkUtility
+    var rootViewController: UIViewController?
+    var transformersListViewController: TransformersListViewController?
     
     init() {
         dataController = DataController()
         networkUtility = NetworkUtility()
         networkUtility.delegate = dataController
         
-        rootViewController = UIViewController()
-        rootViewController.view.backgroundColor = .blue
+        rootViewController = startTransformersList()
+    }
+    
+    // MARK: manage TransformersList view controller
+    
+    func startTransformersList() -> UIViewController {
+        let storyboard = UIStoryboard(name: "TransformersList", bundle: nil)
+        guard let outerViewController = storyboard.instantiateInitialViewController() else {
+            fatalError("Could not find initial view controller in TransformersList storyboard")
+        }
+        
+        guard let viewController: TransformersListViewController = outerViewController.locateViewControllerByType() else {
+            fatalError("Could not find TransformersList view controller in TransformersList storyboard")
+        }
+        
+        transformersListViewController = viewController
+        transformersListViewController?.flowController = self
+        transformersListViewController?.viewModel = TransformersListViewModel() // withDataController: dataController
+        
+        return outerViewController
     }
     
     // public funcs to be called from view controllers to handle transitions
     // to remove that logic and interdependence from the view controllers themselves
     
-    // ...
+    func startBattle() {
+        print("startBattle")
+    }
+    
+    func showTransformer(withId id: String) {
+        print("showTransformer id \(id)")
+    }
+    
+    func addTransformer() {
+        print("addTransformer")
+    }
+    
+    func deleteTransformer(withId id: String) {
+        print("deleteTransformer id \(id)")
+    }
+    
+    func toggleTransformerBenched(forId id: String) {
+        print("toggleTransformerBenched id \(id)")
+    }
+    
+    func toggleAllTransformersBenched() {
+        print("benchOrJoinAll")
+    }
+    
+    
 }
+
+struct TransformersListViewModel { } // TODO: implement this elsewhere
+
+// don't let view controller code have to know whether there's only 1 flow controller
+// vs a separate one for each
+typealias TransformersListFlowController = FlowController
