@@ -165,6 +165,34 @@ extension Transformer {
         self.skill = source.skill
     }
     
+    init(copiedFrom source: Transformer, replacingId newId: String?) {
+        self.id = newId
+        self.name = source.name
+        self.team = source.team
+        self.teamIcon = source.teamIcon
+        self.rank = source.rank
+        self.strength = source.strength
+        self.intelligence = source.intelligence
+        self.speed = source.speed
+        self.endurance = source.endurance
+        self.courage = source.courage
+        self.firepower = source.firepower
+        self.skill = source.skill
+    }
+    
+    init() {
+        self.id = nil
+        self.name = ""
+        self.team = .autobots
+        self.rank = 0
+        self.strength = 0
+        self.intelligence = 0
+        self.speed = 0
+        self.endurance = 0
+        self.courage = 0
+        self.firepower = 0
+        self.skill = 0
+    }
 }
 
 

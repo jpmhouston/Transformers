@@ -13,8 +13,12 @@
 //  backend testing.
 //
 //  I'd also prefer a root flow controller and children for major sections of
-//  the app, however going with only 1 for this.
+//  the app, however going with only 1 for this. I've divided up support for
+//  various view controllers into separate protocols though.
 //
+//  The goal with the view controllers is to have their dependencies defined
+//  as protocols and injected so that they can more easily be exercised in a
+//  test build, separate test app, or even a playground.
 
 import UIKit
 
@@ -25,17 +29,19 @@ class FlowController {
     var rootViewController: UIViewController?
     var transformersListViewController: TransformersListViewController?
     
+    // MARK: -
+    
     init() {
         dataController = DataController()
         networkUtility = NetworkUtility()
         networkUtility.delegate = dataController
         
-        rootViewController = startTransformersList()
+        rootViewController = createTransformersList()
     }
     
-    // MARK: manage TransformersList view controller
+    // MARK: - TransformersList view controller wrangling
     
-    func startTransformersList() -> UIViewController {
+    func createTransformersList() -> UIViewController {
         let storyboard = UIStoryboard(name: "TransformersList", bundle: nil)
         guard let outerViewController = storyboard.instantiateInitialViewController() else {
             fatalError("Could not find initial view controller in TransformersList storyboard")
@@ -46,44 +52,301 @@ class FlowController {
         }
         
         transformersListViewController = viewController
-        transformersListViewController?.flowController = self
-        transformersListViewController?.viewModel = TransformersListViewModel() // withDataController: dataController
+        viewController.flowController = self
+        
+        // if data controller has been loaded with models already, or idk has been made to use offline storage,
+        // and not currently empty then start the list view controller with a model, otherwise leave it without
+        // until loading from the network. would be good for it to show an activity indicator during thie time
+        if !dataController.isTransformerListEmpty {
+            viewController.viewModel = TransformersListViewModel(withDataController: dataController)
+        }
+        
+        networkUtility.loadTransformerList() { error in
+            DispatchQueue.main.async {
+                viewController.viewModel = TransformersListViewModel(withDataController: self.dataController)
+            }
+        }
         
         return outerViewController
     }
     
-    // public funcs to be called from view controllers to handle transitions
-    // to remove that logic and interdependence from the view controllers themselves
-    
-    func startBattle() {
-        print("startBattle")
+    func updateTransformersList() {
+        // simply set the view controller's viewModel again with a fresh one
+        // app uses simple structs as the view models and not complex stateful objects
+        transformersListViewController?.viewModel = TransformersListViewModel(withDataController: dataController)
     }
     
-    func showTransformer(withId id: String) {
-        print("showTransformer id \(id)")
+    // MARK: - TransformersEditor view controller wrangling
+    
+    func createTransformerEditor(withTransformer existingTransformer: Transformer? = nil) -> UIViewController {
+        let storyboard = UIStoryboard(name: "EditTransformer", bundle: nil)
+        guard let viewController = storyboard.instantiateInitialViewController() as? EditTransformerViewController else {
+            fatalError("Could not find initial view controller in EditTransformer storyboard")
+        }
+        
+        let transformer = existingTransformer ?? Transformer()
+        dataController.startEditedTransformer(transformer)
+        
+        viewController.flowController = self
+        viewController.viewModel = TransformerEditorViewModel(withDataController: dataController)
+        
+        return viewController
     }
     
-    func addTransformer() {
-        print("addTransformer")
+    func updateTransformerEditor() {
+        // don't save reference to this vc, by locating it via the root we also verify
+        // that it's still in the hierarchy
+        guard let viewController: EditTransformerViewController = rootViewController?.locateViewControllerByType() else {
+            return
+        }
+        
+        viewController.viewModel = TransformerEditorViewModel(withDataController: dataController)
     }
     
-    func deleteTransformer(withId id: String) {
-        print("deleteTransformer id \(id)")
+    func exitTransformerEditor(saving: Bool) {
+        print("FlowController.exitTransformerEditor")
+        guard let transformersListViewController = transformersListViewController else {
+            fatalError("TransformerList view controller has gone away")
+        }
+        
+        // probably instead assert this has already been cleaned up, b/c i think i covered all cases
+        // of getting here without doing so. the tricky part is
+        dataController.dismissEditedTransformer()
+
+        guard let viewController: EditTransformerViewController = rootViewController?.locateViewControllerByType() else {
+            // its already gone, just update the list screen
+            if saving {
+                updateTransformersList()
+            }
+            return
+        }
+        _ = viewController // don't really need this after all, but was nice to validate it was there tho
+        
+        transformersListViewController.navigationController?.popToViewController(transformersListViewController, animated: true)
+        
+        // some completion would be helpful, like `present()` has, currently use a quick & dirty
+        // technique to know when the view is back
+        if saving {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
+                self?.updateTransformersList()
+            }
+        }
     }
     
-    func toggleTransformerBenched(forId id: String) {
-        print("toggleTransformerBenched id \(id)")
+    func transformerEditorWasExited() {
+        dataController.dismissEditedTransformer()
     }
-    
-    func toggleAllTransformersBenched() {
-        print("benchOrJoinAll")
-    }
-    
     
 }
 
-struct TransformersListViewModel { } // TODO: implement this elsewhere
 
-// don't let view controller code have to know whether there's only 1 flow controller
-// vs a separate one for each
-typealias TransformersListFlowController = FlowController
+// protocols of functions to be called from view controllers to handle transitions
+// to remove that logic and interdependence from the view controllers themselves
+
+// MARK: - TransformersList support
+
+protocol TransformersListFlowControllerProtocol: class {
+    func startBattle()
+    func editTransformer(withId id: String)
+    func addTransformer()
+    func deleteTransformer(withId id: String)
+    func returnedToTransformersList()
+    func toggleTransformerBenched(forId id: String)
+    func toggleAllTransformersBenched(_ benched: Bool)
+}
+
+extension FlowController: TransformersListFlowControllerProtocol {
+    
+    func startBattle() {
+        print("FlowController.startBattle")
+        // TODO: finish battle ui
+    }
+    
+    func editTransformer(withId id: String) {
+        print("FlowController.editTransformer id \(id)")
+        guard let transformer = dataController.transformer(withId: id) else {
+            return
+        }
+        let viewController = createTransformerEditor(withTransformer: transformer)
+        transformersListViewController?.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func addTransformer() {
+        print("FlowController.addTransformer")
+        let viewController = createTransformerEditor()
+        transformersListViewController?.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func deleteTransformer(withId id: String) {
+        print("FlowController.deleteTransformer id \(id)")
+        
+        networkUtility.deleteTransformer(id) { [weak self] error in
+            print("FlowController.deleteTransformer id \(id) - deleteTransformer completion")
+            if error == nil {
+                self?.updateTransformerEditor()
+            } else {
+                // should invoke an alert here, but for now we get silent failure
+            }
+        }
+    }
+    
+    func returnedToTransformersList() {
+        // if we wanted to save the transformer edits when back button used instead of discarding them
+        // then we'd do that here or within `transformerEditorWasExited()`, including updating the
+        // transformer's list view model
+        // don't want to bite that bullet for this assessment app (i've aready gone way overboard as it is)
+        transformerEditorWasExited()
+    }
+    
+    func toggleTransformerBenched(forId id: String) {
+        print("FlowController.toggleTransformerBenched id \(id)")
+        dataController.toggleBenchedState(forId: id)
+        updateTransformersList()
+    }
+    
+    func toggleAllTransformersBenched(_ benched: Bool) {
+        print("FlowController.toggleAllTransformersBenched \(benched)")
+        dataController.setAllBenchedState(benched)
+        updateTransformersList()
+    }
+    
+}
+
+// MARK: - TransformerEditor support
+
+protocol TransformerEditorFlowControllerProtocol: class {
+    func changedTransformerName(_ newName: String, forId id: String?)
+    func changedTransformerTeam(_ newTeam: Transformer.Team, forId id: String?)
+    func changedTransformerBenched(_ newIsBenched: Bool, forId id: String?)
+    func changedTransformerRank(_ newValue: Int, forId id: String?)
+    func changedTransformerStrength(_ newValue: Int, forId id: String?)
+    func changedTransformerIntelligence(_ newValue: Int, forId id: String?)
+    func changedTransformerSpeed(_ newValue: Int, forId id: String?)
+    func changedTransformerEndurance(_ newValue: Int, forId id: String?)
+    func changedTransformerFirepower(_ newValue: Int, forId id: String?)
+    func changedTransformerCourage(_ newValue: Int, forId id: String?)
+    func changedTransformerSkill(_ newValue: Int, forId id: String?)
+    func saveNewTransformer()
+    func discardNewTransformer()
+    func discardOpenTransformer(withId id: String)
+    func updateOpenTransformer(withId id: String)
+    func deleteOpenTransformer(withId id: String)
+}
+
+extension FlowController: TransformerEditorFlowControllerProtocol {
+    
+    func changedTransformerName(_ newName: String, forId id: String?) {
+        dataController.updateEditingTransformerName(newName)
+        updateTransformerEditor()
+    }
+    
+    func changedTransformerTeam(_ newTeam: Transformer.Team, forId id: String?) {
+        dataController.updateEditingTransformerTeam(newTeam)
+        updateTransformerEditor()
+    }
+    
+    func changedTransformerBenched(_ newIsBenched: Bool, forId id: String?) {
+        dataController.updateEditingTransformerBenched(newIsBenched, forId: id)
+        updateTransformerEditor()
+    }
+    
+    func changedTransformerRank(_ newValue: Int, forId id: String?) {
+        dataController.updateEditingTransformerRank(newValue)
+        updateTransformerEditor()
+    }
+    
+    func changedTransformerStrength(_ newValue: Int, forId id: String?) {
+        dataController.updateEditingTransformerStrength(newValue)
+        updateTransformerEditor()
+    }
+    
+    func changedTransformerIntelligence(_ newValue: Int, forId id: String?) {
+        dataController.updateEditingTransformerIntelligence(newValue)
+        updateTransformerEditor()
+    }
+    
+    func changedTransformerSpeed(_ newValue: Int, forId id: String?) {
+        dataController.updateEditingTransformerSpeed(newValue)
+        updateTransformerEditor()
+    }
+    
+    func changedTransformerEndurance(_ newValue: Int, forId id: String?) {
+        dataController.updateEditingTransformerEndurance(newValue)
+        updateTransformerEditor()
+    }
+    
+    func changedTransformerFirepower(_ newValue: Int, forId id: String?) {
+        dataController.updateEditingTransformerFirepower(newValue)
+        updateTransformerEditor()
+    }
+    
+    func changedTransformerCourage(_ newValue: Int, forId id: String?) {
+        dataController.updateEditingTransformerCourage(newValue)
+        updateTransformerEditor()
+    }
+    
+    func changedTransformerSkill(_ newValue: Int, forId id: String?) {
+        dataController.updateEditingTransformerSkill(newValue)
+        updateTransformerEditor()
+    }
+    
+    func saveNewTransformer() {
+        print("FlowController.saveNewTransformer")
+        guard let newTransformer = dataController.editingTransformer else { return }
+        dataController.savingEditedTransformer()
+        
+        networkUtility.addTransformer(TransformerInput(copiedFrom: newTransformer)) { [weak self] error in
+            print("FlowController.saveNewTransformer - addTransformer completion")
+            if error == nil {
+                DispatchQueue.main.async {
+                    self?.exitTransformerEditor(saving: true)
+                }
+            } else {
+                // should invoke an alert here, but for now we get silent failure
+            }
+        }
+    }
+    
+    func discardNewTransformer() {
+        print("FlowController.discardNewTransformer")
+        dataController.dismissEditedTransformer()
+    }
+    
+    func discardOpenTransformer(withId id: String) {
+        print("FlowController.discardOpenTransformer id \(id)")
+        dataController.dismissEditedTransformer()
+    }
+    
+    func updateOpenTransformer(withId id: String) {
+        print("FlowController.updateTransformer id \(id)")
+        guard let updatedTransformer = dataController.editingTransformer else { return }
+        dataController.savingEditedTransformer()
+        
+        networkUtility.updateTransformer(TransformerInput(copiedFrom: updatedTransformer)) { [weak self] error in
+            print("FlowController.updateTransformer id \(id) - updateTransformer completion")
+            if error == nil {
+                DispatchQueue.main.async {
+                    self?.exitTransformerEditor(saving: true)
+                }
+            } else {
+                // should invoke an alert here, but for now we get silent failure
+            }
+        }
+    }
+    
+    func deleteOpenTransformer(withId id: String) {
+        print("FlowController.deleteOpenTransformer id \(id)")
+        
+        networkUtility.deleteTransformer(id) { [weak self] error in
+            print("FlowController.deleteOpenTransformer id \(id) - deleteTransformer completion")
+            if error == nil {
+                DispatchQueue.main.async {
+                    self?.exitTransformerEditor(saving: true)
+                }
+            } else {
+                // should invoke an alert here, but for now we get silent failure
+            }
+        }
+    }
+    
+}

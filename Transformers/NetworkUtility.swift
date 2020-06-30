@@ -205,7 +205,8 @@ class NetworkUtility: NetworkUtilityProtocol {
         }
         _ = request
         
-        // todo: finish this
+        // TODO: finish loadList
+        // * and wrap in a background task to mostly ensure transaction completes if app backgrounded
         
         DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(500)) {
             completion(.success([]))
@@ -222,13 +223,14 @@ class NetworkUtility: NetworkUtilityProtocol {
         }
         _ = request
         
-        // TODO: finish this
-        // TODO: wrap in a background task to mostly ensure transaction completes if app backgrounded
+        // TODO: finish addItem
+        // * and wrap in a background task to mostly ensure transaction completes if app backgrounded
 
         DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
             var t = data
-            t.id = "abcxyz"
-            t.teamIcon = "https://image.flaticon.com/icons/svg/3094/3094213.svg"
+            t.id = String(arc4random())
+            t.teamIcon = (t.team == .autobots ?
+                "https://image.flaticon.com/icons/svg/3094/3094213.svg" : "https://image.flaticon.com/icons/svg/3116/3116138.svg")
             completion(.success(t))
         }
     }
@@ -243,12 +245,13 @@ class NetworkUtility: NetworkUtilityProtocol {
         }
         _ = request
         
-        // TODO: finish this
-        // TODO: wrap in a background task to mostly ensure transaction completes if app backgrounded
+        // TODO: finish updateItem
+        // * and wrap in a background task to mostly ensure transaction completes if app backgrounded
         
         DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
             var t = data
-            t.teamIcon = "https://image.flaticon.com/icons/svg/3094/3094213.svg"
+            t.teamIcon = (t.team == .autobots ?
+                "https://image.flaticon.com/icons/svg/3094/3094213.svg" : "https://image.flaticon.com/icons/svg/3116/3116138.svg")
             completion(.success(t))
         }
     }
@@ -263,8 +266,8 @@ class NetworkUtility: NetworkUtilityProtocol {
         }
         _ = request
         
-        // TODO: finish this
-        // TODO: wrap in a background task to mostly ensure transaction completes if app backgrounded
+        // TODO: finish deleteItem
+        // * and wrap in a background task to mostly ensure transaction completes if app backgrounded
         
         DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
             completion(.success(id))

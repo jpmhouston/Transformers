@@ -6,7 +6,7 @@
 //  Copyright © 2020 Pierre Houston. All rights reserved.
 //
 
-import SwiftUI
+import UIKit
 
 @IBDesignable
 class DesignableButton: UIButton {
