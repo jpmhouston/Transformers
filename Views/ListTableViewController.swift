@@ -1,5 +1,5 @@
 //
-//  TransformerListTableViewController.swift
+//  ListTableViewController.swift
 //  Transformers
 //
 //  Created by Pierre Houston on 2020-06-28.
@@ -8,13 +8,13 @@
 
 import UIKit
 
-class TransformerListTableViewController: UITableViewController {
+class ListTableViewController: UITableViewController {
     
     @IBOutlet var toggleTapRecognizer: UITapGestureRecognizer!
     @IBOutlet var toggleLongPressRecognizer: UILongPressGestureRecognizer!
     
-    weak var flowController: TransformersListFlowControllerProtocol?
-    var viewModel: TransformersListViewModel? {
+    weak var flowController: ListFlowControllerProtocol?
+    var viewModel: ListViewModel? {
         didSet {
             guard isViewLoaded else { return }
             configure()
@@ -24,7 +24,7 @@ class TransformerListTableViewController: UITableViewController {
     var cellReuseIdentifier = "TransformerListCell"
     
     // keep local copy of data to have a source for diffing against new data from view model
-    var transformerData: [TransformersListViewModel.TransformerItem] = []
+    var transformerData: [ListViewModel.TransformerItem] = []
     
     // MARK: -
     
@@ -52,10 +52,10 @@ class TransformerListTableViewController: UITableViewController {
         //    transformerData = targetData
         //}
         
-        // also TransformersListViewModel.TransformerItem would need to add these protocols Equatable, Differentiable
+        // also ListViewModel.TransformerItem would need to add these protocols Equatable, Differentiable
     }
     
-    func toggleAllTransformersJoinedOrBenched(forCell cell: TransformerListCell) {
+    func toggleAllTransformersJoinedOrBenched(forCell cell: ListCell) {
         let currentCellBenched = cell.isBenched
         guard let fc = flowController else {    // to simplify some code below
             return
@@ -87,7 +87,7 @@ class TransformerListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
-        guard let transformerCell = cell as? TransformerListCell, indexPath.item < transformerData.count else {
+        guard let transformerCell = cell as? ListCell, indexPath.item < transformerData.count else {
             return cell
         }
         let data = transformerData[indexPath.item]
@@ -98,7 +98,7 @@ class TransformerListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let transformerCell = tableView.cellForRow(at: indexPath) as? TransformerListCell else {
+        guard let transformerCell = tableView.cellForRow(at: indexPath) as? ListCell else {
             return
         }
         flowController?.editTransformer(withId: transformerCell.transformerId)
@@ -106,7 +106,7 @@ class TransformerListTableViewController: UITableViewController {
     
     // implementing this give us a delete swipe action automatically
 //    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//        guard editingStyle == .delete, let transformerCell = tableView.cellForRow(at: indexPath) as? TransformerListCell else {
+//        guard editingStyle == .delete, let transformerCell = tableView.cellForRow(at: indexPath) as? ListCell else {
 //            return
 //        }
 //        self?.flowController?.deleteTransformer(withId: transformerCell.transformerId)
@@ -122,7 +122,7 @@ class TransformerListTableViewController: UITableViewController {
         // it's probably valid to get the cell when called here and use it in the closures below,
         // seeing as this gets called just as the slide occurs, vs much earlier giving any opportunity
         // for the cell to be reused inbetween
-        guard let transformerCell = tableView.cellForRow(at: indexPath) as? TransformerListCell else {
+        guard let transformerCell = tableView.cellForRow(at: indexPath) as? ListCell else {
             return []
         }
         
@@ -157,7 +157,7 @@ class TransformerListTableViewController: UITableViewController {
 // recognizers onto the view controllers and drilling down to ensure they only take effect
 // for taps on the icon, a little more involved but works well
 
-extension TransformerListTableViewController: UIGestureRecognizerDelegate {
+extension ListTableViewController: UIGestureRecognizerDelegate {
     
     func setupGestureRecognizers() {
         // nothing extra to setup after all, these checkboxes set thusly in IB are all that's needed:
@@ -194,10 +194,10 @@ extension TransformerListTableViewController: UIGestureRecognizerDelegate {
     
     // went a bit overboard and factored out the common iteration I had above, supporting the 2 simple variants below
     @discardableResult
-    func testOverVisibleCells<T>(_ locationMap: (TransformerListCell) -> CGPoint, _ visit: (TransformerListCell, CGPoint) -> T) -> T? {
+    func testOverVisibleCells<T>(_ locationMap: (ListCell) -> CGPoint, _ visit: (ListCell, CGPoint) -> T) -> T? {
         guard let indexPaths = tableView.indexPathsForVisibleRows else { return nil }
         for indexPath in indexPaths {
-            guard let transformerCell = tableView.cellForRow(at: indexPath) as? TransformerListCell else { continue }
+            guard let transformerCell = tableView.cellForRow(at: indexPath) as? ListCell else { continue }
             let touchLocation = locationMap(transformerCell)
             guard transformerCell.bounds.contains(touchLocation) else {
                 continue
@@ -207,11 +207,11 @@ extension TransformerListTableViewController: UIGestureRecognizerDelegate {
         return nil
     }
     
-    func testOverVisibleCells(forTouch touch: UITouch, _ visit: (TransformerListCell, CGPoint) -> Bool) -> Bool {
+    func testOverVisibleCells(forTouch touch: UITouch, _ visit: (ListCell, CGPoint) -> Bool) -> Bool {
         return testOverVisibleCells({ touch.location(in: $0) }, visit) ?? false
     }
     
-    func iterateOverVisibleCells(forGestureRecognizer gestureRecognizer: UIGestureRecognizer, _ visit: (TransformerListCell, CGPoint) -> Void) {
+    func iterateOverVisibleCells(forGestureRecognizer gestureRecognizer: UIGestureRecognizer, _ visit: (ListCell, CGPoint) -> Void) {
         testOverVisibleCells({ gestureRecognizer.location(in: $0) }, visit) // calls generic func below with T = Void, ignores Void? return value
     }
     

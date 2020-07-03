@@ -1,5 +1,5 @@
 //
-//  TransformersListViewModel.swift
+//  ListViewModel.swift
 //  Transformers
 //
 //  Created by Pierre Houston on 2020-06-29.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct TransformersListViewModel {
+struct ListViewModel {
     struct TransformerItem {
         let id: String
         let name: String

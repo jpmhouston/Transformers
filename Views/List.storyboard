@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="m5E-ll-Sxt">
-    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,16 +9,16 @@
         <!--Transformers-->
         <scene sceneID="dUJ-Fw-7I9">
             <objects>
-                <viewController id="RUN-52-aCS" customClass="TransformersListViewController" customModule="Transformers" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="cxg-23-eWE">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                <viewController id="RUN-52-aCS" customClass="ListViewController" customModule="Transformers" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" misplaced="YES" id="cxg-23-eWE">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OVq-sW-slA">
-                                <rect key="frame" x="50" y="219.5" width="275" height="112"/>
+                                <rect key="frame" x="161" y="186" width="278" height="112"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Transformers entered yet. Use the + button to add some, then swords button in the top-left to battle!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.75" translatesAutoresizingMaskIntoConstraints="NO" id="rLY-5a-pCe">
-                                        <rect key="frame" x="0.0" y="0.0" width="275" height="112"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="278" height="112"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -37,10 +35,10 @@
                                 </constraints>
                             </view>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="kBb-47-fal">
-                                <rect key="frame" x="177.5" y="265.5" width="20" height="20"/>
+                                <rect key="frame" x="290" y="232" width="20" height="20"/>
                             </activityIndicatorView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W8C-mE-og0">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <segue destination="EP0-Yu-MAF" kind="embed" id="sjK-hP-MNo"/>
@@ -87,12 +85,12 @@
             </objects>
             <point key="canvasLocation" x="552.79999999999995" y="-18.440779610194905"/>
         </scene>
-        <!--Transformer List Table View Controller-->
+        <!--List Table View Controller-->
         <scene sceneID="LGj-ar-JbW">
             <objects>
-                <tableViewController id="EP0-Yu-MAF" customClass="TransformerListTableViewController" customModule="Transformers" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="EP0-Yu-MAF" customClass="ListTableViewController" customModule="Transformers" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="1" id="HdA-xw-LBh">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="579"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <gestureRecognizers/>
@@ -103,7 +101,7 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TransformerListCell" id="FeD-LM-p0L" customClass="TransformerListCell" customModule="Transformers" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TransformerListCell" id="FeD-LM-p0L" customClass="ListCell" customModule="Transformers" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="80.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="FeD-LM-p0L" id="szW-kr-ysT">
@@ -235,6 +233,7 @@
                         <color key="barTintColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="oSN-oA-Lij">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>

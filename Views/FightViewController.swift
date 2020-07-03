@@ -1,5 +1,5 @@
 //
-//  TransformerFightViewController.swift
+//  FightViewController.swift
 //  Transformers
 //
 //  Created by Pierre Houston on 2020-06-30.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TransformerFightViewController: UITableViewController {
+class FightViewController: UITableViewController {
     
     @IBOutlet var blankFooter: UIView!
     @IBOutlet var roundNFooter: UIView!
@@ -37,7 +37,7 @@ class TransformerFightViewController: UITableViewController {
     var showingFinalResults = false
     var showFightButton = false
     var roundsTimer: Timer?
-    var desiredInterval: TimeInterval = TransformerFightViewController.slowTimeInterval
+    var desiredInterval: TimeInterval = FightViewController.slowTimeInterval
     static let slowTimeInterval: TimeInterval = 1.5
     static let fastTimeInterval: TimeInterval = 0.25
     
@@ -101,7 +101,7 @@ class TransformerFightViewController: UITableViewController {
     }
     
     @IBAction func speedUpRoundsTimer(_ sender: UIBarButtonItem) {
-        desiredInterval = TransformerFightViewController.fastTimeInterval
+        desiredInterval = FightViewController.fastTimeInterval
         if let timer = roundsTimer, timer.isValid {
             roundsTimer?.invalidate()
             startRoundsTimer(withInterval: desiredInterval)

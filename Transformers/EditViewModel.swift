@@ -1,5 +1,5 @@
 //
-//  TransformerEditorViewModel.swift
+//  EditViewModel.swift
 //  Transformers
 //
 //  Created by Pierre Houston on 2020-06-29.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct TransformerEditorViewModel {
+struct EditViewModel {
     let id: String?
     let name: String
     let isSpecial: Bool

@@ -1,5 +1,5 @@
 //
-//  EditTransformerViewController.swift
+//  EditViewController.swift
 //  Transformers
 //
 //  Created by Pierre Houston on 2020-06-29.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditTransformerViewController: UIViewController {
+class EditViewController: UIViewController {
     
     @IBOutlet var nameField: UITextField!
     @IBOutlet var teamIcon: UIImageView!
@@ -41,8 +41,8 @@ class EditTransformerViewController: UIViewController {
     var activeField: UITextField?
     var observations: [AnyObject] = []
     
-    weak var flowController: TransformerEditorFlowControllerProtocol?
-    var viewModel: TransformerEditorViewModel? {
+    weak var flowController: EditFlowControllerProtocol?
+    var viewModel: EditViewModel? {
         didSet {
             guard isViewLoaded else { return }
             configure()
@@ -287,7 +287,7 @@ class EditTransformerViewController: UIViewController {
         }
         
         if let id = viewModel.id {
-            flowController?.updateOpenTransformer(withId: id)
+            flowController?.updateEditedTransformer(withId: id)
         } else {
             flowController?.saveNewTransformer()
         }
@@ -296,7 +296,7 @@ class EditTransformerViewController: UIViewController {
     @IBAction func cancelPressed(_ sender: UIButton) {
         guard let viewModel = viewModel else { return }
         if let id = viewModel.id {
-            flowController?.discardOpenTransformer(withId: id)
+            flowController?.discardEditedTransformer(withId: id)
         } else {
             flowController?.discardNewTransformer()
         }
@@ -304,7 +304,7 @@ class EditTransformerViewController: UIViewController {
     
     @IBAction func deletePressed(_ sender: UIButton) {
         guard let viewModel = viewModel, let id = viewModel.id else { return }
-        flowController?.deleteOpenTransformer(withId: id)
+        flowController?.deleteEditedTransformer(withId: id)
     }
     
 }
@@ -317,7 +317,7 @@ class EditTransformerViewController: UIViewController {
 // after setting up this much, something in UIKit is scrolling to keep field visible. good enough and i'm
 // not going to spend time on it
 
-extension EditTransformerViewController {
+extension EditViewController {
     
     func setupToScrollWhenKeyboardAppears() {
         guard let view = view else { return }

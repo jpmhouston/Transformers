@@ -1,5 +1,5 @@
 //
-//  TransformersListViewController.swift
+//  ListViewController.swift
 //  Transformers
 //
 //  Created by Pierre Houston on 2020-06-27.
@@ -10,7 +10,7 @@
 
 import UIKit
 
-class TransformersListViewController: UIViewController {
+class ListViewController: UIViewController {
     
     @IBOutlet var fightButton: UIBarButtonItem!
     @IBOutlet var addButton: UIBarButtonItem!
@@ -19,8 +19,8 @@ class TransformersListViewController: UIViewController {
     @IBOutlet var emptyListMessageView: UIView!
     @IBOutlet var loadingIndicator: UIActivityIndicatorView!
     
-    weak var flowController: TransformersListFlowControllerProtocol?
-    var viewModel: TransformersListViewModel? {
+    weak var flowController: ListFlowControllerProtocol?
+    var viewModel: ListViewModel? {
         didSet {
             guard isViewLoaded else { return }
             configure()
@@ -29,7 +29,7 @@ class TransformersListViewController: UIViewController {
     
     var hadDisappeared = false
     
-    var tableViewViewController: TransformerListTableViewController? {
+    var tableViewViewController: ListTableViewController? {
         locateChildViewControllerByType()
     }
     
@@ -56,7 +56,7 @@ class TransformersListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         if hadDisappeared {
-            flowController?.returnedToTransformersList()
+            flowController?.returnedToList()
             
             // after reappearing, assume view mode is bound to be updated imminently
             // looks better if the message is hidden off the bat

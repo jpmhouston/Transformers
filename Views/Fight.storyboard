@@ -10,7 +10,7 @@
         <!--Transformers Battle!-->
         <scene sceneID="cQv-ZG-qnH">
             <objects>
-                <tableViewController id="584-JL-CmF" customClass="TransformerFightViewController" customModule="Transformers" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="584-JL-CmF" customClass="FightViewController" customModule="Transformers" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="20" id="iME-wq-zdv">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

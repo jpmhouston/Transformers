@@ -1,5 +1,5 @@
 //
-//  TransformerListCell.swift
+//  ListCell.swift
 //  Transformers
 //
 //  Created by Pierre Houston on 2020-06-28.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TransformerListCell: UITableViewCell {
+class ListCell: UITableViewCell {
     
     @IBOutlet var teamIcon: UIImageView!
     @IBOutlet var nameLabel: UILabel!
