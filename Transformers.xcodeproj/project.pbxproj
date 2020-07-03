@@ -112,13 +112,26 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		8FA9560724A3D58300990BD7 /* Model */ = {
+		8F09571C24AF1E280022A4E2 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8FA9560924A3D5D900990BD7 /* FlowController.swift */,
+				8FA9561C24A7ABA300990BD7 /* DataController.swift */,
+				8FA9560E24A529A300990BD7 /* NetworkUtility.swift */,
+				8F69D05E24AAF40F00D2CCA5 /* ListViewModel.swift */,
+				8F69D06124AAF42E00D2CCA5 /* EditViewModel.swift */,
+			);
+			name = Controllers;
+			path = Transformers/Controllers;
+			sourceTree = "<group>";
+		};
+		8FA9560724A3D58300990BD7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				8FA9561424A69DE000990BD7 /* Transformer.swift */,
 				8FA9561924A6A57500990BD7 /* Fight.swift */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		8FA9560824A3D58E00990BD7 /* Views */ = {
@@ -144,7 +157,8 @@
 			children = (
 				8FA9561124A5573200990BD7 /* Aequilibrium_-_Mobile_Developer_Technical_Test.pdf */,
 				8FDBB6C824A2FF720015E182 /* Transformers */,
-				8FA9560724A3D58300990BD7 /* Model */,
+				8F09571C24AF1E280022A4E2 /* Controllers */,
+				8FA9560724A3D58300990BD7 /* Models */,
 				8FA9560824A3D58E00990BD7 /* Views */,
 				8FDBB6DF24A2FF760015E182 /* TransformersTests */,
 				8FDBB6C724A2FF720015E182 /* Products */,
@@ -166,11 +180,6 @@
 			isa = PBXGroup;
 			children = (
 				8FDBB6C924A2FF720015E182 /* AppDelegate.swift */,
-				8FA9560924A3D5D900990BD7 /* FlowController.swift */,
-				8FA9561C24A7ABA300990BD7 /* DataController.swift */,
-				8FA9560E24A529A300990BD7 /* NetworkUtility.swift */,
-				8F69D05E24AAF40F00D2CCA5 /* ListViewModel.swift */,
-				8F69D06124AAF42E00D2CCA5 /* EditViewModel.swift */,
 				8FDBB6CF24A2FF760015E182 /* Assets.xcassets */,
 				8FDBB6D424A2FF760015E182 /* LaunchScreen.storyboard */,
 				8FDBB6D724A2FF760015E182 /* Info.plist */,
