@@ -252,8 +252,8 @@ class TransformerFightViewController: UITableViewController {
             assertionFailure("could dequeue FightLineUpCell")
             return nil
         }
-        //lineUpCell.autobotsIcon.setImage ... autobotsIcon
-        //lineUpCell.decepticonsIcon.setImage ... decepticonsIcon
+        lineUpCell.autobotsIcon.setTransformerIcon(withURLString: autobotsIcon)
+        lineUpCell.decepticonsIcon.setTransformerIcon(withURLString: decepticonsIcon)
         fillStackView(lineUpCell.autobotNameStack, withNames: battleResult.startingAutobots.map(\.name))
         fillStackView(lineUpCell.decepticonNameStack, withNames: battleResult.startingDecepticons.map(\.name))
         return lineUpCell
@@ -270,13 +270,13 @@ class TransformerFightViewController: UITableViewController {
         }
         winnerCell.teamIcon.image = nil
         if case .autobotWin = roundResult.outcome {
-            //winnerCell.teamIcon.setImage ... autobotsIcon
+            winnerCell.teamIcon.setTransformerIcon(withURLString: autobotsIcon)
             winnerCell.autobotWinLabel.isHidden = false
             winnerCell.decepticonWinLabel.isHidden = true
             winnerCell.autobotDefeatsLabel.isHidden = false
             winnerCell.autobotDefeatedByLabel.isHidden = true
         } else {
-            //winnerCell.teamIcon.setImage ... decepticonsIcon
+            winnerCell.teamIcon.setTransformerIcon(withURLString: decepticonsIcon)
             winnerCell.autobotWinLabel.isHidden = true
             winnerCell.decepticonWinLabel.isHidden = false
             winnerCell.autobotDefeatsLabel.isHidden = true
@@ -292,8 +292,8 @@ class TransformerFightViewController: UITableViewController {
             assertionFailure("could dequeue TieCell")
             return nil
         }
-        //tieCell.autobotsIcon.setImage ... autobotsIcon
-        //tieCell.decepticonsIcon.setImage ... decepticonsIcon
+        tieCell.autobotsIcon.setTransformerIcon(withURLString: autobotsIcon)
+        tieCell.decepticonsIcon.setTransformerIcon(withURLString: decepticonsIcon)
         tieCell.autobotName.text = roundResult.autobot.name
         tieCell.decepticonName.text = roundResult.decepticon.name
         return tieCell
@@ -314,7 +314,7 @@ class TransformerFightViewController: UITableViewController {
             assertionFailure("could dequeue AutobotsWinCell")
             return nil
         }
-        //autobotsWinCell.autobotsIcon.setImage ... autobotsIcon
+        autobotsWinCell.autobotsIcon.setTransformerIcon(withURLString: autobotsIcon)
         fillStackView(autobotsWinCell.autobotNameStack, withNames: battleResult.autobotSurvivors.map(\.name))
         fillStackView(autobotsWinCell.decepticonNameStack, withNames: battleResult.decepticonSurvivors.map(\.name))
         return autobotsWinCell
@@ -325,7 +325,7 @@ class TransformerFightViewController: UITableViewController {
             assertionFailure("could dequeue DecepticonsWinCell")
             return nil
         }
-        //decepticonsWinCell.decepticonsIcon.setImage ... decepticonsIcon
+        decepticonsWinCell.decepticonsIcon.setTransformerIcon(withURLString: decepticonsIcon)
         fillStackView(decepticonsWinCell.autobotNameStack, withNames: battleResult.autobotSurvivors.map(\.name))
         fillStackView(decepticonsWinCell.decepticonNameStack, withNames: battleResult.decepticonSurvivors.map(\.name))
         return decepticonsWinCell
@@ -336,8 +336,8 @@ class TransformerFightViewController: UITableViewController {
             assertionFailure("could dequeue TeamsTieCell")
             return nil
         }
-        //teamsTieCell.autobotsIcon.setImage ... autobotsIcon
-        //teamsTieCell.decepticonsIcon.setImage ... decepticonsIcon
+        teamsTieCell.autobotsIcon.setTransformerIcon(withURLString: autobotsIcon)
+        teamsTieCell.decepticonsIcon.setTransformerIcon(withURLString: decepticonsIcon)
         fillStackView(teamsTieCell.autobotNameStack, withNames: battleResult.autobotSurvivors.map(\.name))
         fillStackView(teamsTieCell.decepticonNameStack, withNames: battleResult.startingDecepticons.map(\.name))
         return teamsTieCell

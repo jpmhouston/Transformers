@@ -76,7 +76,7 @@ class TransformerListTableViewController: UITableViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated) // overridden to give somewhere to put a breakpoint
+        super.viewDidAppear(animated) // overridden to give somewhere to put a breakpoint during some view debugging, to be removed
     }
     
     // MARK: - data source & delegate methods
@@ -91,7 +91,7 @@ class TransformerListTableViewController: UITableViewController {
             return cell
         }
         let data = transformerData[indexPath.item]
-        transformerCell.configure(name: data.name, teamIconURL: data.teamIcon, isSpecial: data.isSpecial, rank: data.rank, rating: data.rating, benched: data.isBenched)
+        transformerCell.configure(name: data.name, teamIcon: data.teamIcon, isSpecial: data.isSpecial, rank: data.rank, rating: data.rating, benched: data.isBenched)
         transformerCell.transformerId = data.id
         return transformerCell
     }

@@ -251,7 +251,7 @@ class NetworkUtility: NetworkUtilityProtocol {
         DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
             var t = data
             t.teamIcon = (t.team == .autobots ?
-                "https://image.flaticon.com/icons/svg/3094/3094213.svg" : "https://image.flaticon.com/icons/svg/3116/3116138.svg")
+                "https://img.icons8.com/fluent/48/000000/car.png" : "https://img.icons8.com/color/48/000000/prop-plane.png")
             completion(.success(t))
         }
     }

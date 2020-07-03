@@ -86,6 +86,8 @@ class EditTransformerViewController: UIViewController {
         star.isHidden = (viewModel.isSpecial == false)
         ratingValue.text = String(viewModel.rating)
         
+        teamIcon.setTransformerIcon(withURLString: viewModel.teamIcon)
+        
         switch viewModel.team {
         case .autobots: teamSwitcher.selectedSegmentIndex = 0
         case .decepticons: teamSwitcher.selectedSegmentIndex = 1

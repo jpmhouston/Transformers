@@ -30,7 +30,7 @@
                                                 <constraint firstAttribute="width" constant="48" id="g2H-sk-Axg"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Autobots" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="c95-nO-x21">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Autobots" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="c95-nO-x21">
                                             <rect key="frame" x="74" y="15" width="73.5" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -131,7 +131,6 @@
                                         </label>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="88g-8L-OAl">
                                             <rect key="frame" x="175.5" y="15" width="24" height="28"/>
-                                            <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="ckR-Ta-z47"/>
                                                 <constraint firstAttribute="width" constant="24" id="zCc-y5-afI"/>
@@ -218,7 +217,6 @@
                                         </view>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VcP-gs-4hD">
                                             <rect key="frame" x="151" y="15" width="24" height="28"/>
-                                            <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="hVN-FX-liA"/>
                                                 <constraint firstAttribute="width" constant="24" id="pMa-fq-MKH"/>
@@ -232,7 +230,6 @@
                                         </label>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lre-xQ-fhW">
                                             <rect key="frame" x="200.5" y="15" width="24" height="28"/>
-                                            <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="24" id="RjH-Ps-BoW"/>
                                                 <constraint firstAttribute="height" constant="28" id="h30-eF-AEu"/>
@@ -332,10 +329,10 @@ annihilation with</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AutobotsWinCell" id="nan-DY-hjf" customClass="AutobotsWinCell" customModule="Transformers" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="364" width="375" height="101.5"/>
+                                <rect key="frame" x="0.0" y="364" width="375" height="99.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nan-DY-hjf" id="G2k-xm-PAt">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="101.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="99.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="dLH-VD-vmF">
@@ -359,13 +356,13 @@ annihilation with</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Survivors" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HjI-kg-nLv">
-                                            <rect key="frame" x="74" y="52" width="53" height="14.5"/>
+                                            <rect key="frame" x="74" y="50" width="53" height="14.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="6QS-Zw-0TE">
-                                            <rect key="frame" x="74" y="68.5" width="108.5" height="18"/>
+                                            <rect key="frame" x="74" y="66.5" width="108.5" height="18"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Scj-k5-hjj">
                                                     <rect key="frame" x="0.0" y="0.0" width="108.5" height="18"/>
@@ -376,13 +373,13 @@ annihilation with</string>
                                             </subviews>
                                         </stackView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="275" verticalHuggingPriority="251" horizontalCompressionResistancePriority="550" text="Decepticon Survivors" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QDM-c7-MOi">
-                                            <rect key="frame" x="233" y="37.5" width="68" height="29"/>
+                                            <rect key="frame" x="233" y="35.5" width="68" height="29"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="c51-VV-Ho5">
-                                            <rect key="frame" x="192.5" y="68.5" width="108.5" height="18"/>
+                                            <rect key="frame" x="192.5" y="66.5" width="108.5" height="18"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bLC-N4-sCI">
                                                     <rect key="frame" x="0.0" y="0.0" width="108.5" height="18"/>
@@ -411,7 +408,7 @@ annihilation with</string>
                                         <constraint firstItem="1sM-bZ-rIV" firstAttribute="leading" secondItem="dLH-VD-vmF" secondAttribute="trailing" constant="10" id="Xot-ia-KKo"/>
                                         <constraint firstItem="QDM-c7-MOi" firstAttribute="bottom" secondItem="HjI-kg-nLv" secondAttribute="bottom" id="bSG-Kl-xzg"/>
                                         <constraint firstItem="dLH-VD-vmF" firstAttribute="leading" secondItem="G2k-xm-PAt" secondAttribute="leading" constant="16" id="f7G-NS-8Ts"/>
-                                        <constraint firstItem="QDM-c7-MOi" firstAttribute="top" relation="greaterThanOrEqual" secondItem="1sM-bZ-rIV" secondAttribute="bottom" constant="2" id="gJu-bh-BYf"/>
+                                        <constraint firstItem="QDM-c7-MOi" firstAttribute="top" relation="greaterThanOrEqual" secondItem="1sM-bZ-rIV" secondAttribute="bottom" id="gJu-bh-BYf"/>
                                         <constraint firstItem="c51-VV-Ho5" firstAttribute="top" secondItem="6QS-Zw-0TE" secondAttribute="top" id="gj1-da-CE9"/>
                                         <constraint firstItem="c51-VV-Ho5" firstAttribute="trailing" secondItem="QDM-c7-MOi" secondAttribute="trailing" id="s14-Gn-EWE"/>
                                         <constraint firstItem="XY4-tM-855" firstAttribute="leading" secondItem="QDM-c7-MOi" secondAttribute="trailing" constant="10" id="xHO-4W-voq"/>
@@ -425,10 +422,10 @@ annihilation with</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DecepticonsWinCell" id="aDL-6a-twU" customClass="DecepticonsWinCell" customModule="Transformers" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="465.5" width="375" height="101.5"/>
+                                <rect key="frame" x="0.0" y="463.5" width="375" height="99.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aDL-6a-twU" id="qrP-pu-8BY">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="101.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="99.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="2UO-Gd-RVV">
@@ -452,13 +449,13 @@ annihilation with</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Autobot Survivors" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qnw-RF-T3y">
-                                            <rect key="frame" x="74" y="37.5" width="53" height="29"/>
+                                            <rect key="frame" x="74" y="35.5" width="53" height="29"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Apd-36-c6Z">
-                                            <rect key="frame" x="74" y="68.5" width="108.5" height="18"/>
+                                            <rect key="frame" x="74" y="66.5" width="108.5" height="18"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fIU-wU-cxK">
                                                     <rect key="frame" x="0.0" y="0.0" width="108.5" height="18"/>
@@ -469,13 +466,13 @@ annihilation with</string>
                                             </subviews>
                                         </stackView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Survivors" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rdk-ry-2J4">
-                                            <rect key="frame" x="248" y="52" width="53" height="14.5"/>
+                                            <rect key="frame" x="248" y="50" width="53" height="14.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="JBh-CZ-q5W">
-                                            <rect key="frame" x="192.5" y="68.5" width="108.5" height="18"/>
+                                            <rect key="frame" x="192.5" y="66.5" width="108.5" height="18"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZi-Q2-rFu">
                                                     <rect key="frame" x="0.0" y="0.0" width="108.5" height="18"/>
@@ -489,7 +486,7 @@ annihilation with</string>
                                     <constraints>
                                         <constraint firstItem="tn5-hx-Id2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Qnw-RF-T3y" secondAttribute="trailing" constant="8" id="87D-3q-bvf"/>
                                         <constraint firstItem="2UO-Gd-RVV" firstAttribute="leading" secondItem="qrP-pu-8BY" secondAttribute="leading" constant="16" id="A5d-WA-MZg"/>
-                                        <constraint firstItem="Qnw-RF-T3y" firstAttribute="top" relation="greaterThanOrEqual" secondItem="tn5-hx-Id2" secondAttribute="bottom" constant="2" id="Cay-jf-2k6"/>
+                                        <constraint firstItem="Qnw-RF-T3y" firstAttribute="top" relation="greaterThanOrEqual" secondItem="tn5-hx-Id2" secondAttribute="bottom" id="Cay-jf-2k6"/>
                                         <constraint firstItem="Rdk-ry-2J4" firstAttribute="trailing" secondItem="tn5-hx-Id2" secondAttribute="trailing" id="Doc-6y-a0U"/>
                                         <constraint firstItem="JBh-CZ-q5W" firstAttribute="top" secondItem="Rdk-ry-2J4" secondAttribute="bottom" constant="2" id="FyU-ss-BIx"/>
                                         <constraint firstItem="JBh-CZ-q5W" firstAttribute="leading" secondItem="Apd-36-c6Z" secondAttribute="trailing" constant="10" id="Fzk-DF-zFS"/>
@@ -517,7 +514,7 @@ annihilation with</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TeamsTieCell" id="WfC-2n-PlE" customClass="TeamsTieCell" customModule="Transformers" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="567" width="375" height="93"/>
+                                <rect key="frame" x="0.0" y="563" width="375" height="93"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WfC-2n-PlE" id="KDc-2X-BX7">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="93"/>
@@ -530,7 +527,7 @@ annihilation with</string>
                                                 <constraint firstAttribute="height" constant="56" id="bse-Qc-dit"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Autobots" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="gA7-tO-X3r">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Autobots" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="gA7-tO-X3r">
                                             <rect key="frame" x="74" y="15" width="73.5" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -625,7 +622,7 @@ annihilation with</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TeamsDestroyedCell" id="OqR-Ry-zRU" customClass="TeamsDestroyedCell" customModule="Transformers" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="660" width="375" height="159.5"/>
+                                <rect key="frame" x="0.0" y="656" width="375" height="159.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="OqR-Ry-zRU" id="Wai-1N-WVo">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="159.5"/>
@@ -638,7 +635,7 @@ annihilation with</string>
                                                 <constraint firstAttribute="width" constant="56" id="vTg-Ww-feq"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Autobots" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.89999997615814209" translatesAutoresizingMaskIntoConstraints="NO" id="sHo-de-TXm">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Autobots" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.89999997615814209" translatesAutoresizingMaskIntoConstraints="NO" id="sHo-de-TXm">
                                             <rect key="frame" x="74" y="79" width="73.5" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -696,7 +693,7 @@ annihilation with</string>
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="StartButtonCell" id="bo0-dD-sMH">
-                                <rect key="frame" x="0.0" y="819.5" width="375" height="43"/>
+                                <rect key="frame" x="0.0" y="815.5" width="375" height="43"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bo0-dD-sMH" id="npC-sS-ZMx">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
