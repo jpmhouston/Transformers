@@ -17,8 +17,8 @@ class FightViewController: UITableViewController {
     @IBOutlet var finishedSingularLabel: UILabel!
     @IBOutlet var finishedPluralLabel: UILabel!
     
-    // in place of a view model, simply this list of transformer combatants
-    var combatants: [Transformer]! {
+    // this list of combat results is essentially the view model
+    var battleResult: Transformer.BattleResult! {
         didSet {
             if isViewLoaded {
                 configure()
@@ -26,7 +26,6 @@ class FightViewController: UITableViewController {
         }
     }
     
-    var battleResult: Transformer.BattleResult!
     var autobotsIcon: String?
     var decepticonsIcon: String?
     var roundNFooterLabelTemplate = ""
@@ -47,14 +46,17 @@ class FightViewController: UITableViewController {
         
         transparentFooter = UIView()
         
-        if combatants != nil {
+        if battleResult != nil {
             configure()
         }
     }
     
     func configure() {
-        let autobot = combatants.first(where: { $0.team == .autobots })
-        let decepticon = combatants.first(where: { $0.team == .decepticons })
+        // seeing that icons come from the set of combatants, i deliberately designed the ui so that
+        // if there are no transformers from one team or the other, then icon isn't needed to be displayed
+        
+        let autobot = battleResult.startingAutobots.first(where: { $0.team == .autobots })
+        let decepticon = battleResult.startingDecepticons.first(where: { $0.team == .decepticons })
         
         guard autobot != nil || decepticon != nil else {
             navigationController?.popViewController(animated: true)
@@ -67,9 +69,6 @@ class FightViewController: UITableViewController {
         if let decepticon = decepticon {
             decepticonsIcon = decepticon.teamIcon
         }
-        
-        // fight results generated here, doll out results a row at a time
-        battleResult = Transformer.battle(betweenTransformers: combatants)
         
         showingRound = 0
         numberOfRounds = battleResult.roundResults.count
@@ -125,7 +124,7 @@ class FightViewController: UITableViewController {
     // these methods, returning a tuple of data that's used to produce the same output
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if combatants == nil {
+        if battleResult == nil {
             return 0
         } else if showFightButton {
             return 1                                            // before sequence starts, just the lineup section

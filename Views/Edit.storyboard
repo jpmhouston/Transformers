@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--New Transformer-->
+        <!--Edit Transformer-->
         <scene sceneID="oLR-Mc-uof">
             <objects>
                 <viewController id="Srd-LO-sz8" customClass="EditViewController" customModule="Transformers" customModuleProvider="target" sceneMemberID="viewController">
@@ -512,7 +512,7 @@
                                             <constraint firstItem="e6Q-qz-26U" firstAttribute="top" secondItem="3b6-jq-avJ" secondAttribute="bottom" constant="12" id="ZxE-9U-2z3"/>
                                             <constraint firstAttribute="trailing" secondItem="53J-p0-50v" secondAttribute="trailing" constant="60" id="d2w-bh-dl6"/>
                                             <constraint firstItem="3b6-jq-avJ" firstAttribute="leading" secondItem="JBT-3N-V0d" secondAttribute="leading" id="heq-hW-W2h"/>
-                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="qHm-yx-o3h"/>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="500" id="qHm-yx-o3h"/>
                                             <constraint firstItem="53J-p0-50v" firstAttribute="trailing" secondItem="PJl-f9-U8S" secondAttribute="trailing" id="vmx-mo-JVE"/>
                                             <constraint firstItem="PJl-f9-U8S" firstAttribute="leading" secondItem="e6Q-qz-26U" secondAttribute="trailing" priority="700" constant="30" id="zAb-y2-D5D"/>
                                         </constraints>
@@ -542,7 +542,7 @@
                         </connections>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationItem key="navigationItem" title="New Transformer" id="uft-CP-9jJ"/>
+                    <navigationItem key="navigationItem" title="Edit Transformer" id="uft-CP-9jJ"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="cancelButton" destination="PJl-f9-U8S" id="47G-nn-kLe"/>

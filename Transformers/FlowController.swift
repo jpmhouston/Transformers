@@ -150,7 +150,8 @@ class FlowController {
             fatalError("Could not find initial view controller in Fight.storyboard")
         }
         
-        viewController.combatants = dataController.transformersForNextFight
+        let combatants = dataController.transformersForNextFight
+        viewController.battleResult = Transformer.battle(betweenTransformers: combatants)
         
         return viewController
     }
