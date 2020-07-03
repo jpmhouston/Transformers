@@ -13,6 +13,8 @@
 		8F69D06024AAF40F00D2CCA5 /* TransformersListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F69D05E24AAF40F00D2CCA5 /* TransformersListViewModel.swift */; };
 		8F69D06224AAF42E00D2CCA5 /* TransformerEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F69D06124AAF42E00D2CCA5 /* TransformerEditorViewModel.swift */; };
 		8F69D06324AAF42E00D2CCA5 /* TransformerEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F69D06124AAF42E00D2CCA5 /* TransformerEditorViewModel.swift */; };
+		8F69D06524AB3B3100D2CCA5 /* TransformerFightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F69D06424AB3B3100D2CCA5 /* TransformerFightViewController.swift */; };
+		8F69D06724AB4C3600D2CCA5 /* TransformerFight.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8F69D06624AB4C3600D2CCA5 /* TransformerFight.storyboard */; };
 		8FA9560A24A3D5D900990BD7 /* FlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9560924A3D5D900990BD7 /* FlowController.swift */; };
 		8FA9560F24A529A300990BD7 /* NetworkUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9560E24A529A300990BD7 /* NetworkUtility.swift */; };
 		8FA9561024A529A300990BD7 /* NetworkUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA9560E24A529A300990BD7 /* NetworkUtility.swift */; };
@@ -51,6 +53,8 @@
 		8F69D05C24A9D8BD00D2CCA5 /* EditTransformerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTransformerViewController.swift; sourceTree = "<group>"; };
 		8F69D05E24AAF40F00D2CCA5 /* TransformersListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformersListViewModel.swift; sourceTree = "<group>"; };
 		8F69D06124AAF42E00D2CCA5 /* TransformerEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformerEditorViewModel.swift; sourceTree = "<group>"; };
+		8F69D06424AB3B3100D2CCA5 /* TransformerFightViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformerFightViewController.swift; sourceTree = "<group>"; };
+		8F69D06624AB4C3600D2CCA5 /* TransformerFight.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TransformerFight.storyboard; sourceTree = "<group>"; };
 		8FA9560924A3D5D900990BD7 /* FlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowController.swift; sourceTree = "<group>"; };
 		8FA9560E24A529A300990BD7 /* NetworkUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUtility.swift; sourceTree = "<group>"; };
 		8FA9561124A5573200990BD7 /* Aequilibrium_-_Mobile_Developer_Technical_Test.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "Aequilibrium_-_Mobile_Developer_Technical_Test.pdf"; path = "../Aequilibrium_-_Mobile_Developer_Technical_Test.pdf"; sourceTree = "<group>"; };
@@ -111,6 +115,8 @@
 				8FA9567124A9451200990BD7 /* TransformerListCell.swift */,
 				8F69D05A24A9B4A500D2CCA5 /* EditTransformer.storyboard */,
 				8F69D05C24A9D8BD00D2CCA5 /* EditTransformerViewController.swift */,
+				8F69D06624AB4C3600D2CCA5 /* TransformerFight.storyboard */,
+				8F69D06424AB3B3100D2CCA5 /* TransformerFightViewController.swift */,
 				8FA9562B24A834A500990BD7 /* UIView+DesignableBorders.swift */,
 				8FA9566F24A93C9B00990BD7 /* UIViewController+locateByType.swift */,
 			);
@@ -246,6 +252,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F69D06724AB4C3600D2CCA5 /* TransformerFight.storyboard in Resources */,
 				8FDBB6D624A2FF760015E182 /* LaunchScreen.storyboard in Resources */,
 				8FA9562624A82CCF00990BD7 /* TransformersList.storyboard in Resources */,
 				8F69D05B24A9B4A500D2CCA5 /* EditTransformer.storyboard in Resources */,
@@ -273,6 +280,7 @@
 				8FA9561A24A6A57500990BD7 /* Fight.swift in Sources */,
 				8FA9567424A9715B00990BD7 /* TransformerListTableViewController.swift in Sources */,
 				8FA9567024A93C9B00990BD7 /* UIViewController+locateByType.swift in Sources */,
+				8F69D06524AB3B3100D2CCA5 /* TransformerFightViewController.swift in Sources */,
 				8F69D06224AAF42E00D2CCA5 /* TransformerEditorViewModel.swift in Sources */,
 				8FA9562824A82CF600990BD7 /* TransformersListViewController.swift in Sources */,
 				8FA9567224A9451200990BD7 /* TransformerListCell.swift in Sources */,

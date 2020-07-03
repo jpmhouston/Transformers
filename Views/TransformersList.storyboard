@@ -16,18 +16,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W8C-mE-og0">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <connections>
-                                    <segue destination="EP0-Yu-MAF" kind="embed" id="sjK-hP-MNo"/>
-                                </connections>
-                            </containerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OVq-sW-slA">
-                                <rect key="frame" x="54" y="239.5" width="267.5" height="72"/>
+                                <rect key="frame" x="50" y="219.5" width="275" height="112"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Transformers entered yet, use the + button to add them." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.75" translatesAutoresizingMaskIntoConstraints="NO" id="rLY-5a-pCe">
-                                        <rect key="frame" x="0.0" y="0.0" width="267.5" height="72"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Transformers entered yet. Use the + button to add some, then swords button in the top-left to battle!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.75" translatesAutoresizingMaskIntoConstraints="NO" id="rLY-5a-pCe">
+                                        <rect key="frame" x="0.0" y="0.0" width="275" height="112"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -37,7 +30,7 @@
                                 <constraints>
                                     <constraint firstItem="rLY-5a-pCe" firstAttribute="top" secondItem="OVq-sW-slA" secondAttribute="top" id="Bq0-Yw-Toi"/>
                                     <constraint firstAttribute="bottom" secondItem="rLY-5a-pCe" secondAttribute="bottom" id="Dto-tU-P5T"/>
-                                    <constraint firstAttribute="height" constant="72" id="hUU-79-ffC"/>
+                                    <constraint firstAttribute="height" constant="112" id="hUU-79-ffC"/>
                                     <constraint firstItem="rLY-5a-pCe" firstAttribute="leading" secondItem="OVq-sW-slA" secondAttribute="leading" id="iBH-cu-m3b"/>
                                     <constraint firstAttribute="trailing" secondItem="rLY-5a-pCe" secondAttribute="trailing" id="keL-Eo-yjm"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="280" id="sMr-dc-EyM"/>
@@ -46,6 +39,13 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="kBb-47-fal">
                                 <rect key="frame" x="177.5" y="265.5" width="20" height="20"/>
                             </activityIndicatorView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W8C-mE-og0">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <segue destination="EP0-Yu-MAF" kind="embed" id="sjK-hP-MNo"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -57,26 +57,27 @@
                             <constraint firstItem="OVq-sW-slA" firstAttribute="centerX" secondItem="cxg-23-eWE" secondAttribute="centerX" id="Yxz-Hb-5Gc"/>
                             <constraint firstItem="kBb-47-fal" firstAttribute="centerY" secondItem="OVq-sW-slA" secondAttribute="centerY" id="bEf-Xg-x1Z"/>
                             <constraint firstItem="h2o-Xz-Dig" firstAttribute="bottom" secondItem="W8C-mE-og0" secondAttribute="bottom" id="frI-Vt-Rbq"/>
-                            <constraint firstItem="OVq-sW-slA" firstAttribute="baseline" secondItem="cxg-23-eWE" secondAttribute="centerY" id="kJc-cG-mB7"/>
+                            <constraint firstItem="OVq-sW-slA" firstAttribute="baseline" secondItem="cxg-23-eWE" secondAttribute="centerY" constant="20" id="kJc-cG-mB7"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="OVq-sW-slA" secondAttribute="trailing" constant="50" id="sxs-pg-uiE"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="h2o-Xz-Dig"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="Transformers" largeTitleDisplayMode="never" id="VcB-8e-wAW">
-                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="Mqk-U5-1G8">
+                        <barButtonItem key="leftBarButtonItem" title="Toggle" image="BenchIcon" id="m6N-Ve-0Xu">
                             <connections>
-                                <action selector="addTransformer:" destination="RUN-52-aCS" id="8DG-rg-dTx"/>
+                                <action selector="startBattle:" destination="RUN-52-aCS" id="W3r-xQ-Wpa"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Toggle" image="BenchIcon" id="m6N-Ve-0Xu">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Mqk-U5-1G8">
                             <connections>
-                                <action selector="startBattle:" destination="RUN-52-aCS" id="BuG-FB-4R9"/>
+                                <action selector="addTransformer:" destination="RUN-52-aCS" id="8DG-rg-dTx"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="addButton" destination="Mqk-U5-1G8" id="iGS-MW-gJc"/>
+                        <outlet property="containerView" destination="W8C-mE-og0" id="7lg-Zt-Zd1"/>
                         <outlet property="emptyListMessageView" destination="OVq-sW-slA" id="HX6-Vh-faG"/>
                         <outlet property="fightButton" destination="m6N-Ve-0Xu" id="wzf-8P-ljI"/>
                         <outlet property="loadingIndicator" destination="kBb-47-fal" id="esQ-mI-33C"/>
@@ -91,10 +92,11 @@
             <objects>
                 <tableViewController id="EP0-Yu-MAF" customClass="TransformerListTableViewController" customModule="Transformers" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="1" id="HdA-xw-LBh">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="579"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <gestureRecognizers/>
+                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="brh-r3-iyO" userLabel="Invisible Footer View">
                             <rect key="frame" x="0.0" y="136.5" width="375" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -195,29 +197,30 @@
                         <connections>
                             <outlet property="dataSource" destination="EP0-Yu-MAF" id="BjY-bl-Kra"/>
                             <outlet property="delegate" destination="EP0-Yu-MAF" id="zcq-1a-zwy"/>
-                            <outletCollection property="gestureRecognizers" destination="IYR-Qa-1Pe" appends="YES" id="t1B-qd-sHf"/>
-                            <outletCollection property="gestureRecognizers" destination="alc-A4-hpi" appends="YES" id="BLr-cZ-yN6"/>
+                            <outletCollection property="gestureRecognizers" destination="ywB-9c-Xx7" appends="YES" id="ENG-KB-RCa"/>
+                            <outletCollection property="gestureRecognizers" destination="kJv-6M-05v" appends="YES" id="Uqo-sZ-LhR"/>
                         </connections>
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <connections>
-                        <outlet property="benchToggleLongPressRecognizer" destination="IYR-Qa-1Pe" id="fYc-V5-Hh3"/>
-                        <outlet property="benchToggleTapRecognizer" destination="alc-A4-hpi" id="yyO-Um-b54"/>
+                        <outlet property="toggleLongPressRecognizer" destination="kJv-6M-05v" id="bhh-sc-RUL"/>
+                        <outlet property="toggleTapRecognizer" destination="ywB-9c-Xx7" id="ohw-MP-T8n"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RTP-ic-eng" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="IYR-Qa-1Pe">
+                <tapGestureRecognizer cancelsTouchesInView="NO" delaysTouchesBegan="YES" id="ywB-9c-Xx7">
                     <connections>
-                        <action selector="toggleBenchButtonLongPressed:" destination="EP0-Yu-MAF" id="5HY-ad-6qK"/>
-                        <outlet property="delegate" destination="EP0-Yu-MAF" id="A7S-MA-3l0"/>
-                    </connections>
-                </pongPressGestureRecognizer>
-                <tapGestureRecognizer id="alc-A4-hpi">
-                    <connections>
-                        <action selector="toggleBenchButtonPressed:" destination="EP0-Yu-MAF" id="bqr-KJ-46v"/>
-                        <outlet property="delegate" destination="EP0-Yu-MAF" id="fKj-t7-dE2"/>
+                        <action selector="toggleButtonPressed:" destination="EP0-Yu-MAF" id="KVM-Zr-M4d"/>
+                        <outlet property="delegate" destination="EP0-Yu-MAF" id="DSe-HM-lTV"/>
                     </connections>
                 </tapGestureRecognizer>
+                <pongPressGestureRecognizer cancelsTouchesInView="NO" allowableMovement="10" minimumPressDuration="0.5" id="kJv-6M-05v">
+                    <connections>
+                        <action selector="toggleButtonLongPressed:" destination="EP0-Yu-MAF" id="PH3-TL-rSK"/>
+                        <outlet property="delegate" destination="EP0-Yu-MAF" id="z4L-i4-lq5"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1386" y="-38"/>
         </scene>

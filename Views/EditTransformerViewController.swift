@@ -108,7 +108,7 @@ class EditTransformerViewController: UIViewController {
         setFieldIfIntValueNew(courageField, viewModel.courage)
         setFieldIfIntValueNew(skillField, viewModel.skill)
         
-        let hideDeleteButton = true
+        let hideDeleteButton = !viewModel.allowDelete
         deleteButton.isHidden = hideDeleteButton
         deleteButtonHiddenConstraint.isActive = hideDeleteButton
     }

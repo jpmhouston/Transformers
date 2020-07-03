@@ -10,8 +10,8 @@ import UIKit
 
 class TransformerListTableViewController: UITableViewController {
     
-    @IBOutlet var benchToggleTapRecognizer: UITapGestureRecognizer!
-    @IBOutlet var benchToggleLongPressRecognizer: UILongPressGestureRecognizer!
+    @IBOutlet var toggleTapRecognizer: UITapGestureRecognizer!
+    @IBOutlet var toggleLongPressRecognizer: UILongPressGestureRecognizer!
     
     weak var flowController: TransformersListFlowControllerProtocol?
     var viewModel: TransformersListViewModel? {
@@ -23,15 +23,13 @@ class TransformerListTableViewController: UITableViewController {
     
     var cellReuseIdentifier = "TransformerListCell"
     
-    var deleteAction: UITableViewRowAction?
-    
     // keep local copy of data to have a source for diffing against new data from view model
     var transformerData: [TransformersListViewModel.TransformerItem] = []
     
     // MARK: -
     
     override func viewDidLoad() {
-        buildCellSwipeActions()
+        setupGestureRecognizers()
         
         // if view model set before `viewDidLoad` then its earlier didSet did nothing, postponed call to `configure` here
         // if view model set after `viewDidLoad` then this below does nothing, the didSet will call `configure`
@@ -44,7 +42,7 @@ class TransformerListTableViewController: UITableViewController {
         transformerData = viewModel?.transformers ?? []
         tableView.reloadData()
         
-        // TODO: use DifferenceKit to give us cell animations
+        // TODO: use DifferenceKit to handle optimized cell moves/insertions/deletions & potentially better animations
         // instead of the above:
         
         //let sourceData = transformerData
@@ -54,21 +52,14 @@ class TransformerListTableViewController: UITableViewController {
         //    transformerData = targetData
         //}
         
-        // also somewhere need to do:
-        //extension TransformerItem: Equatable, Differentiable
-    }
-    
-    func buildCellSwipeActions() {
-        let deleteTitle = NSLocalizedString("Delete", comment: "")
-        deleteAction = UITableViewRowAction(style: .destructive, title: deleteTitle) { [weak self] action, indexPath in
-            guard let transformerCell = self?.tableView.cellForRow(at: indexPath) as? TransformerListCell else { return }
-            self?.flowController?.deleteTransformer(withId: transformerCell.transformerId)
-        }
+        // also TransformersListViewModel.TransformerItem would need to add these protocols Equatable, Differentiable
     }
     
     func toggleAllTransformersJoinedOrBenched(forCell cell: TransformerListCell) {
         let currentCellBenched = cell.isBenched
-        guard let fc = flowController else { return } // to simplify some code below
+        guard let fc = flowController else {    // to simplify some code below
+            return
+        }
         
         let joinOption = NSLocalizedString("Set All to Fight!", comment: "")
         let benchOption = NSLocalizedString("Set All to Benched", comment: "")
@@ -82,6 +73,10 @@ class TransformerListTableViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: cancel, style: .cancel, handler: nil))
         
         present(alert, animated: true, completion: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated) // overridden to give somewhere to put a breakpoint
     }
     
     // MARK: - data source & delegate methods
@@ -103,40 +98,80 @@ class TransformerListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let transformerCell = tableView.cellForRow(at: indexPath) as? TransformerListCell else { return }
+        guard let transformerCell = tableView.cellForRow(at: indexPath) as? TransformerListCell else {
+            return
+        }
         flowController?.editTransformer(withId: transformerCell.transformerId)
     }
     
+    // implementing this give us a delete swipe action automatically
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//        guard editingStyle == .delete, let transformerCell = tableView.cellForRow(at: indexPath) as? TransformerListCell else {
+//            return
+//        }
+//        self?.flowController?.deleteTransformer(withId: transformerCell.transformerId)
+//    }
+    // but choose to use UITableViewRowAction api to get an edit option too
+    
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        guard let deleteAction = deleteAction else { return [] }
-        return [deleteAction]
+        let deleteTitle = NSLocalizedString("Delete", comment: "")
+        let editTitle = NSLocalizedString("Edit", comment: "")
+        let benchTitle = NSLocalizedString("Bench", comment: "")
+        let joinTitle = NSLocalizedString("Join", comment: "")
+        
+        // it's probably valid to get the cell when called here and use it in the closures below,
+        // seeing as this gets called just as the slide occurs, vs much earlier giving any opportunity
+        // for the cell to be reused inbetween
+        guard let transformerCell = tableView.cellForRow(at: indexPath) as? TransformerListCell else {
+            return []
+        }
+        
+        let deleteAction = UITableViewRowAction(style: .destructive, title: deleteTitle) { [weak self] _, indexPath in
+            self?.flowController?.deleteTransformer(withId: transformerCell.transformerId)
+        }
+        let editAction = UITableViewRowAction(style: .default, title: editTitle) { [weak self] _, indexPath in
+            self?.flowController?.editTransformer(withId: transformerCell.transformerId)
+        }
+        editAction.backgroundColor = UIColor(red: 88/255, green: 86/255, blue: 214/255, alpha: 1) // the indigo i used in IB isn't in iOS10 APIs :^(
+        
+        let joinOrBenchTitle = transformerCell.isBenched ? joinTitle : benchTitle
+        let joinOrBenchAction = UITableViewRowAction(style: .default, title: joinOrBenchTitle) { [weak self] _, indexPath in
+            self?.flowController?.toggleTransformerBenched(forId: transformerCell.transformerId)
+        }
+        joinOrBenchAction.backgroundColor = .gray
+        
+        return [deleteAction, editAction, joinOrBenchAction]
     }
     
 }
 
-// MARK: -
+// MARK: - gesture recognizer
+// i've tried putting buttons into tableview & collectionview cells a few times and learned
+// that there's some voodoo there, and wanting to handle a long press makes it worse
+//
+// one solution i've previous tried is to use a UIButton subclass that monitors its own events
+// to implement long press but i wasn't about to reinvent that wheel and rediscover the issues
+// of buttons in tableview cells
+//
+// another thing i've done before is what's below, putting the tap and long press geture
+// recognizers onto the view controllers and drilling down to ensure they only take effect
+// for taps on the icon, a little more involved but works well
 
 extension TransformerListTableViewController: UIGestureRecognizerDelegate {
     
-    // MARK: gesture recognizer
-    // i've tried putting buttons into tableview & collectionview cells a few times and learned
-    // that there's some voodoo there, and wanting to handle a long press makes it worse
-    //
-    // one solution i've previous tried is to use a UIButton subclass that monitors its own events
-    // to implement long press but i wasn't about to reinvent that wheel and rediscover the issues
-    // of buttons in tableview cells
-    //
-    // another thing i've done before is what's below, putting the tap and long press geture
-    // recognizers onto the view controllers and drilling down to ensure they only take effect
-    // for taps on the icon, a little more involved but works well
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        return testOverVisibleCells(forTouch: touch) { transformerCell, touchLocation in
-            transformerCell.joinedBenchedIcon.frame.contains(touchLocation)
-        }
+    func setupGestureRecognizers() {
+        // nothing extra to setup after all, these checkboxes set thusly in IB are all that's needed:
+        // Cancel touches in view Off for both, Delays touches begin On for the tap recognizer
     }
     
-    @IBAction func toggleBenchButtonPressed(_ sender: UITapGestureRecognizer) {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        let result = testOverVisibleCells(forTouch: touch) { transformerCell, touchLocation in
+            return transformerCell.joinedBenchedIcon.frame.contains(touchLocation)
+        }
+        return result
+    }
+    
+    @IBAction func toggleButtonPressed(_ sender: UITapGestureRecognizer) {
         iterateOverVisibleCells(forGestureRecognizer: sender) { transformerCell, touchLocation in
             // don't need to test for touch location within icon, assume that `gestureRecognizer(shouldReceive:)`
             // would have rejected the touch if it wasn't
@@ -144,7 +179,7 @@ extension TransformerListTableViewController: UIGestureRecognizerDelegate {
         }
     }
     
-    @IBAction func toggleBenchButtonLongPressed(_ sender: UILongPressGestureRecognizer) {
+    @IBAction func toggleButtonLongPressed(_ sender: UILongPressGestureRecognizer) {
         guard sender.state == .began else { return }
         
         // the cell seems to highlight during this long press, but if i remember correctly it's not

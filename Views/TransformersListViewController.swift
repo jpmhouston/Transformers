@@ -15,6 +15,7 @@ class TransformersListViewController: UIViewController {
     @IBOutlet var fightButton: UIBarButtonItem!
     @IBOutlet var addButton: UIBarButtonItem!
     
+    @IBOutlet var containerView: UIView!
     @IBOutlet var emptyListMessageView: UIView!
     @IBOutlet var loadingIndicator: UIActivityIndicatorView!
     
@@ -44,8 +45,7 @@ class TransformersListViewController: UIViewController {
         } else {
             // if vc appearing without a view model then show a progress indicator
             // expecting load to eventually finish and view model to be set
-            emptyListMessageView.isHidden = true
-            loadingIndicator.startAnimating()
+            showLoadingIndicator()
         }
     }
     
@@ -58,9 +58,9 @@ class TransformersListViewController: UIViewController {
         if hadDisappeared {
             flowController?.returnedToTransformersList()
             
-            // after reappearing, don't want that message and make sure indicator is gone
-            emptyListMessageView.isHidden = true
-            loadingIndicator.stopAnimating()
+            // after reappearing, assume view mode is bound to be updated imminently
+            // looks better if the message is hidden off the bat
+            showContainer()
         }
         hadDisappeared = false
     }
@@ -71,22 +71,42 @@ class TransformersListViewController: UIViewController {
     }
     
     func configure() {
-        loadingIndicator.stopAnimating()
-        
         let emptyList = viewModel?.transformers.isEmpty ?? true
+        if emptyList {
+            showMessage()
+        } else {
+            showContainer()
+        }
         fightButton.isEnabled = !emptyList
-        emptyListMessageView.isHidden = !emptyList
         
         tableViewViewController?.viewModel = viewModel
     }
     
+    func showLoadingIndicator() {
+        containerView.isHidden = true
+        emptyListMessageView.isHidden = true
+        loadingIndicator.startAnimating()
+    }
+    
+    func showMessage() {
+        containerView.isHidden = true
+        emptyListMessageView.isHidden = false
+        loadingIndicator.stopAnimating()
+    }
+    
+    func showContainer() {
+        containerView.isHidden = false
+        emptyListMessageView.isHidden = true
+        loadingIndicator.stopAnimating()
+    }
+    
     // MARK: - controls
     
-    @IBAction func addTransformer(_ sender: UIControl) {
+    @IBAction func addTransformer(_ sender: UIBarButtonItem) {
         flowController?.addTransformer()
     }
     
-    @IBAction func startBattle(_ sender: UIControl) {
+    @IBAction func startBattle(_ sender: UIBarButtonItem) {
         flowController?.startBattle()
     }
     

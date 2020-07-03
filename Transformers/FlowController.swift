@@ -36,12 +36,12 @@ class FlowController {
         networkUtility = NetworkUtility()
         networkUtility.delegate = dataController
         
-        rootViewController = createTransformersList()
+        rootViewController = createListViewController()
     }
     
-    // MARK: - TransformersList view controller wrangling
+    // MARK: - list view controller wrangling
     
-    func createTransformersList() -> UIViewController {
+    func createListViewController() -> UIViewController {
         let storyboard = UIStoryboard(name: "TransformersList", bundle: nil)
         guard let outerViewController = storyboard.instantiateInitialViewController() else {
             fatalError("Could not find initial view controller in TransformersList storyboard")
@@ -62,30 +62,35 @@ class FlowController {
         }
         
         networkUtility.loadTransformerList() { error in
-            DispatchQueue.main.async {
-                viewController.viewModel = TransformersListViewModel(withDataController: self.dataController)
+            print("FlowController.createListViewController - loadTransformerList completion")
+            if error == nil {
+                DispatchQueue.main.async {
+                    viewController.viewModel = TransformersListViewModel(withDataController: self.dataController)
+                }
+            } else {
+                // should invoke an alert here, but for now we get silent failure
             }
         }
         
         return outerViewController
     }
     
-    func updateTransformersList() {
+    func updateListViewController() {
         // simply set the view controller's viewModel again with a fresh one
         // app uses simple structs as the view models and not complex stateful objects
         transformersListViewController?.viewModel = TransformersListViewModel(withDataController: dataController)
     }
     
-    // MARK: - TransformersEditor view controller wrangling
+    // MARK: - edit view controller wrangling
     
-    func createTransformerEditor(withTransformer existingTransformer: Transformer? = nil) -> UIViewController {
+    func createEditViewController(withTransformer existingTransformer: Transformer? = nil) -> UIViewController {
         let storyboard = UIStoryboard(name: "EditTransformer", bundle: nil)
         guard let viewController = storyboard.instantiateInitialViewController() as? EditTransformerViewController else {
             fatalError("Could not find initial view controller in EditTransformer storyboard")
         }
         
         let transformer = existingTransformer ?? Transformer()
-        dataController.startEditedTransformer(transformer)
+        dataController.startEditingTransformer(transformer)
         
         viewController.flowController = self
         viewController.viewModel = TransformerEditorViewModel(withDataController: dataController)
@@ -93,7 +98,7 @@ class FlowController {
         return viewController
     }
     
-    func updateTransformerEditor() {
+    func updateEditViewController() {
         // don't save reference to this vc, by locating it via the root we also verify
         // that it's still in the hierarchy
         guard let viewController: EditTransformerViewController = rootViewController?.locateViewControllerByType() else {
@@ -103,7 +108,7 @@ class FlowController {
         viewController.viewModel = TransformerEditorViewModel(withDataController: dataController)
     }
     
-    func exitTransformerEditor(saving: Bool) {
+    func exitEditViewController(saving: Bool) {
         print("FlowController.exitTransformerEditor")
         guard let transformersListViewController = transformersListViewController else {
             fatalError("TransformerList view controller has gone away")
@@ -116,7 +121,7 @@ class FlowController {
         guard let viewController: EditTransformerViewController = rootViewController?.locateViewControllerByType() else {
             // its already gone, just update the list screen
             if saving {
-                updateTransformersList()
+                updateListViewController()
             }
             return
         }
@@ -128,13 +133,26 @@ class FlowController {
         // technique to know when the view is back
         if saving {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
-                self?.updateTransformersList()
+                self?.updateListViewController()
             }
         }
     }
     
-    func transformerEditorWasExited() {
+    func editViewControllerWasExited() {
         dataController.dismissEditedTransformer()
+    }
+    
+    // MARK: - fight view controller wrangling
+    
+    func createFightViewController() -> UIViewController {
+        let storyboard = UIStoryboard(name: "TransformerFight", bundle: nil)
+        guard let viewController = storyboard.instantiateInitialViewController() as? TransformerFightViewController else {
+            fatalError("Could not find initial view controller in TransformerFight storyboard")
+        }
+        
+        viewController.combatants = dataController.transformersForNextFight
+        
+        return viewController
     }
     
 }
@@ -159,7 +177,8 @@ extension FlowController: TransformersListFlowControllerProtocol {
     
     func startBattle() {
         print("FlowController.startBattle")
-        // TODO: finish battle ui
+        let viewController = createFightViewController()
+        transformersListViewController?.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func editTransformer(withId id: String) {
@@ -167,13 +186,13 @@ extension FlowController: TransformersListFlowControllerProtocol {
         guard let transformer = dataController.transformer(withId: id) else {
             return
         }
-        let viewController = createTransformerEditor(withTransformer: transformer)
+        let viewController = createEditViewController(withTransformer: transformer)
         transformersListViewController?.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func addTransformer() {
         print("FlowController.addTransformer")
-        let viewController = createTransformerEditor()
+        let viewController = createEditViewController()
         transformersListViewController?.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -183,7 +202,9 @@ extension FlowController: TransformersListFlowControllerProtocol {
         networkUtility.deleteTransformer(id) { [weak self] error in
             print("FlowController.deleteTransformer id \(id) - deleteTransformer completion")
             if error == nil {
-                self?.updateTransformerEditor()
+                DispatchQueue.main.async {
+                    self?.updateListViewController()
+                }
             } else {
                 // should invoke an alert here, but for now we get silent failure
             }
@@ -195,19 +216,19 @@ extension FlowController: TransformersListFlowControllerProtocol {
         // then we'd do that here or within `transformerEditorWasExited()`, including updating the
         // transformer's list view model
         // don't want to bite that bullet for this assessment app (i've aready gone way overboard as it is)
-        transformerEditorWasExited()
+        editViewControllerWasExited()
     }
     
     func toggleTransformerBenched(forId id: String) {
         print("FlowController.toggleTransformerBenched id \(id)")
         dataController.toggleBenchedState(forId: id)
-        updateTransformersList()
+        updateListViewController()
     }
     
     func toggleAllTransformersBenched(_ benched: Bool) {
         print("FlowController.toggleAllTransformersBenched \(benched)")
         dataController.setAllBenchedState(benched)
-        updateTransformersList()
+        updateListViewController()
     }
     
 }
@@ -237,57 +258,57 @@ extension FlowController: TransformerEditorFlowControllerProtocol {
     
     func changedTransformerName(_ newName: String, forId id: String?) {
         dataController.updateEditingTransformerName(newName)
-        updateTransformerEditor()
+        updateEditViewController()
     }
     
     func changedTransformerTeam(_ newTeam: Transformer.Team, forId id: String?) {
         dataController.updateEditingTransformerTeam(newTeam)
-        updateTransformerEditor()
+        updateEditViewController()
     }
     
     func changedTransformerBenched(_ newIsBenched: Bool, forId id: String?) {
         dataController.updateEditingTransformerBenched(newIsBenched, forId: id)
-        updateTransformerEditor()
+        updateEditViewController()
     }
     
     func changedTransformerRank(_ newValue: Int, forId id: String?) {
         dataController.updateEditingTransformerRank(newValue)
-        updateTransformerEditor()
+        updateEditViewController()
     }
     
     func changedTransformerStrength(_ newValue: Int, forId id: String?) {
         dataController.updateEditingTransformerStrength(newValue)
-        updateTransformerEditor()
+        updateEditViewController()
     }
     
     func changedTransformerIntelligence(_ newValue: Int, forId id: String?) {
         dataController.updateEditingTransformerIntelligence(newValue)
-        updateTransformerEditor()
+        updateEditViewController()
     }
     
     func changedTransformerSpeed(_ newValue: Int, forId id: String?) {
         dataController.updateEditingTransformerSpeed(newValue)
-        updateTransformerEditor()
+        updateEditViewController()
     }
     
     func changedTransformerEndurance(_ newValue: Int, forId id: String?) {
         dataController.updateEditingTransformerEndurance(newValue)
-        updateTransformerEditor()
+        updateEditViewController()
     }
     
     func changedTransformerFirepower(_ newValue: Int, forId id: String?) {
         dataController.updateEditingTransformerFirepower(newValue)
-        updateTransformerEditor()
+        updateEditViewController()
     }
     
     func changedTransformerCourage(_ newValue: Int, forId id: String?) {
         dataController.updateEditingTransformerCourage(newValue)
-        updateTransformerEditor()
+        updateEditViewController()
     }
     
     func changedTransformerSkill(_ newValue: Int, forId id: String?) {
         dataController.updateEditingTransformerSkill(newValue)
-        updateTransformerEditor()
+        updateEditViewController()
     }
     
     func saveNewTransformer() {
@@ -295,11 +316,11 @@ extension FlowController: TransformerEditorFlowControllerProtocol {
         guard let newTransformer = dataController.editingTransformer else { return }
         dataController.savingEditedTransformer()
         
-        networkUtility.addTransformer(TransformerInput(copiedFrom: newTransformer)) { [weak self] error in
+        networkUtility.addTransformer(TransformerInput(sourcedFrom: newTransformer)) { [weak self] error in
             print("FlowController.saveNewTransformer - addTransformer completion")
             if error == nil {
                 DispatchQueue.main.async {
-                    self?.exitTransformerEditor(saving: true)
+                    self?.exitEditViewController(saving: true)
                 }
             } else {
                 // should invoke an alert here, but for now we get silent failure
@@ -310,11 +331,13 @@ extension FlowController: TransformerEditorFlowControllerProtocol {
     func discardNewTransformer() {
         print("FlowController.discardNewTransformer")
         dataController.dismissEditedTransformer()
+        exitEditViewController(saving: false)
     }
     
     func discardOpenTransformer(withId id: String) {
         print("FlowController.discardOpenTransformer id \(id)")
         dataController.dismissEditedTransformer()
+        exitEditViewController(saving: false)
     }
     
     func updateOpenTransformer(withId id: String) {
@@ -322,11 +345,11 @@ extension FlowController: TransformerEditorFlowControllerProtocol {
         guard let updatedTransformer = dataController.editingTransformer else { return }
         dataController.savingEditedTransformer()
         
-        networkUtility.updateTransformer(TransformerInput(copiedFrom: updatedTransformer)) { [weak self] error in
+        networkUtility.updateTransformer(TransformerInput(sourcedFrom: updatedTransformer)) { [weak self] error in
             print("FlowController.updateTransformer id \(id) - updateTransformer completion")
             if error == nil {
                 DispatchQueue.main.async {
-                    self?.exitTransformerEditor(saving: true)
+                    self?.exitEditViewController(saving: true)
                 }
             } else {
                 // should invoke an alert here, but for now we get silent failure
@@ -341,7 +364,7 @@ extension FlowController: TransformerEditorFlowControllerProtocol {
             print("FlowController.deleteOpenTransformer id \(id) - deleteTransformer completion")
             if error == nil {
                 DispatchQueue.main.async {
-                    self?.exitTransformerEditor(saving: true)
+                    self?.exitEditViewController(saving: true)
                 }
             } else {
                 // should invoke an alert here, but for now we get silent failure

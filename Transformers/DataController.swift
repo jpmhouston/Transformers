@@ -12,14 +12,39 @@ class DataController: NetworkUtilityDelegate {
     
     var runtimeStorage = Set<Transformer>()
     var benchedTransformersById = Set<String>() // cunning quick & dirty plan is to cache these in UserDefaults
+    let defaults: UserDefaults
+    #if DEBUG
+    var cacheInUserDefaults = true
+    #endif
     
     var editingTransformer: Transformer?
     var editingBenchedState: Bool?
     
     // MARK: -
     
-    init() {
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
         readBenchedTransformerIds()
+        setupRuntimeStorage()
+    }
+    
+    func setupRuntimeStorage() {
+        #if DEBUG
+        var load: Bool
+        load = cacheInUserDefaults // either set `cache..` to false, or `load` to false here at runtime, to ignore saved test data
+        guard load, let encoded = defaults.value(forKey: "debugsave") as? Data else { return }
+        let decoded = try! JSONDecoder().decode([Transformer].self, from: encoded)
+        runtimeStorage = Set(decoded)
+        #endif
+    }
+    
+    func runtimeStorageUpdated() {
+        #if DEBUG
+        guard cacheInUserDefaults && runtimeStorage.isEmpty == false else { return }
+        let encoded = try! JSONEncoder().encode(Array(runtimeStorage))
+        defaults.set(encoded, forKey: "debugsave")
+        defaults.synchronize()
+        #endif
     }
     
     func transformerList(sortedBy: [Transformer.Sorting]) -> [Transformer] {
@@ -32,6 +57,10 @@ class DataController: NetworkUtilityDelegate {
     
     var isTransformerListEmpty: Bool {
         return runtimeStorage.isEmpty
+    }
+    
+    var transformersForNextFight: [Transformer] {
+        runtimeStorage.filter({ $0.id != nil && benchedTransformersById.contains($0.id!) == false })
     }
     
     func transformer(withId id: String) -> Transformer? {
@@ -73,16 +102,18 @@ class DataController: NetworkUtilityDelegate {
     }
     
     func readBenchedTransformerIds() {
-        // TODO: read from toUserDefaults
+        guard let savedIds = defaults.value(forKey: "benchedids") as? [String] else { return }
+        benchedTransformersById = Set(savedIds)
     }
     
     func saveBenchedTransformerIds() {
-        // TODO: save toUserDefaults
+        defaults.set(Array(benchedTransformersById), forKey: "benchedids")
+        defaults.synchronize()
     }
     
-    // MARK: isolated transformer being edited
+    // MARK: transformer being edited
     
-    func startEditedTransformer(_ transformer: Transformer) {
+    func startEditingTransformer(_ transformer: Transformer) {
         print("DataController.startEditedTransformer")
         editingTransformer = transformer
         editingBenchedState = false
@@ -191,9 +222,13 @@ class DataController: NetworkUtilityDelegate {
     
     // MARK: - NetworkUtilityDelegate conformance
     
-    func transformerListReceived(_ data: [Transformer]) {
+    func transformerListReceived(_ list: [Transformer]) {
         DispatchQueue.main.async {
-            self.runtimeStorage = Set(data)
+            #if DEBUG
+            if self.cacheInUserDefaults && list.isEmpty { return } // dont let empty list overwrite debug cache
+            #endif
+            self.runtimeStorage = Set(list)
+            self.runtimeStorageUpdated()
         }
     }
     
@@ -204,6 +239,7 @@ class DataController: NetworkUtilityDelegate {
         DispatchQueue.main.async {
             print("transformerAdded - async main thread closure")
             self.runtimeStorage.insert(newTransformer)
+            self.runtimeStorageUpdated()
             
             if let id = newTransformer.id {
                 self.finishSavingBenchedFlag(forId: id)
@@ -223,6 +259,7 @@ class DataController: NetworkUtilityDelegate {
             print("transformerUpdated - async main thread closure")
             if let index = self.runtimeStorage.firstIndex(where: { $0.hasMatchingId(id) }) {
                 self.runtimeStorage.remove(at: index)
+                self.runtimeStorageUpdated()
             } else {
                 assertionFailure("\(updatedTransformer.nameIncludingTeam) with id \(id) cannot be found to be updated")
                 // maybe correct to fallthrough to insert anyway? instead should it return or throw??
@@ -240,6 +277,7 @@ class DataController: NetworkUtilityDelegate {
             print("transformerDeleted - async main thread closure")
             if let index = self.runtimeStorage.firstIndex(where: { $0.hasMatchingId(id) }) {
                 self.runtimeStorage.remove(at: index)
+                self.runtimeStorageUpdated()
             } else {
                 assertionFailure("transformer with id \(id) cannot be found to be deleted")
                 // maybe this function should throw?? see comment above
