@@ -36,7 +36,7 @@ class ModelTests: XCTestCase {
         XCTAssertNotNil(x2.id)
         XCTAssertNil(x2.teamIcon)
         
-        decepticon.teamIcon = "https://image.flaticon.com/icons/svg/3094/3094213.svg"
+        decepticon.teamIcon = "https://img.icons8.com/color/48/000000/prop-plane.png"
         let x3 = TransformerInput(sourcedFrom: decepticon)
         XCTAssertNil(x3.teamIcon)
         

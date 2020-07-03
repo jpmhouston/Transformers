@@ -30,14 +30,16 @@ class NetworkAuthorizationTests: XCTestCase {
             DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
                 var t = data
                 t.id = "abcxyz"
-                t.teamIcon = "https://image.flaticon.com/icons/svg/3094/3094213.svg"
+                t.teamIcon = (t.team == .autobots ?
+                    "https://img.icons8.com/fluent/48/000000/car.png" : "https://img.icons8.com/color/48/000000/prop-plane.png")
                 completion(.success(t))
             }
         }
         override func updateItem(_ data: TransformerInput, completion: @escaping (Result<Transformer, Error>) -> ()) {
             DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
                 var t = data
-                t.teamIcon = "https://image.flaticon.com/icons/svg/3094/3094213.svg"
+                t.teamIcon = (t.team == .autobots ?
+                    "https://img.icons8.com/fluent/48/000000/car.png" : "https://img.icons8.com/color/48/000000/prop-plane.png")
                 completion(.success(t))
             }
         }

@@ -21,7 +21,8 @@ extension UIImageView {
                     .scaleFactor(UIScreen.main.scale),
                     .transition(.fade(0.25))
                 ], completionHandler: { result in
-                    print("kf \(urlString) \(result)")
+                    let _ = result
+                    //print("image from \(urlString)\n\(result)\n")
                 })
         } else {
             image = nil
