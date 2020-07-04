@@ -15,7 +15,7 @@ protocol NetworkUtilityProtocol {
     func deleteTransformer(_ id: String, completion: @escaping (Error?) -> ())
 }
 
-protocol NetworkUtilityDelegate: AnyObject {
+protocol NetworkUtilityDelegateProtocol: AnyObject {
     func transformerListReceived(_ list: [Transformer])
     func transformerAdded(_ newTransformer: Transformer)
     func transformerUpdated(_ updatedTransformer: Transformer)
@@ -34,7 +34,7 @@ class NetworkUtility: NetworkUtilityProtocol {
         case notLoading, loading, received, failed
     }
     
-    weak var delegate: NetworkUtilityDelegate?
+    weak var delegate: NetworkUtilityDelegateProtocol?
     
     var session: URLSession
     var authorizationQueue: DispatchQueue // vars below are updated only on this serial queueu

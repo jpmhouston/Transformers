@@ -8,7 +8,7 @@
 
 import Foundation
 
-class DataController: NetworkUtilityDelegate {
+class DataController: NetworkUtilityDelegateProtocol {
     
     var runtimeStorage = Set<Transformer>()
     var benchedTransformersById = Set<String>() // cunning quick & dirty plan is to cache these in UserDefaults
@@ -279,7 +279,7 @@ class DataController: NetworkUtilityDelegate {
                 self.runtimeStorage.remove(at: index)
                 self.runtimeStorageUpdated()
             } else {
-                assertionFailure("transformer with id \(id) cannot be found to be deleted")
+                assertionFailure("Transformer with id \(id) cannot be found to be deleted")
                 // maybe this function should throw?? see comment above
             }
         }

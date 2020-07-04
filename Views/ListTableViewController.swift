@@ -13,6 +13,8 @@ class ListTableViewController: UITableViewController {
     @IBOutlet var toggleTapRecognizer: UITapGestureRecognizer!
     @IBOutlet var toggleLongPressRecognizer: UILongPressGestureRecognizer!
     
+    // public properties:
+    
     weak var flowController: ListFlowControllerProtocol?
     var viewModel: ListViewModel? {
         didSet {
@@ -20,6 +22,8 @@ class ListTableViewController: UITableViewController {
             configure()
         }
     }
+    
+    // private properties:
     
     var cellReuseIdentifier = "TransformerListCell"
     

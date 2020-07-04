@@ -37,9 +37,7 @@ class EditViewController: UIViewController {
     @IBOutlet var contentView: UIView!
     @IBOutlet var keyboardDismissalTapRecognizer: UITapGestureRecognizer!
     
-    var contentViewCoordinates: CGPoint?
-    var activeField: UITextField?
-    var observations: [AnyObject] = []
+    // public properties:
     
     weak var flowController: EditFlowControllerProtocol?
     var viewModel: EditViewModel? {
@@ -48,6 +46,12 @@ class EditViewController: UIViewController {
             configure()
         }
     }
+    
+    // private properties:
+    
+    var contentViewCoordinates: CGPoint?
+    var activeField: UITextField?
+    var observations: [AnyObject] = []
     
     var isNewTransformer: Bool {
         if let viewModel = viewModel {

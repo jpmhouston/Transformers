@@ -20,6 +20,8 @@ class ListViewController: UIViewController {
     @IBOutlet var EmptyListMessageViewWhenSplitWiewExpanded: UIView!
     @IBOutlet var loadingIndicator: UIActivityIndicatorView!
     
+    // public properties:
+    
     weak var flowController: ListFlowControllerProtocol?
     var viewModel: ListViewModel? {
         didSet {
@@ -34,6 +36,8 @@ class ListViewController: UIViewController {
             updateFightButtonVisibility()
         }
     }
+    
+    // private properties:
     
     var tableViewViewController: ListTableViewController? {
         locateChildViewControllerByType()

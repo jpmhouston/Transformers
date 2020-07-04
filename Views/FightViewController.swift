@@ -17,6 +17,8 @@ class FightViewController: UITableViewController {
     @IBOutlet var finishedSingularLabel: UILabel!
     @IBOutlet var finishedPluralLabel: UILabel!
     
+    // public properties:
+    
     // this list of combat results is essentially the view model
     var battleResult: Transformer.BattleResult! {
         didSet {
@@ -25,6 +27,8 @@ class FightViewController: UITableViewController {
             }
         }
     }
+    
+    // private properties:
     
     var autobotsIcon: String?
     var decepticonsIcon: String?
