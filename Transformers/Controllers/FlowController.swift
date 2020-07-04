@@ -12,13 +12,21 @@
 //  be it another platform or perhaps even command-line interface to assist
 //  backend testing.
 //
-//  I'd also prefer a root flow controller and children for major sections of
-//  the app, however going with only 1 for this. I've divided up support for
-//  various view controllers into separate protocols though.
+//  I'd also prefer a root flow controller and child flow controller for major
+//  sections of an app, however going with only 1 for this. I've divided up
+//  support for various view controllers into separate protocols though.
 //
 //  The goal with the view controllers is to have their dependencies defined
 //  as protocols and injected so that they can more easily be exercised in a
 //  test build, separate test app, or even a playground.
+//
+//  Success story: I expected to radically change the root view controllers
+//  in the storyboards, adding ipad support by changing the root navigation
+//  controller into the standard structure for a split view controller. It
+//  turns out I was able to perform this surgery with only changes in this
+//  flow controller, the view controllers didn't need to be touched (except
+//  in a minor fashion to make optional the "battle" nav bar button and
+//  change some text shown when views are empty).
 
 import UIKit
 
@@ -34,7 +42,7 @@ class FlowController: UISplitViewControllerDelegate {
     init() {
         dataController = DataController()
         #if DEBUG
-        networkUtility = FlowController.makeNetworkUtility(fake: true)
+        networkUtility = FlowController.makeNetworkUtility(fake: false)
         #else
         networkUtility = NetworkUtility()
         #endif
