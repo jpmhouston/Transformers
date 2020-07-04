@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="m5E-ll-Sxt">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="RUN-52-aCS">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -9,36 +11,34 @@
         <!--Transformers-->
         <scene sceneID="dUJ-Fw-7I9">
             <objects>
-                <viewController id="RUN-52-aCS" customClass="ListViewController" customModule="Transformers" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" misplaced="YES" id="cxg-23-eWE">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                <viewController storyboardIdentifier="List" id="RUN-52-aCS" customClass="ListViewController" customModule="Transformers" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cxg-23-eWE">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OVq-sW-slA">
-                                <rect key="frame" x="161" y="186" width="278" height="112"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Transformers entered yet. Use the + button to add some, then swords button in the top-left to battle!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.75" translatesAutoresizingMaskIntoConstraints="NO" id="rLY-5a-pCe">
-                                        <rect key="frame" x="0.0" y="0.0" width="278" height="112"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Transformers entered yet. Use the + button to add some." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.75" translatesAutoresizingMaskIntoConstraints="NO" id="h9L-1S-8qh">
+                                <rect key="frame" x="70" y="164" width="274.5" height="50.5"/>
                                 <constraints>
-                                    <constraint firstItem="rLY-5a-pCe" firstAttribute="top" secondItem="OVq-sW-slA" secondAttribute="top" id="Bq0-Yw-Toi"/>
-                                    <constraint firstAttribute="bottom" secondItem="rLY-5a-pCe" secondAttribute="bottom" id="Dto-tU-P5T"/>
-                                    <constraint firstAttribute="height" constant="112" id="hUU-79-ffC"/>
-                                    <constraint firstItem="rLY-5a-pCe" firstAttribute="leading" secondItem="OVq-sW-slA" secondAttribute="leading" id="iBH-cu-m3b"/>
-                                    <constraint firstAttribute="trailing" secondItem="rLY-5a-pCe" secondAttribute="trailing" id="keL-Eo-yjm"/>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="280" id="sMr-dc-EyM"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="280" id="dGl-Qq-RFQ"/>
                                 </constraints>
-                            </view>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Transformers entered yet. Use the + button to add some, then swords button in the top-left to battle!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.75" translatesAutoresizingMaskIntoConstraints="NO" id="rLY-5a-pCe">
+                                <rect key="frame" x="68" y="347.5" width="278" height="100.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="280" id="xyC-i3-qU0"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="kBb-47-fal">
-                                <rect key="frame" x="290" y="232" width="20" height="20"/>
+                                <rect key="frame" x="197" y="388" width="20" height="20"/>
                             </activityIndicatorView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W8C-mE-og0">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <segue destination="EP0-Yu-MAF" kind="embed" id="sjK-hP-MNo"/>
@@ -49,14 +49,18 @@
                         <constraints>
                             <constraint firstItem="h2o-Xz-Dig" firstAttribute="trailing" secondItem="W8C-mE-og0" secondAttribute="trailing" id="72G-NT-dj5"/>
                             <constraint firstItem="W8C-mE-og0" firstAttribute="top" secondItem="h2o-Xz-Dig" secondAttribute="top" id="88r-hp-0si"/>
-                            <constraint firstItem="kBb-47-fal" firstAttribute="centerX" secondItem="OVq-sW-slA" secondAttribute="centerX" id="Alx-79-L93"/>
-                            <constraint firstItem="OVq-sW-slA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cxg-23-eWE" secondAttribute="leading" constant="50" id="BLK-OT-a3x"/>
+                            <constraint firstItem="kBb-47-fal" firstAttribute="centerY" secondItem="rLY-5a-pCe" secondAttribute="centerY" id="DAg-4O-786"/>
+                            <constraint firstItem="rLY-5a-pCe" firstAttribute="bottom" secondItem="cxg-23-eWE" secondAttribute="centerY" id="I1S-6J-qcJ"/>
+                            <constraint firstItem="rLY-5a-pCe" firstAttribute="centerX" secondItem="cxg-23-eWE" secondAttribute="centerX" id="NeK-dn-uMs"/>
+                            <constraint firstItem="h9L-1S-8qh" firstAttribute="centerX" secondItem="cxg-23-eWE" secondAttribute="centerX" id="SX7-Ua-ozO"/>
                             <constraint firstItem="W8C-mE-og0" firstAttribute="leading" secondItem="h2o-Xz-Dig" secondAttribute="leading" id="U2T-0C-MSB"/>
-                            <constraint firstItem="OVq-sW-slA" firstAttribute="centerX" secondItem="cxg-23-eWE" secondAttribute="centerX" id="Yxz-Hb-5Gc"/>
-                            <constraint firstItem="kBb-47-fal" firstAttribute="centerY" secondItem="OVq-sW-slA" secondAttribute="centerY" id="bEf-Xg-x1Z"/>
+                            <constraint firstItem="h2o-Xz-Dig" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rLY-5a-pCe" secondAttribute="trailing" constant="20" id="cCA-V4-1MI"/>
+                            <constraint firstItem="rLY-5a-pCe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="h2o-Xz-Dig" secondAttribute="leading" constant="20" id="cG5-f9-OVY"/>
+                            <constraint firstItem="h9L-1S-8qh" firstAttribute="top" secondItem="h2o-Xz-Dig" secondAttribute="top" constant="120" id="cte-XR-4mX"/>
                             <constraint firstItem="h2o-Xz-Dig" firstAttribute="bottom" secondItem="W8C-mE-og0" secondAttribute="bottom" id="frI-Vt-Rbq"/>
-                            <constraint firstItem="OVq-sW-slA" firstAttribute="baseline" secondItem="cxg-23-eWE" secondAttribute="centerY" constant="20" id="kJc-cG-mB7"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="OVq-sW-slA" secondAttribute="trailing" constant="50" id="sxs-pg-uiE"/>
+                            <constraint firstItem="h2o-Xz-Dig" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="h9L-1S-8qh" secondAttribute="trailing" constant="20" id="gmc-d1-Jpm"/>
+                            <constraint firstItem="h9L-1S-8qh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="h2o-Xz-Dig" secondAttribute="leading" constant="20" id="hRp-jx-rvp"/>
+                            <constraint firstItem="kBb-47-fal" firstAttribute="centerX" secondItem="cxg-23-eWE" secondAttribute="centerX" id="hXe-PR-K1i"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="h2o-Xz-Dig"/>
                     </view>
@@ -74,9 +78,10 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="EmptyListMessageViewWhenSplitWiewExpanded" destination="h9L-1S-8qh" id="cR2-Xb-v9I"/>
                         <outlet property="addButton" destination="Mqk-U5-1G8" id="iGS-MW-gJc"/>
                         <outlet property="containerView" destination="W8C-mE-og0" id="7lg-Zt-Zd1"/>
-                        <outlet property="emptyListMessageView" destination="OVq-sW-slA" id="HX6-Vh-faG"/>
+                        <outlet property="emptyListMessageView" destination="rLY-5a-pCe" id="3Gx-fq-y4g"/>
                         <outlet property="fightButton" destination="m6N-Ve-0Xu" id="wzf-8P-ljI"/>
                         <outlet property="loadingIndicator" destination="kBb-47-fal" id="esQ-mI-33C"/>
                     </connections>
@@ -90,22 +95,22 @@
             <objects>
                 <tableViewController id="EP0-Yu-MAF" customClass="ListTableViewController" customModule="Transformers" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="1" id="HdA-xw-LBh">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="730"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <gestureRecognizers/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="brh-r3-iyO" userLabel="Invisible Footer View">
-                            <rect key="frame" x="0.0" y="136.5" width="375" height="1"/>
+                            <rect key="frame" x="0.0" y="136.5" width="414" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TransformerListCell" id="FeD-LM-p0L" customClass="ListCell" customModule="Transformers" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="80.5"/>
+                                <rect key="frame" x="0.0" y="28" width="414" height="80.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="FeD-LM-p0L" id="szW-kr-ysT">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="80.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="80.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RpH-ws-U9r">
@@ -153,7 +158,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="FightIcon" translatesAutoresizingMaskIntoConstraints="NO" id="aMA-oM-2w4">
-                                            <rect key="frame" x="335" y="30.5" width="20" height="20"/>
+                                            <rect key="frame" x="374" y="30.5" width="20" height="20"/>
                                             <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="EWf-jc-qjo"/>
@@ -221,28 +226,6 @@
                 </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1386" y="-38"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Wh1-hk-LOP">
-            <objects>
-                <navigationController id="m5E-ll-Sxt" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="cF7-zM-xnU">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="barTintColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </navigationBar>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="oSN-oA-Lij">
-                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
-                    <connections>
-                        <segue destination="RUN-52-aCS" kind="relationship" relationship="rootViewController" id="KzX-sf-m8K"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="chH-XW-OyJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-286" y="-18"/>
         </scene>
     </scenes>
     <resources>

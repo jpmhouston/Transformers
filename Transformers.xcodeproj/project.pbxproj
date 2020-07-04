@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8F09571E24AF24C50022A4E2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8F09571D24AF24C50022A4E2 /* Main.storyboard */; };
 		8F0F288B24AEEA090067A7CE /* UIImageView+loadIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0F288A24AEEA090067A7CE /* UIImageView+loadIcon.swift */; };
 		8F69D05B24A9B4A500D2CCA5 /* Edit.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8F69D05A24A9B4A500D2CCA5 /* Edit.storyboard */; };
 		8F69D05D24A9D8BD00D2CCA5 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F69D05C24A9D8BD00D2CCA5 /* EditViewController.swift */; };
@@ -52,6 +53,7 @@
 
 /* Begin PBXFileReference section */
 		5EFA4C4C2D46F2F0533682FE /* Pods_Transformers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Transformers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F09571D24AF24C50022A4E2 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		8F0F288A24AEEA090067A7CE /* UIImageView+loadIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+loadIcon.swift"; sourceTree = "<group>"; };
 		8F69D05A24A9B4A500D2CCA5 /* Edit.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Edit.storyboard; sourceTree = "<group>"; };
 		8F69D05C24A9D8BD00D2CCA5 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				8FA9562B24A834A500990BD7 /* UIView+DesignableBorders.swift */,
 				8FA9566F24A93C9B00990BD7 /* UIViewController+locateByType.swift */,
 				8F0F288A24AEEA090067A7CE /* UIImageView+loadIcon.swift */,
+				8F09571D24AF24C50022A4E2 /* Main.storyboard */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -293,6 +296,7 @@
 				8F69D06724AB4C3600D2CCA5 /* Fight.storyboard in Resources */,
 				8FDBB6D624A2FF760015E182 /* LaunchScreen.storyboard in Resources */,
 				8FA9562624A82CCF00990BD7 /* List.storyboard in Resources */,
+				8F09571E24AF24C50022A4E2 /* Main.storyboard in Resources */,
 				8F69D05B24A9B4A500D2CCA5 /* Edit.storyboard in Resources */,
 				8FDBB6D024A2FF760015E182 /* Assets.xcassets in Resources */,
 			);

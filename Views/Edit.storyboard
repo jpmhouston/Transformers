@@ -11,7 +11,7 @@
         <!--Edit Transformer-->
         <scene sceneID="oLR-Mc-uof">
             <objects>
-                <viewController id="Srd-LO-sz8" customClass="EditViewController" customModule="Transformers" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Edit" id="Srd-LO-sz8" customClass="EditViewController" customModule="Transformers" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uvS-jf-6G0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -34,7 +34,8 @@ class FightViewController: UITableViewController {
     var numberOfRounds = 0
     var showingRound = 0               // counting from 1 like the UI does, ie. 2 means showing results from rounds 1 & 2
     var showingFinalResults = false
-    var showFightButton = false
+    var noCombatants = false
+    var showBattle = false
     var roundsTimer: Timer?
     var desiredInterval: TimeInterval = FightViewController.slowTimeInterval
     static let slowTimeInterval: TimeInterval = 1.5
@@ -58,11 +59,6 @@ class FightViewController: UITableViewController {
         let autobot = battleResult.startingAutobots.first(where: { $0.team == .autobots })
         let decepticon = battleResult.startingDecepticons.first(where: { $0.team == .decepticons })
         
-        guard autobot != nil || decepticon != nil else {
-            navigationController?.popViewController(animated: true)
-            return
-        }
-        
         if let autobot = autobot {
             autobotsIcon = autobot.teamIcon
         }
@@ -73,7 +69,10 @@ class FightViewController: UITableViewController {
         showingRound = 0
         numberOfRounds = battleResult.roundResults.count
         showingFinalResults = false
-        showFightButton = true
+        showBattle = false
+        noCombatants = battleResult.startingAutobots.isEmpty && battleResult.startingDecepticons.isEmpty
+        
+        assert((battleResult.finalOutcome == nil) == battleResult.roundResults.isEmpty, "Inconsistent battle results state can't be displayed.")
         
         tableView.reloadData()
     }
@@ -110,7 +109,7 @@ class FightViewController: UITableViewController {
     @IBAction func start(_ sender: UIControl) {
         startRoundsTimer()
         
-        showFightButton = false
+        showBattle = true
         tableView.reloadData()
     }
     
@@ -122,41 +121,41 @@ class FightViewController: UITableViewController {
     // this was horrendous to do and error-prone, hence all the verbose assertions below. i would want to
     // do this differently with a function that has one case for every state which call it from each of
     // these methods, returning a tuple of data that's used to produce the same output
+    //
+    // made somewhat simpler by showing battle with no rounds (ie. vs no opponents) as a special case
+    // instead of trying to support a final results sometimes in the second section, sometimes the third.
+    // that eliminated many #rounds==0 / #rounds>0 conditions, plus supporting that made no sense anyway.
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if battleResult == nil {
+        if battleResult == nil || noCombatants {
             return 0
-        } else if showFightButton {
-            return 1                                            // before sequence starts, just the lineup section
-        } else if numberOfRounds == 0 && !showingFinalResults {
-            return 1                                            // when #rounds is 0, show lineup section only..
-        } else if numberOfRounds == 0 && showingFinalResults {
-            return 2                                            // ..unless the final results section needed
-        } else if numberOfRounds > 0 && showingRound == 0 {
-            return 1                                            // when #rounds > 0, show lineup section only before first round shown..
-        } else if numberOfRounds > 0 && !showingFinalResults {
-            return 2                                            // ..then also show the rounds results section..
-        } else if numberOfRounds > 0 && showingFinalResults {
-            return 3                                            // ..and the final results section when its needed
+        } else if !showBattle {
+            return 1                                // before battle displayed, just the lineup section
+        } else if showingRound == 0 {
+            return 1                                // again show lineup section only before first round shown..
+        } else if !showingFinalResults {
+            return 2                                // ..then also show the rounds results section..
+        } else if showingFinalResults {
+            return 3                                // ..and the final results section when its needed
         } else {
-            assertionFailure("expected logic above to cover all cases")
+            assertionFailure("Expected logic above to cover all cases")
             return 0
         }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 && showFightButton {
-            return 2                                            // section 0 has the line up, initially it has a second row with start button
-        } else if section == 0 && !showFightButton {
-            return 1                                            // after pressed, hide the button row
-        } else if section == 1 && numberOfRounds == 0 {
-            return 1                                            // when #rounds == 0, section 1 has the final results
-        } else if section == 1 && numberOfRounds > 0 {
-            return showingRound                                 // when #rounds > 0, section 1 instead has one row for each rounds showing
+        if section == 0 && battleResult.roundResults.isEmpty {
+            return 2
+        } else if section == 0 && !showBattle {
+            return 2                                // section 0 has the line up, initially it has a second row with start button
+        } else if section == 0 && showBattle {
+            return 1                                // after pressed, hide the button row
+        } else if section == 1 {
+            return showingRound                     // section 1 instead has one row for each rounds showing
         } else if section == 2 {
-            return 1                                            // when #rounds > 0, section 2 has the final results
+            return 1                                // section 2 has only the final results row
         } else {
-            assertionFailure("expected logic above to cover all cases")
+            assertionFailure("Expected logic above to cover all cases")
             return 0
         }
     }
@@ -167,13 +166,15 @@ class FightViewController: UITableViewController {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 cell = createLineUpCell()
+            } else if indexPath.row == 1 && battleResult.roundResults.isEmpty {
+                cell = createTeamsNotReadyCell()
             } else if indexPath.row == 1 {
                 cell = createStartButtonCell()
             } else {
-                assertionFailure("unexecpted row \(indexPath.row) in section 0")
+                assertionFailure("Unexecpted row \(indexPath.row) in section 0")
             }
             
-        } else if (indexPath.section == 1 && numberOfRounds > 0) {
+        } else if indexPath.section == 1 {
             if indexPath.row < numberOfRounds {
                 let roundResult = battleResult.roundResults[indexPath.row]
                 switch roundResult.outcome {
@@ -185,12 +186,12 @@ class FightViewController: UITableViewController {
                     cell = createAnnihilationCell(withRoundResult: roundResult)
                 }
             } else {
-                assertionFailure("unexecpted row \(indexPath.row) in section 1")
+                assertionFailure("Unexecpted row \(indexPath.row) in section 1")
             }
             
-        } else if ((indexPath.section == 1 && numberOfRounds == 0) || (indexPath.section == 2 && numberOfRounds > 0)) {
+        } else if indexPath.section == 2 {
             if showingFinalResults && indexPath.row == 0 {
-                switch battleResult.finalOutcome {
+                switch battleResult.finalOutcome! { // ok to force unwrap b/c should not have been a section 2 if nil
                 case .autobotWin:
                     cell = createAutobotsWinCell()
                 case .decepticonWin:
@@ -201,32 +202,32 @@ class FightViewController: UITableViewController {
                     cell = createTeamsDestroyedCell()
                 }
             } else if !showingFinalResults {
-                assertionFailure("didn't expect to be showing section \(indexPath.section)")
+                assertionFailure("Unexecpted section being show \(indexPath.section)")
             } else {
-                assertionFailure("unexecpted row \(indexPath.row) in section \(indexPath.section)")
+                assertionFailure("Unexecpted row \(indexPath.row) in section \(indexPath.section)")
             }
         }
-        assert(cell != nil, "expected logic above to cover all cases")
+        assert(cell != nil, "Expected logic above to cover all cases")
         return cell ?? UITableViewCell()
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if section == 0 && showFightButton {
+        if section == 0 && !showBattle {
             return transparentFooter
             
         // after fight button pressed, top section shows footer announcing round 1, after more rounds change footer to a blank bar
-        } else if section == 0 && numberOfRounds > 0 && showingRound == 0 {
+        } else if section == 0 && showingRound == 0 {
             roundNFooterLabel.text = String(format: roundNFooterLabelTemplate, "1")
             return roundNFooter
-        } else if section == 0 && numberOfRounds > 0 && showingRound > 0 {
+        } else if section == 0 && showingRound > 0 {
             return blankFooter
             
         // for each round except the last round, rounds section show footer announcing the next round
-        } else if section == 1 && numberOfRounds > 0 && showingRound < numberOfRounds {
+        } else if section == 1 && showingRound < numberOfRounds {
             roundNFooterLabel.text = String(format: roundNFooterLabelTemplate, String(showingRound + 1))
             return roundNFooter
             
-        } else if ((section == 0 && numberOfRounds == 0) || (section == 1 && numberOfRounds > 0)) {
+        } else if section == 1 && showingRound == numberOfRounds {
             if numberOfRounds == 1 {
                 finishedSingularLabel.isHidden = false
                 finishedPluralLabel.isHidden = true
@@ -237,7 +238,7 @@ class FightViewController: UITableViewController {
             }
             return finishedFooter
         
-        } else if (section == 1 && numberOfRounds == 0) || (section == 2 && numberOfRounds > 0) {
+        } else if section == 2 {
             return transparentFooter
         } else {
             return nil
@@ -248,7 +249,7 @@ class FightViewController: UITableViewController {
     
     func createLineUpCell() -> FightLineUpCell? {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: FightLineUpCell.cellReuseIdentifier), let lineUpCell = cell as? FightLineUpCell else {
-            assertionFailure("could dequeue FightLineUpCell")
+            assertionFailure("Could not dequeue FightLineUpCell")
             return nil
         }
         lineUpCell.autobotsIcon.setTransformerIcon(withURLString: autobotsIcon)
@@ -258,13 +259,17 @@ class FightViewController: UITableViewController {
         return lineUpCell
     }
     
+    func createTeamsNotReadyCell() -> UITableViewCell? {
+        return tableView.dequeueReusableCell(withIdentifier: "TeamsNotReadyCell")
+    }
+    
     func createStartButtonCell() -> UITableViewCell? {
         return tableView.dequeueReusableCell(withIdentifier: "StartButtonCell")
     }
     
     func createWinnerCell(withRoundResult roundResult: Transformer.RoundResult) -> WinnerCell? {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: WinnerCell.cellReuseIdentifier), let winnerCell = cell as? WinnerCell else {
-            assertionFailure("could dequeue WinnerCell")
+            assertionFailure("Could not dequeue WinnerCell")
             return nil
         }
         winnerCell.teamIcon.image = nil
@@ -288,7 +293,7 @@ class FightViewController: UITableViewController {
     
     func createTieCell(withRoundResult roundResult: Transformer.RoundResult) -> TieCell? {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TieCell.cellReuseIdentifier), let tieCell = cell as? TieCell else {
-            assertionFailure("could dequeue TieCell")
+            assertionFailure("Could not dequeue TieCell")
             return nil
         }
         tieCell.autobotsIcon.setTransformerIcon(withURLString: autobotsIcon)
@@ -300,7 +305,7 @@ class FightViewController: UITableViewController {
     
     func createAnnihilationCell(withRoundResult roundResult: Transformer.RoundResult) -> AnnihilationCell? {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AnnihilationCell.cellReuseIdentifier), let annihilationCell = cell as? AnnihilationCell else {
-            assertionFailure("could dequeue AnnihilationCell")
+            assertionFailure("Could not dequeue AnnihilationCell")
             return nil
         }
         annihilationCell.autobotName.text = roundResult.autobot.name
@@ -310,7 +315,7 @@ class FightViewController: UITableViewController {
     
     func createAutobotsWinCell() -> AutobotsWinCell? {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AutobotsWinCell.cellReuseIdentifier), let autobotsWinCell = cell as? AutobotsWinCell else {
-            assertionFailure("could dequeue AutobotsWinCell")
+            assertionFailure("Could not dequeue AutobotsWinCell")
             return nil
         }
         autobotsWinCell.autobotsIcon.setTransformerIcon(withURLString: autobotsIcon)
@@ -321,7 +326,7 @@ class FightViewController: UITableViewController {
     
     func createDecepticonsWinCell() -> DecepticonsWinCell? {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DecepticonsWinCell.cellReuseIdentifier), let decepticonsWinCell = cell as? DecepticonsWinCell else {
-            assertionFailure("could dequeue DecepticonsWinCell")
+            assertionFailure("Could not dequeue DecepticonsWinCell")
             return nil
         }
         decepticonsWinCell.decepticonsIcon.setTransformerIcon(withURLString: decepticonsIcon)
@@ -332,7 +337,7 @@ class FightViewController: UITableViewController {
     
     func createTeamsTieCell() -> TeamsTieCell? {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TeamsTieCell.cellReuseIdentifier), let teamsTieCell = cell as? TeamsTieCell else {
-            assertionFailure("could dequeue TeamsTieCell")
+            assertionFailure("Could not dequeue TeamsTieCell")
             return nil
         }
         teamsTieCell.autobotsIcon.setTransformerIcon(withURLString: autobotsIcon)
@@ -344,7 +349,7 @@ class FightViewController: UITableViewController {
     
     func createTeamsDestroyedCell() -> TeamsDestroyedCell? {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TeamsDestroyedCell.cellReuseIdentifier), let teamsDestroyedCell = cell as? TeamsDestroyedCell else {
-            assertionFailure("could dequeue TeamsDestroyedCell")
+            assertionFailure("Could not dequeue TeamsDestroyedCell")
             return nil
         }
         return teamsDestroyedCell

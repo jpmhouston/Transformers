@@ -65,7 +65,7 @@ extension Transformer {
     }
     
     struct BattleResult {
-        let finalOutcome: BattleOutcome
+        let finalOutcome: BattleOutcome?
         let roundResults: [RoundResult]
         let startingAutobots: [Transformer]
         let startingDecepticons: [Transformer]
@@ -75,9 +75,9 @@ extension Transformer {
         let decepticonSurvivors: [Transformer]
     }
     
-    // currently throws if an autobot is found amongst the decepticons battle team, or vice-versa.
-    // expect however that `battle(betweenTransformers:)` not `battle(betweenAutobots:andDecepticons:)`
-    // will be the function that's actually used, and it does the splitting into teams itself which is
+    // `battle(betweenAutobots:andDecepticons:) throws if an autobot is found amongst the decepticons
+    // battle team, or vice-versa. expect however it's `battle(betweenTransformers:)` function
+    // instead that will actually used, and it does the splitting into teams itself which is
     // assumed to always work (hance its confident use of `try!`).
     // probably `battle(betweenAutobots:andDecepticons:)` should be private and we shouldn't even
     // bother testing for these error conditions
@@ -100,9 +100,13 @@ extension Transformer {
         }
         
         let rankSort = Transformer.orderWithCriteria([.rankDescending, .name])
-        
         var startingAutobots: [Transformer] = autobots.sorted(by: rankSort)
         var startingDecepticons: [Transformer] = decepticons.sorted(by: rankSort)
+        
+        guard (startingAutobots.isEmpty || startingDecepticons.isEmpty) == false else {
+            return BattleResult(finalOutcome: nil, roundResults: [], startingAutobots: startingAutobots, startingDecepticons: startingDecepticons, autobotCasualties: [], decepticonCasualties: [], autobotSurvivors: startingAutobots, decepticonSurvivors: startingDecepticons)
+        }
+        
         var autobotCombatants = startingAutobots
         var decepticonCombatants = startingDecepticons
         var autobotSurvivors: [Transformer] = []

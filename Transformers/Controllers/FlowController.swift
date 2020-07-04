@@ -22,12 +22,12 @@
 
 import UIKit
 
-class FlowController {
+class FlowController: UISplitViewControllerDelegate {
     
     var dataController: DataController
     var networkUtility: NetworkUtility
     var rootViewController: UIViewController?
-    var listViewController: ListViewController?
+    var splitViewController: UISplitViewController?
     
     // MARK: -
     
@@ -36,22 +36,79 @@ class FlowController {
         networkUtility = NetworkUtility()
         networkUtility.delegate = dataController
         
-        rootViewController = createListViewController()
+        createRootViewController()
     }
     
-    // MARK: - list view controller wrangling
+    // MARK: - split view controller
     
-    func createListViewController() -> UIViewController {
-        let storyboard = UIStoryboard(name: "List", bundle: nil)
-        guard let outerViewController = storyboard.instantiateInitialViewController() else {
-            fatalError("Could not find initial view controller in List.storyboard")
+    func createRootViewController() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let splitViewController = storyboard.instantiateInitialViewController() as? UISplitViewController else {
+            fatalError("Could not find the root view controller in Main.storyboard")
+        }
+        guard let master = splitViewController.viewControllers.first as? UINavigationController, let detail = splitViewController.viewControllers.last as? UINavigationController else {
+            fatalError("Could not find the master and detail view controllers in Main.storyboard")
         }
         
-        guard let viewController: ListViewController = outerViewController.locateViewControllerByType() else {
+        self.splitViewController = splitViewController
+        rootViewController = splitViewController
+        
+        splitViewController.preferredDisplayMode = .allVisible
+        splitViewController.delegate = self
+        
+        let listViewController = createListViewController()
+        listViewController.fightButtonShouldBeHidden = true
+        master.viewControllers = [listViewController]
+        
+        let fightViewController = createFightViewController()
+        detail.viewControllers = [fightViewController]
+    }
+    
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+        // fight button is needed when collapsed, there's no other way to get to the fight view controller
+        listViewController.fightButtonShouldBeHidden = false
+        
+        guard let detail = secondaryViewController as? UINavigationController, let detailShowing = detail.viewControllers.last else {
+            return true
+        }
+        
+        // return false means let the split view do its default of pushing the child of the secondary onto the master
+        // ie. if detail is showing an editor, collapsing pushes in on after the list
+        if detailShowing is EditViewController {
+            return false
+        }
+        // true to mean we handle incorporating the secondary ourselves, by doing nothing its not incorporated
+        // and the master is used as-is, ie. if detail isn't showing an editor, collapsing shows just the list
+        return true
+    }
+    
+    func splitViewController(_ splitViewController: UISplitViewController, separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
+        // fight button is unnecessary when uncollapsed, the constant detail is the fight view controller
+        listViewController.fightButtonShouldBeHidden = true
+        
+        guard let master = primaryViewController as? UINavigationController, let masterShowing = master.viewControllers.last else {
+            return nil
+        }
+        
+        // returning nil lets the split view try its normal handling where it pop the master's last view controller
+        // and pushes it onto the detail. if the only thing on the nav controller is the list, then return a new
+        // fight view controller to use as the detail view
+        if (masterShowing is ListViewController) == false {
+            return nil
+        } else {
+            return createFightViewController()
+        }
+    }
+    
+    
+    // MARK: - list view controller
+    
+    func createListViewController() -> ListViewController {
+        let storyboard = UIStoryboard(name: "List", bundle: nil)
+        guard let viewController = storyboard.instantiateInitialViewController() as? ListViewController else {
             fatalError("Could not find list view controller in List.storyboard")
         }
         
-        listViewController = viewController
         viewController.flowController = self
         
         // if data controller has been loaded with models already, or idk has been made to use offline storage,
@@ -72,18 +129,32 @@ class FlowController {
             }
         }
         
-        return outerViewController
+        return viewController
+    }
+    
+    var listViewController: ListViewController {
+        guard let viewController: ListViewController = splitViewController?.locateViewControllerByType() else {
+            fatalError("Could not re-locate the list view controller")
+        }
+        return viewController
     }
     
     func updateListViewController() {
+//        guard let viewController = listViewController else {
+//            return
+//        }
+        
         // simply set the view controller's viewModel again with a fresh one
         // app uses simple structs as the view models and not complex stateful objects
-        listViewController?.viewModel = ListViewModel(withDataController: dataController)
+        listViewController.viewModel = ListViewModel(withDataController: dataController)
+        
+        // when split view expanded, always update the fight view controller, which is probably visible
+        updateFightViewControllerIfSplitViewExpanded()
     }
     
-    // MARK: - edit view controller wrangling
+    // MARK: - edit view controller
     
-    func createEditViewController(withTransformer existingTransformer: Transformer? = nil) -> UIViewController {
+    func createEditViewController(withTransformer existingTransformer: Transformer? = nil) -> EditViewController {
         let storyboard = UIStoryboard(name: "Edit", bundle: nil)
         guard let viewController = storyboard.instantiateInitialViewController() as? EditViewController else {
             fatalError("Could not find initial view controller in Edit.storyboard")
@@ -98,53 +169,77 @@ class FlowController {
         return viewController
     }
     
-    func updateEditViewController() {
-        // don't save reference to this vc, by locating it via the root we also verify
-        // that it's still in the hierarchy
-        guard let viewController: EditViewController = rootViewController?.locateViewControllerByType() else {
-            return
+    func presentEditViewController(withTransformer existingTransformer: Transformer? = nil) {
+        // if already editing the same transformer, or existing and editor id both nil, this is the user
+        // tapping again in the master side list again, or tapping the + again, redundantly. just return
+        if let currentViewController = editViewController {
+            if let viewModel = currentViewController.viewModel, viewModel.id == nil && existingTransformer == nil {
+                return
+            }
+            if let viewModelId = currentViewController.viewModel?.id, let id = existingTransformer?.id, id == viewModelId {
+                return
+            }
+            
+            // already editing some another transformer, dismiss that first
+            dismissEditViewController(saving: false, animated: false)
         }
         
+        let viewController = createEditViewController(withTransformer: existingTransformer)
+        
+        if splitViewController?.isCollapsed != true, let detail = splitViewController?.viewControllers.last as? UINavigationController {
+            detail.pushViewController(viewController, animated: true)
+        } else {
+            splitViewController?.showDetailViewController(viewController, sender: nil)
+        }
+    }
+    
+    var editViewController: EditViewController? {
+        guard let viewController: EditViewController = splitViewController?.locateViewControllerByType() else {
+            return nil
+        }
+        return viewController
+    }
+    
+    func updateEditViewController() {
+        guard let viewController = editViewController else {
+            return
+        }
         viewController.viewModel = EditViewModel(withDataController: dataController)
     }
     
-    func exitEditViewController(saving: Bool) {
-        print("FlowController.exitEditViewController")
-        guard let listViewController = listViewController else {
-            fatalError("list view controller has gone away")
-        }
+    func dismissEditViewController(ifMatchingId id: String? = nil, saving: Bool, animated: Bool = true) {
+        print("FlowController.dismissEditViewController")
         
-        // probably instead assert this has already been cleaned up, b/c i think i covered all cases
-        // of getting here without doing so. the tricky part is
-        dataController.dismissEditedTransformer()
-
-        guard let viewController: EditViewController = rootViewController?.locateViewControllerByType() else {
-            // its already gone, just update the list screen
-            if saving {
-                updateListViewController()
-            }
+        let viewController = editViewController
+        
+        // if id passed in, only dismiss if id's match
+        if let id = id, let viewController = viewController, viewController.viewModel?.id != id {
             return
         }
-        _ = viewController // don't really need this after all, but was nice to validate it was there tho
         
-        listViewController.navigationController?.popToViewController(listViewController, animated: true)
+        // data controller holds some state about the transformer being edited, ensure its cleaned up
+        // yes, leaky abstraction, not the best
+        // maybe instead assert its already been cleaned up, b/c i think i covered all cases of getting here without doing so
+        dataController.dismissEditedTransformer()
         
-        // some completion would be helpful, like `present()` has, currently use a quick & dirty
-        // technique to know when the view is back
+        // is view controller is not already gone, remove it here
+        if let viewController = viewController, viewController.navigationController?.viewControllers.last == viewController {
+            viewController.navigationController?.popViewController(animated: animated)
+        }
+        
         if saving {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
-                self?.updateListViewController()
-            }
+            updateListViewController()
+            updateFightViewControllerIfSplitViewExpanded()
         }
     }
     
-    func editViewControllerWasExited() {
+    func editViewControllerWasDismissed() {
         dataController.dismissEditedTransformer()
     }
     
-    // MARK: - fight view controller wrangling
+    // MARK: - fight view controller
     
-    func createFightViewController() -> UIViewController {
+    func createFightViewController() -> FightViewController {
         let storyboard = UIStoryboard(name: "Fight", bundle: nil)
         guard let viewController = storyboard.instantiateInitialViewController() as? FightViewController else {
             fatalError("Could not find initial view controller in Fight.storyboard")
@@ -154,6 +249,33 @@ class FlowController {
         viewController.battleResult = Transformer.battle(betweenTransformers: combatants)
         
         return viewController
+    }
+    
+    func presentFightViewController() {
+        let viewController = createFightViewController()
+        splitViewController?.showDetailViewController(viewController, sender: nil)
+    }
+    
+    var fightViewController: FightViewController? {
+        guard let viewController: FightViewController = splitViewController?.locateViewControllerByType() else {
+            return nil
+        }
+        return viewController
+    }
+    
+    func updateFightViewController() {
+        guard let viewController = fightViewController else {
+            return
+        }
+        
+        let combatants = dataController.transformersForNextFight
+        viewController.battleResult = Transformer.battle(betweenTransformers: combatants)
+    }
+    
+    func updateFightViewControllerIfSplitViewExpanded() {
+        if splitViewController?.isCollapsed == false {
+            updateFightViewController()
+        }
     }
     
 }
@@ -178,8 +300,7 @@ extension FlowController: ListFlowControllerProtocol {
     
     func startBattle() {
         print("FlowController.startBattle")
-        let viewController = createFightViewController()
-        listViewController?.navigationController?.pushViewController(viewController, animated: true)
+        presentFightViewController()
     }
     
     func editTransformer(withId id: String) {
@@ -187,14 +308,12 @@ extension FlowController: ListFlowControllerProtocol {
         guard let transformer = dataController.transformer(withId: id) else {
             return
         }
-        let viewController = createEditViewController(withTransformer: transformer)
-        listViewController?.navigationController?.pushViewController(viewController, animated: true)
+        presentEditViewController(withTransformer: transformer)
     }
     
     func addTransformer() {
         print("FlowController.addTransformer")
-        let viewController = createEditViewController()
-        listViewController?.navigationController?.pushViewController(viewController, animated: true)
+        presentEditViewController()
     }
     
     func deleteTransformer(withId id: String) {
@@ -204,7 +323,13 @@ extension FlowController: ListFlowControllerProtocol {
             print("FlowController.deleteTransformer id \(id) - deleteTransformer completion")
             if error == nil {
                 DispatchQueue.main.async {
+                    // remove the showing edit view controller if its editing this very same transformer
+                    self?.dismissEditViewController(ifMatchingId: id, saving: false)
+                    
+                    // calls to dismissEditViewController normally do these already, but only when
+                    // called with saving:true, need to explicitly call these here
                     self?.updateListViewController()
+                    self?.updateFightViewControllerIfSplitViewExpanded()
                 }
             } else {
                 // should invoke an alert here, but for now we get silent failure
@@ -214,22 +339,24 @@ extension FlowController: ListFlowControllerProtocol {
     
     func returnedToList() {
         // if we wanted to save the transformer edits when back button used instead of discarding them
-        // then we'd do that here or within `editViewControllerWasExited()`, including updating the
+        // then we'd do that here or within `editViewControllerWasDismissed()`, including updating the
         // transformer's list view model
         // don't want to bite that bullet for this assessment app (i've aready gone way overboard as it is)
-        editViewControllerWasExited()
+        editViewControllerWasDismissed()
     }
     
     func toggleTransformerBenched(forId id: String) {
         print("FlowController.toggleTransformerBenched id \(id)")
         dataController.toggleBenchedState(forId: id)
         updateListViewController()
+        updateFightViewControllerIfSplitViewExpanded()
     }
     
     func toggleAllTransformersBenched(_ benched: Bool) {
         print("FlowController.toggleAllTransformersBenched \(benched)")
         dataController.setAllBenchedState(benched)
         updateListViewController()
+        updateFightViewControllerIfSplitViewExpanded()
     }
     
 }
@@ -312,6 +439,18 @@ extension FlowController: EditFlowControllerProtocol {
         updateEditViewController()
     }
     
+    func discardNewTransformer() {
+        print("FlowController.discardNewTransformer")
+        dataController.dismissEditedTransformer()
+        dismissEditViewController(saving: false)
+    }
+    
+    func discardEditedTransformer(withId id: String) {
+        print("FlowController.discardEditedTransformer id \(id)")
+        dataController.dismissEditedTransformer()
+        dismissEditViewController(saving: false)
+    }
+    
     func saveNewTransformer() {
         print("FlowController.saveNewTransformer")
         guard let newTransformer = dataController.editingTransformer else { return }
@@ -321,24 +460,12 @@ extension FlowController: EditFlowControllerProtocol {
             print("FlowController.saveNewTransformer - addTransformer completion")
             if error == nil {
                 DispatchQueue.main.async {
-                    self?.exitEditViewController(saving: true)
+                    self?.dismissEditViewController(saving: true)
                 }
             } else {
                 // should invoke an alert here, but for now we get silent failure
             }
         }
-    }
-    
-    func discardNewTransformer() {
-        print("FlowController.discardNewTransformer")
-        dataController.dismissEditedTransformer()
-        exitEditViewController(saving: false)
-    }
-    
-    func discardEditedTransformer(withId id: String) {
-        print("FlowController.discardEditedTransformer id \(id)")
-        dataController.dismissEditedTransformer()
-        exitEditViewController(saving: false)
     }
     
     func updateEditedTransformer(withId id: String) {
@@ -350,7 +477,7 @@ extension FlowController: EditFlowControllerProtocol {
             print("FlowController.updateEditedTransformer id \(id) - updateTransformer completion")
             if error == nil {
                 DispatchQueue.main.async {
-                    self?.exitEditViewController(saving: true)
+                    self?.dismissEditViewController(saving: true)
                 }
             } else {
                 // should invoke an alert here, but for now we get silent failure
@@ -365,7 +492,7 @@ extension FlowController: EditFlowControllerProtocol {
             print("FlowController.deleteEditedTransformer id \(id) - deleteTransformer completion")
             if error == nil {
                 DispatchQueue.main.async {
-                    self?.exitEditViewController(saving: true)
+                    self?.dismissEditViewController(saving: true)
                 }
             } else {
                 // should invoke an alert here, but for now we get silent failure

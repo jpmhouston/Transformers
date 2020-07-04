@@ -17,6 +17,7 @@ class ListViewController: UIViewController {
     
     @IBOutlet var containerView: UIView!
     @IBOutlet var emptyListMessageView: UIView!
+    @IBOutlet var EmptyListMessageViewWhenSplitWiewExpanded: UIView!
     @IBOutlet var loadingIndicator: UIActivityIndicatorView!
     
     weak var flowController: ListFlowControllerProtocol?
@@ -27,16 +28,25 @@ class ListViewController: UIViewController {
         }
     }
     
-    var hadDisappeared = false
+    var fightButtonShouldBeHidden: Bool = false {
+        didSet {
+            guard isViewLoaded else { return }
+            updateFightButtonVisibility()
+        }
+    }
     
     var tableViewViewController: ListTableViewController? {
         locateChildViewControllerByType()
     }
     
+    var hadDisappeared = false
+    
     // MARK: - lifecycle
     
     override func viewDidLoad() {
         tableViewViewController?.flowController = flowController
+        
+        updateFightButtonVisibility()
         
         // if view model set before `viewDidLoad` then its earlier didSet did nothing, postponed call to `configure` here
         // if view model set after `viewDidLoad` then this below does nothing, the didSet will call `configure`
@@ -82,21 +92,38 @@ class ListViewController: UIViewController {
         tableViewViewController?.viewModel = viewModel
     }
     
+    func updateFightButtonVisibility() {
+        // relies on the fightButton property not being weak so it can be removed as the left bar item and then added again
+        if fightButtonShouldBeHidden && navigationItem.leftBarButtonItem != nil {
+            navigationItem.leftBarButtonItem = nil
+        } else if fightButtonShouldBeHidden && navigationItem.leftBarButtonItem == nil {
+            navigationItem.leftBarButtonItem = fightButton
+        }
+    }
+    
     func showLoadingIndicator() {
         containerView.isHidden = true
         emptyListMessageView.isHidden = true
+        EmptyListMessageViewWhenSplitWiewExpanded.isHidden = true
         loadingIndicator.startAnimating()
     }
     
     func showMessage() {
         containerView.isHidden = true
-        emptyListMessageView.isHidden = false
+        if splitViewController?.isCollapsed ?? true {
+            emptyListMessageView.isHidden = false
+            EmptyListMessageViewWhenSplitWiewExpanded.isHidden = true
+        } else {
+            emptyListMessageView.isHidden = true
+            EmptyListMessageViewWhenSplitWiewExpanded.isHidden = false
+        }
         loadingIndicator.stopAnimating()
     }
     
     func showContainer() {
         containerView.isHidden = false
         emptyListMessageView.isHidden = true
+        EmptyListMessageViewWhenSplitWiewExpanded.isHidden = true
         loadingIndicator.stopAnimating()
     }
     

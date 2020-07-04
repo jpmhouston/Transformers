@@ -7,10 +7,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Transformers Battle!-->
+        <!--Battle!-->
         <scene sceneID="cQv-ZG-qnH">
             <objects>
-                <tableViewController id="584-JL-CmF" customClass="FightViewController" customModule="Transformers" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="Fight" id="584-JL-CmF" customClass="FightViewController" customModule="Transformers" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="20" id="iME-wq-zdv">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -124,8 +124,98 @@
                                     <outlet property="decepticonsIcon" destination="Caq-c7-jPU" id="7LM-2Q-Pa9"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TeamsNotReadyCell" id="mdI-lv-miA">
+                                <rect key="frame" x="0.0" y="114" width="414" height="109.33333587646484"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mdI-lv-miA" id="dRQ-Nh-JDP">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="109.33333587646484"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rxG-gA-8Fw">
+                                            <rect key="frame" x="82" y="0.0" width="250" height="109.33333333333333"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create and select both Autobots and Decepticons to allow a battle." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vVE-TV-cPj">
+                                                    <rect key="frame" x="0.0" y="33.999999999999993" width="250" height="75.333333333333314"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="250" id="egT-vU-1MA"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                            <constraints>
+                                                <constraint firstItem="vVE-TV-cPj" firstAttribute="top" secondItem="rxG-gA-8Fw" secondAttribute="top" constant="34" id="If9-MJ-yO7"/>
+                                                <constraint firstItem="vVE-TV-cPj" firstAttribute="leading" secondItem="rxG-gA-8Fw" secondAttribute="leading" id="Tuz-4c-xaB"/>
+                                                <constraint firstAttribute="trailing" secondItem="vVE-TV-cPj" secondAttribute="trailing" id="YBT-I5-eUZ"/>
+                                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="500" id="icz-4j-3Zm"/>
+                                                <constraint firstAttribute="bottom" secondItem="vVE-TV-cPj" secondAttribute="bottom" id="zed-9D-36m"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="rxG-gA-8Fw" secondAttribute="trailing" priority="500" id="1tP-eK-dIh"/>
+                                        <constraint firstItem="rxG-gA-8Fw" firstAttribute="top" secondItem="dRQ-Nh-JDP" secondAttribute="top" id="Mgq-Qv-Kxf"/>
+                                        <constraint firstAttribute="bottom" secondItem="rxG-gA-8Fw" secondAttribute="bottom" id="fI4-PK-eD5"/>
+                                        <constraint firstItem="rxG-gA-8Fw" firstAttribute="centerX" secondItem="dRQ-Nh-JDP" secondAttribute="centerX" id="rzN-fP-Cpx"/>
+                                        <constraint firstItem="rxG-gA-8Fw" firstAttribute="leading" secondItem="dRQ-Nh-JDP" secondAttribute="leading" priority="500" id="zKg-eM-aWS"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="StartButtonCell" id="bo0-dD-sMH">
+                                <rect key="frame" x="0.0" y="223.33333587646484" width="414" height="51"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bo0-dD-sMH" id="npC-sS-ZMx">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="51"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nKu-cG-89u">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="51"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FzN-IB-9pR">
+                                                    <rect key="frame" x="146.66666666666666" y="8" width="120.99999999999997" height="35"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
+                                                    <inset key="contentEdgeInsets" minX="10" minY="6" maxX="10" maxY="6"/>
+                                                    <state key="normal" title="Begin Fight">
+                                                        <color key="titleColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </state>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                            <real key="value" value="2"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                            <real key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                            <color key="value" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="start:" destination="584-JL-CmF" eventType="touchUpInside" id="OX3-nx-jUD"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                            <constraints>
+                                                <constraint firstItem="FzN-IB-9pR" firstAttribute="centerX" secondItem="nKu-cG-89u" secondAttribute="centerX" id="QeW-Tw-WcA"/>
+                                                <constraint firstAttribute="bottom" secondItem="FzN-IB-9pR" secondAttribute="bottom" constant="8" id="Xff-nM-OKA"/>
+                                                <constraint firstItem="FzN-IB-9pR" firstAttribute="top" secondItem="nKu-cG-89u" secondAttribute="top" constant="8" id="Z5g-Ye-Emk"/>
+                                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="500" id="lyP-9y-NQA"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="nKu-cG-89u" secondAttribute="trailing" priority="500" id="2eO-zQ-zyx"/>
+                                        <constraint firstAttribute="bottom" secondItem="nKu-cG-89u" secondAttribute="bottom" id="6Eh-F8-PKx"/>
+                                        <constraint firstItem="nKu-cG-89u" firstAttribute="leading" secondItem="npC-sS-ZMx" secondAttribute="leading" priority="500" id="dHt-he-wlM"/>
+                                        <constraint firstItem="nKu-cG-89u" firstAttribute="top" secondItem="npC-sS-ZMx" secondAttribute="top" id="eA0-ta-9xw"/>
+                                        <constraint firstItem="nKu-cG-89u" firstAttribute="centerX" secondItem="npC-sS-ZMx" secondAttribute="centerX" id="zwI-TC-akE"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="WinnerCell" id="7NK-90-GBG" customClass="WinnerCell" customModule="Transformers" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="114" width="414" height="86"/>
+                                <rect key="frame" x="0.0" y="274.33333587646484" width="414" height="86"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7NK-90-GBG" id="Zi5-CC-zLG">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="86"/>
@@ -232,7 +322,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TieCell" id="JDB-Rs-qPb" customClass="TieCell" customModule="Transformers" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="200" width="414" height="86"/>
+                                <rect key="frame" x="0.0" y="360.33333587646484" width="414" height="86"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JDB-Rs-qPb" id="Hhg-3O-qjB">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="86"/>
@@ -328,7 +418,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AnnihilationCell" id="1kE-S6-06H" customClass="AnnihilationCell" customModule="Transformers" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="286" width="414" height="68"/>
+                                <rect key="frame" x="0.0" y="446.33333587646484" width="414" height="68"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1kE-S6-06H" id="No8-X0-s6D">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="68"/>
@@ -398,7 +488,7 @@ annihilation with</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AutobotsWinCell" id="nan-DY-hjf" customClass="AutobotsWinCell" customModule="Transformers" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="354" width="414" height="92.666664123535156"/>
+                                <rect key="frame" x="0.0" y="514.33333587646484" width="414" height="92.666664123535156"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nan-DY-hjf" id="G2k-xm-PAt">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="92.666664123535156"/>
@@ -505,7 +595,7 @@ annihilation with</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DecepticonsWinCell" id="aDL-6a-twU" customClass="DecepticonsWinCell" customModule="Transformers" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="446.66666412353516" width="414" height="92.666664123535156"/>
+                                <rect key="frame" x="0.0" y="607" width="414" height="92.666664123535156"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aDL-6a-twU" id="qrP-pu-8BY">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="92.666664123535156"/>
@@ -611,7 +701,7 @@ annihilation with</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TeamsTieCell" id="WfC-2n-PlE" customClass="TeamsTieCell" customModule="Transformers" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="539.33332824707031" width="414" height="93.666664123535156"/>
+                                <rect key="frame" x="0.0" y="699.66666412353516" width="414" height="93.666664123535156"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WfC-2n-PlE" id="KDc-2X-BX7">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="93.666664123535156"/>
@@ -732,7 +822,7 @@ annihilation with</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TeamsDestroyedCell" id="OqR-Ry-zRU" customClass="TeamsDestroyedCell" customModule="Transformers" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="632.99999237060547" width="414" height="163.66667175292969"/>
+                                <rect key="frame" x="0.0" y="793.33332824707031" width="414" height="163.66667175292969"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="OqR-Ry-zRU" id="Wai-1N-WVo">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="163.66667175292969"/>
@@ -816,57 +906,6 @@ annihilation with</string>
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="StartButtonCell" id="bo0-dD-sMH">
-                                <rect key="frame" x="0.0" y="796.66666412353516" width="414" height="51"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bo0-dD-sMH" id="npC-sS-ZMx">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="51"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nKu-cG-89u">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="51"/>
-                                            <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FzN-IB-9pR">
-                                                    <rect key="frame" x="146.66666666666666" y="8" width="120.99999999999997" height="35"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
-                                                    <inset key="contentEdgeInsets" minX="10" minY="6" maxX="10" maxY="6"/>
-                                                    <state key="normal" title="Begin Fight">
-                                                        <color key="titleColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    </state>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                            <real key="value" value="2"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                            <real key="value" value="5"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                            <color key="value" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                    <connections>
-                                                        <action selector="start:" destination="584-JL-CmF" eventType="touchUpInside" id="OX3-nx-jUD"/>
-                                                    </connections>
-                                                </button>
-                                            </subviews>
-                                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                            <constraints>
-                                                <constraint firstItem="FzN-IB-9pR" firstAttribute="centerX" secondItem="nKu-cG-89u" secondAttribute="centerX" id="QeW-Tw-WcA"/>
-                                                <constraint firstAttribute="bottom" secondItem="FzN-IB-9pR" secondAttribute="bottom" constant="8" id="Xff-nM-OKA"/>
-                                                <constraint firstItem="FzN-IB-9pR" firstAttribute="top" secondItem="nKu-cG-89u" secondAttribute="top" constant="8" id="Z5g-Ye-Emk"/>
-                                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="500" id="lyP-9y-NQA"/>
-                                            </constraints>
-                                        </view>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="nKu-cG-89u" secondAttribute="trailing" priority="500" id="2eO-zQ-zyx"/>
-                                        <constraint firstAttribute="bottom" secondItem="nKu-cG-89u" secondAttribute="bottom" id="6Eh-F8-PKx"/>
-                                        <constraint firstItem="nKu-cG-89u" firstAttribute="leading" secondItem="npC-sS-ZMx" secondAttribute="leading" priority="500" id="dHt-he-wlM"/>
-                                        <constraint firstItem="nKu-cG-89u" firstAttribute="top" secondItem="npC-sS-ZMx" secondAttribute="top" id="eA0-ta-9xw"/>
-                                        <constraint firstItem="nKu-cG-89u" firstAttribute="centerX" secondItem="npC-sS-ZMx" secondAttribute="centerX" id="zwI-TC-akE"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="584-JL-CmF" id="IDp-a0-C6o"/>
@@ -874,7 +913,7 @@ annihilation with</string>
                         </connections>
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationItem key="navigationItem" title="Transformers Battle!" id="DdS-zs-pmM">
+                    <navigationItem key="navigationItem" title="Battle!" id="DdS-zs-pmM">
                         <barButtonItem key="rightBarButtonItem" title="Item" image="Clock" id="wDH-fO-NGg">
                             <connections>
                                 <action selector="speedUpRoundsTimer:" destination="584-JL-CmF" id="HP7-Ay-zFZ"/>
