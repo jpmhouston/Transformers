@@ -24,10 +24,10 @@ class FightTests: XCTestCase {
     }
     
     func testRatingFight() {
-        let winResult = autobot.fight(against: decepticon)
+        let winResult = autobot.combat(against: decepticon)
         XCTAssertEqual(winResult, .win)
         
-        let lossResult = decepticon.fight(against: autobot)
+        let lossResult = decepticon.combat(against: autobot)
         XCTAssertEqual(lossResult, .loss)
     }
 
@@ -35,37 +35,37 @@ class FightTests: XCTestCase {
         var duplicate = Transformer(copiedFrom: autobot)
         duplicate.team = .decepticons
         
-        let tieResult = autobot.fight(against: duplicate)
+        let tieResult = autobot.combat(against: duplicate)
         XCTAssertEqual(tieResult, .tie)
     }
 
     func testCourageFight() {
         decepticon.courage = autobot.courage + 4
         
-        let lossResult = autobot.fight(against: decepticon)
+        let lossResult = autobot.combat(against: decepticon)
         XCTAssertEqual(lossResult, .loss)
         
-        let winResult = decepticon.fight(against: autobot)
+        let winResult = decepticon.combat(against: autobot)
         XCTAssertEqual(winResult, .win)
     }
 
     func testStrengthFight() {
         decepticon.strength = autobot.strength + 3
         
-        let lossResult = autobot.fight(against: decepticon)
+        let lossResult = autobot.combat(against: decepticon)
         XCTAssertEqual(lossResult, .loss)
         
-        let winResult = decepticon.fight(against: autobot)
+        let winResult = decepticon.combat(against: autobot)
         XCTAssertEqual(winResult, .win)
     }
 
     func testSkillFight() {
         decepticon.skill = autobot.skill + 3
         
-        let lossResult = autobot.fight(against: decepticon)
+        let lossResult = autobot.combat(against: decepticon)
         XCTAssertEqual(lossResult, .loss)
         
-        let winResult = decepticon.fight(against: autobot)
+        let winResult = decepticon.combat(against: autobot)
         XCTAssertEqual(winResult, .win)
     }
 
@@ -75,24 +75,24 @@ class FightTests: XCTestCase {
         var kingCopy = Transformer(copiedFrom: predaking)
         kingCopy.name = "Dummyking"
         
-        let winResult = optimusPrime.fight(against: kingCopy)
+        let winResult = optimusPrime.combat(against: kingCopy)
         XCTAssertEqual(winResult, .win)
         
-        let winResult2 = predaking.fight(against: primeCopy)
+        let winResult2 = predaking.combat(against: primeCopy)
         XCTAssertEqual(winResult2, .win)
         
-        let lossResult = kingCopy.fight(against: optimusPrime)
+        let lossResult = kingCopy.combat(against: optimusPrime)
         XCTAssertEqual(lossResult, .loss)
         
-        let lossResult2 = primeCopy.fight(against: predaking)
+        let lossResult2 = primeCopy.combat(against: predaking)
         XCTAssertEqual(lossResult2, .loss)
     }
 
     func testDestruction() {
-        let nukeResult1 = optimusPrime.fight(against: predaking)
+        let nukeResult1 = optimusPrime.combat(against: predaking)
         XCTAssertEqual(nukeResult1, .destruction)
         
-        let nukeResult2 = predaking.fight(against: optimusPrime)
+        let nukeResult2 = predaking.combat(against: optimusPrime)
         XCTAssertEqual(nukeResult2, .destruction)
     }
     
@@ -109,28 +109,28 @@ class FightTests: XCTestCase {
         decepticonCopy2.name = "DumdumJunior"
         
         let combatants1: [Transformer] = [autobot, decepticon, autobotCopy, decepticonCopy, autobotCopy2]
-        let (result1, rounds1, autobotsLeft1, decepticonsLeft1) = Transformer.battle(betweenTransformers: combatants1)
-        XCTAssertEqual(result1, .autobotWin)
-        XCTAssertEqual(rounds1, 2)
-        XCTAssertEqual(autobotsLeft1.count, 3)
-        XCTAssertEqual(decepticonsLeft1.count, 0)
+        let results1 = Transformer.battle(betweenTransformers: combatants1)
+        XCTAssertEqual(results1.finalOutcome, .autobotWin)
+        XCTAssertEqual(results1.roundResults.count, 2)
+        XCTAssertEqual(results1.autobotSurvivors.count, 3)
+        XCTAssertEqual(results1.decepticonSurvivors.count, 0)
         
         let combatants2: [Transformer] = [autobot, decepticon, optimusPrime, decepticonCopy, decepticonCopy2]
-        let (result2, rounds2, autobotsLeft2, decepticonsLeft2) = Transformer.battle(betweenTransformers: combatants2)
-        XCTAssertEqual(result2, .autobotWin)
-        XCTAssertEqual(rounds2, 2)
-        XCTAssertEqual(autobotsLeft2.count, 2)
-        XCTAssertEqual(decepticonsLeft2.count, 1)
+        let results2 = Transformer.battle(betweenTransformers: combatants2)
+        XCTAssertEqual(results2.finalOutcome, .autobotWin)
+        XCTAssertEqual(results2.roundResults.count, 2)
+        XCTAssertEqual(results2.autobotSurvivors.count, 2)
+        XCTAssertEqual(results2.decepticonSurvivors.count, 1)
         
         // decepticonCopy is rank 2 goes against optimusPrime and loses not matter what, make the other 2 win
         decepticon.strength = 20
         decepticonCopy2.courage = 20
         let combatants3: [Transformer] = [autobot, decepticon, optimusPrime, decepticonCopy, autobotCopy2, decepticonCopy2]
-        let (result3, rounds3, autobotsLeft3, decepticonsLeft3) = Transformer.battle(betweenTransformers: combatants3)
-        XCTAssertEqual(result3, .decepticonWin)
-        XCTAssertEqual(rounds3, 3)
-        XCTAssertEqual(autobotsLeft3.count, 1)
-        XCTAssertEqual(decepticonsLeft3.count, 2)
+        let results3 = Transformer.battle(betweenTransformers: combatants3)
+        XCTAssertEqual(results3.finalOutcome, .decepticonWin)
+        XCTAssertEqual(results3.roundResults.count, 3)
+        XCTAssertEqual(results3.autobotSurvivors.count, 1)
+        XCTAssertEqual(results3.decepticonSurvivors.count, 2)
     }
     
     func testTieBattle() {
@@ -143,16 +143,16 @@ class FightTests: XCTestCase {
         decepticonCopy.strength = 20 // allow this one to win
         let combatants: [Transformer] = [autobot, decepticon, autobotCopy, decepticonCopy]
         
-        let (result1, rounds1, _, _) = Transformer.battle(betweenTransformers: combatants)
-        XCTAssertEqual(result1, .tie)
-        XCTAssertEqual(rounds1, 2)
+        let result = Transformer.battle(betweenTransformers: combatants)
+        XCTAssertEqual(result.finalOutcome, .tie)
+        XCTAssertEqual(result.roundResults.count, 2)
     }
     
     func testNukedBattle() {
         let combatants1: [Transformer] = [autobot, decepticon, optimusPrime, predaking]
-        let (result1, rounds1, _, _) = Transformer.battle(betweenTransformers: combatants1)
-        XCTAssertEqual(result1, .destruction)
-        XCTAssertEqual(rounds1, 1)
+        let result = Transformer.battle(betweenTransformers: combatants1)
+        XCTAssertEqual(result.finalOutcome, .destruction)
+        XCTAssertEqual(result.roundResults.count, 1)
     }
     
 }

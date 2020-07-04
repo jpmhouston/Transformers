@@ -28,6 +28,10 @@ class NetworkUtility: NetworkUtilityProtocol {
         case noAuthorization
         case authorizationUnsynchronized
         case urlError
+        case badResponseCode(Int)
+        case badResponseData
+        case authorizationEmpty
+        case encodingError
     }
     
     enum AuthorizedState {
@@ -169,30 +173,81 @@ class NetworkUtility: NetworkUtilityProtocol {
     lazy var authorizationURL = URL(string: serverBase + authorize)
     lazy var operationsURL = URL(string: serverBase + operations)
     
+    struct TransformerResponse: Codable {
+        var transformers: [Transformer]
+    }
+    
+    var decoder: JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return decoder
+    }
+    var encoder: JSONEncoder {
+        let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
+        return encoder
+    }
+    
+    func decode<T>(from data: Data) -> T? where T: Decodable {
+        do {
+            return try decoder.decode(T.self, from: data)
+        } catch {
+            print("Failed to decode to a \(T.self): \(error)")
+            return nil
+        }
+    }
+    
+    func encode<T>(from value: T) -> Data? where T: Encodable {
+        do {
+            return try encoder.encode(value)
+        } catch {
+            print("Failed to encode a \(type(of: value)): \(error)")
+            return nil
+        }
+    }
+    
+    func buildOperationRequest(withPathComponent pathComponent: String? = nil) throws -> URLRequest {
+        guard let token = token else {
+            throw NetworkError.noAuthorization
+        }
+        guard var url = operationsURL else {
+            throw NetworkError.urlError
+        }
+        if let component = pathComponent {
+            url = url.appendingPathComponent(component)
+        }
+        var request = URLRequest(url: url)
+        request.addValue(authValuePrefix + token, forHTTPHeaderField: authField)
+        request.addValue(contentTypeValue, forHTTPHeaderField: contentTypeField)
+        return request
+    }
+    
+    
     func loadAuthorization(completion: @escaping (Result<String, Error>) -> ()) {
         guard let url = authorizationURL else {
             completion(.failure(NetworkError.urlError))
             return
         }
         let request = URLRequest(url: url)
-        _ = request
         
-        DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
-            completion(.success("xyz"))
+        // TODO: wrap in a background task to mostly ensure transaction completes if app backgrounded
+        
+        let task = session.dataTask(with: request) { [weak self] data, response, error in
+            if let error = error {
+                completion(.failure(error))
+            } else if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode != 200 {
+                completion(.failure(NetworkError.badResponseCode(statusCode)))
+            } else if self == nil {
+                return // or call completion also even if self is gone & app is shutting down?
+                
+            } else if let data = data, let authorizationKey = String(data: data, encoding: .utf8) {
+                completion(.success(authorizationKey))
+                
+            } else {
+                completion(.failure(NetworkError.badResponseData))
+            }
         }
-    }
-    
-    func buildOperationRequest() throws -> URLRequest {
-        guard let token = token else {
-            throw NetworkError.noAuthorization
-        }
-        guard let url = operationsURL else {
-            throw NetworkError.urlError
-        }
-        var request = URLRequest(url: url)
-        request.addValue(authValuePrefix + token, forHTTPHeaderField: authField)
-        request.addValue(contentTypeValue, forHTTPHeaderField: contentTypeField)
-        return request
+        task.resume()
     }
     
     func loadList(completion: @escaping (Result<[Transformer], Error>) -> ()) {
@@ -203,75 +258,125 @@ class NetworkUtility: NetworkUtilityProtocol {
             completion(.failure(error))
             return
         }
-        _ = request
         
-        // TODO: finish loadList
-        // * and wrap in a background task to mostly ensure transaction completes if app backgrounded
+        // TODO: wrap in a background task to mostly ensure transaction completes if app backgrounded
         
-        DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(500)) {
-            completion(.success([]))
+        let task = session.dataTask(with: request) { [weak self] data, response, error in
+            if let error = error {
+                completion(.failure(error))
+            } else if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode != 200 {
+                completion(.failure(NetworkError.badResponseCode(statusCode)))
+            } else if self == nil {
+                return // or call completion also even if self is gone & app is shutting down?
+                
+            } else if let data = data, let decoded: TransformerResponse = self!.decode(from: data) {
+                completion(.success(decoded.transformers))
+                
+            } else {
+                completion(.failure(NetworkError.badResponseData))
+            }
         }
+        task.resume()
     }
     
     func addItem(_ data: TransformerInput, completion: @escaping (Result<Transformer, Error>) -> ()) {
-        let request: URLRequest
+        var request: URLRequest
         do {
             request = try buildOperationRequest()
         } catch {
             completion(.failure(error))
             return
         }
-        _ = request
         
-        // TODO: finish addItem
-        // * and wrap in a background task to mostly ensure transaction completes if app backgrounded
-
-        DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
-            var t = data
-            t.id = String(arc4random())
-            t.teamIcon = (t.team == .autobots ?
-                "https://img.icons8.com/fluent/48/000000/car.png" : "https://img.icons8.com/color/48/000000/prop-plane.png")
-            completion(.success(t))
+        guard let encoded = encode(from: data) else {
+            completion(.failure(NetworkError.encodingError))
+            return
         }
+        request.httpMethod = "POST"
+        request.httpBody = encoded
+        
+        // TODO: wrap in a background task to mostly ensure transaction completes if app backgrounded
+        
+        let task = session.dataTask(with: request) { [weak self] data, response, error in
+            if let error = error {
+                completion(.failure(error))
+            } else if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode != 201 {
+                completion(.failure(NetworkError.badResponseCode(statusCode)))
+            } else if self == nil {
+                return // or call completion also even if self is gone & app is shutting down?
+                
+            } else if let data = data, let decoded: Transformer = self?.decode(from: data) {
+                completion(.success(decoded))
+                
+            } else {
+                completion(.failure(NetworkError.badResponseData))
+            }
+        }
+        task.resume()
     }
     
     func updateItem(_ data: TransformerInput, completion: @escaping (Result<Transformer, Error>) -> ()) {
-        let request: URLRequest
+        var request: URLRequest
         do {
             request = try buildOperationRequest()
         } catch {
             completion(.failure(error))
             return
         }
-        _ = request
         
-        // TODO: finish updateItem
-        // * and wrap in a background task to mostly ensure transaction completes if app backgrounded
-        
-        DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
-            var t = data
-            t.teamIcon = (t.team == .autobots ?
-                "https://img.icons8.com/fluent/48/000000/car.png" : "https://img.icons8.com/color/48/000000/prop-plane.png")
-            completion(.success(t))
+        guard let encoded = encode(from: data) else {
+            completion(.failure(NetworkError.encodingError))
+            return
         }
+        request.httpMethod = "PUT"
+        request.httpBody = encoded
+        
+        // TODO: wrap in a background task to mostly ensure transaction completes if app backgrounded
+        
+        let task = session.dataTask(with: request) { [weak self] data, response, error in
+            if let error = error {
+                completion(.failure(error))
+            } else if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode != 200 {
+                completion(.failure(NetworkError.badResponseCode(statusCode)))
+            } else if self == nil {
+                return // or call completion also even if self is gone & app is shutting down?
+                
+            } else if let data = data, let decoded: Transformer = self?.decode(from: data) {
+                completion(.success(decoded))
+                
+            } else {
+                completion(.failure(NetworkError.badResponseData))
+            }
+        }
+        task.resume()
     }
     
     func deleteItem(_ id: String, completion: @escaping (Result<String, Error>) -> ()) {
-        let request: URLRequest
+        var request: URLRequest
         do {
-            request = try buildOperationRequest()
+            request = try buildOperationRequest(withPathComponent: id)
         } catch {
             completion(.failure(error))
             return
         }
-        _ = request
         
-        // TODO: finish deleteItem
-        // * and wrap in a background task to mostly ensure transaction completes if app backgrounded
+        request.httpMethod = "DELETE"
         
-        DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
-            completion(.success(id))
+        // TODO: wrap in a background task to mostly ensure transaction completes if app backgrounded
+        
+        let task = session.dataTask(with: request) { [weak self] data, response, error in
+            if let error = error {
+                completion(.failure(error))
+            } else if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode != 204 {
+                completion(.failure(NetworkError.badResponseCode(statusCode)))
+            } else if self == nil {
+                return // or call completion also even if self is gone & app is shutting down?
+                
+            } else {
+                completion(.success(id)) // return the id we were passed, currently don't decode & return the list response
+            }
         }
+        task.resume()
     }
     
 }

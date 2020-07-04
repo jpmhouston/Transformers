@@ -33,11 +33,21 @@ class FlowController: UISplitViewControllerDelegate {
     
     init() {
         dataController = DataController()
+        #if DEBUG
+        networkUtility = FlowController.makeNetworkUtility(fake: true)
+        #else
         networkUtility = NetworkUtility()
+        #endif
         networkUtility.delegate = dataController
         
         createRootViewController()
     }
+    
+    #if DEBUG
+    static func makeNetworkUtility(fake: Bool) -> NetworkUtility {
+        return fake ? FakeNetworkUtility() : NetworkUtility()
+    }
+    #endif
     
     // MARK: - split view controller
     

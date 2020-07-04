@@ -10,12 +10,15 @@ import Foundation
 
 class DataController: NetworkUtilityDelegateProtocol {
     
+    // in lieu of persistent local storage in a database, just keep our received
+    // transformers list here in a collection. no persistence
     var runtimeStorage = Set<Transformer>()
-    var benchedTransformersById = Set<String>() // cunning quick & dirty plan is to cache these in UserDefaults
+    
+    // except for the set of ids that are "benched", a feature wouth support from the API
+    // cunning quick & dirty plan is just to cache these in UserDefaults
+    var benchedTransformersById = Set<String>()
     let defaults: UserDefaults
-    #if DEBUG
-    var cacheInUserDefaults = true
-    #endif
+    let benchedIdsKey = "benchedids"
     
     var editingTransformer: Transformer?
     var editingBenchedState: Bool?
@@ -29,22 +32,9 @@ class DataController: NetworkUtilityDelegateProtocol {
     }
     
     func setupRuntimeStorage() {
-        #if DEBUG
-        var load: Bool
-        load = cacheInUserDefaults // either set `cache..` to false, or `load` to false here at runtime, to ignore saved test data
-        guard load, let encoded = defaults.value(forKey: "debugsave") as? Data else { return }
-        let decoded = try! JSONDecoder().decode([Transformer].self, from: encoded)
-        runtimeStorage = Set(decoded)
-        #endif
     }
     
     func runtimeStorageUpdated() {
-        #if DEBUG
-        guard cacheInUserDefaults && runtimeStorage.isEmpty == false else { return }
-        let encoded = try! JSONEncoder().encode(Array(runtimeStorage))
-        defaults.set(encoded, forKey: "debugsave")
-        defaults.synchronize()
-        #endif
     }
     
     func transformerList(sortedBy: [Transformer.Sorting]) -> [Transformer] {
@@ -102,12 +92,12 @@ class DataController: NetworkUtilityDelegateProtocol {
     }
     
     func readBenchedTransformerIds() {
-        guard let savedIds = defaults.value(forKey: "benchedids") as? [String] else { return }
+        guard let savedIds = defaults.value(forKey: benchedIdsKey) as? [String] else { return }
         benchedTransformersById = Set(savedIds)
     }
     
     func saveBenchedTransformerIds() {
-        defaults.set(Array(benchedTransformersById), forKey: "benchedids")
+        defaults.set(Array(benchedTransformersById), forKey: benchedIdsKey)
         defaults.synchronize()
     }
     
@@ -224,9 +214,6 @@ class DataController: NetworkUtilityDelegateProtocol {
     
     func transformerListReceived(_ list: [Transformer]) {
         DispatchQueue.main.async {
-            #if DEBUG
-            if self.cacheInUserDefaults && list.isEmpty { return } // dont let empty list overwrite debug cache
-            #endif
             self.runtimeStorage = Set(list)
             self.runtimeStorageUpdated()
         }
