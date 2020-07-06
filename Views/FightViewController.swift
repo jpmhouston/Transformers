@@ -347,7 +347,7 @@ class FightViewController: UITableViewController {
         teamsTieCell.autobotsIcon.setTransformerIcon(withURLString: autobotsIcon)
         teamsTieCell.decepticonsIcon.setTransformerIcon(withURLString: decepticonsIcon)
         fillStackView(teamsTieCell.autobotNameStack, withNames: battleResult.autobotSurvivors.map(\.name))
-        fillStackView(teamsTieCell.decepticonNameStack, withNames: battleResult.startingDecepticons.map(\.name))
+        fillStackView(teamsTieCell.decepticonNameStack, withNames: battleResult.decepticonSurvivors.map(\.name))
         return teamsTieCell
     }
     

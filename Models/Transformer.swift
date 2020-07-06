@@ -135,7 +135,7 @@ struct Transformer: Codable, Hashable {
 }
 
 extension Transformer {
-    // custom initializer that omits teamIcon and optionally id from the parameter list
+    // custom initializer that omits teamIcon & optionally omits id from the parameter list
     init(id: String? = nil, name: String, team: Team, rank: Int, strength: Int, intelligence: Int, speed: Int, endurance: Int, courage: Int, firepower: Int, skill: Int) {
         self.id = id
         self.name = name

@@ -137,8 +137,23 @@ class ListViewController: UIViewController {
         flowController?.addTransformer()
     }
     
-    @IBAction func startBattle(_ sender: UIBarButtonItem) {
-        flowController?.startBattle()
+    @IBAction func startBattle(_ sender: UIBarButtonItem, forEvent event: UIEvent) {
+        var customCombatants: [Transformer]? = nil
+        
+        // debug feature: long press on the fight button tries to construct fight combatants from data
+        // on the clipboard. if the clipboard isn't text or isn't in the right format then
+        // just act like a regular tap on the battle button
+        // this feature worked well for my efficient testing of all combinations of the final battle
+        // results UI, plus would also be useful for testing drivin by UIAutomation
+        #if DEBUG
+        let singleEvent = event.allTouches?.count == 1 ? event.allTouches?.first : nil
+        let isLongPress = singleEvent?.tapCount == 0
+        if isLongPress, let clip = UIPasteboard.general.value(forPasteboardType: "public.utf8-plain-text") as? String {
+            customCombatants = Transformer.customCombatants(forString: clip)
+        }
+        #endif
+        
+        flowController?.startBattle(withCustomCombatants: customCombatants)
     }
     
 }

@@ -257,20 +257,23 @@ class FlowController: UISplitViewControllerDelegate {
     
     // MARK: - fight view controller
     
-    func createFightViewController() -> FightViewController {
+    func createFightViewController(withCustomCombatants customCombatants: [Transformer]? = nil) -> FightViewController {
         let storyboard = UIStoryboard(name: "Fight", bundle: nil)
         guard let viewController = storyboard.instantiateInitialViewController() as? FightViewController else {
             fatalError("Could not find initial view controller in Fight.storyboard")
         }
         
-        let combatants = dataController.transformersForNextFight
+        let combatants = customCombatants ?? dataController.transformersForNextFight
         viewController.battleResult = Transformer.battle(betweenTransformers: combatants)
         
         return viewController
     }
     
-    func presentFightViewController() {
-        let viewController = createFightViewController()
+    func presentFightViewController(withCustomCombatants customCombatants: [Transformer]? = nil) {
+        let viewController = createFightViewController(withCustomCombatants: customCombatants)
+        if customCombatants != nil {
+            viewController.desiredInterval = FightViewController.fastTimeInterval
+        }
         splitViewController?.showDetailViewController(viewController, sender: nil)
     }
     
@@ -305,7 +308,7 @@ class FlowController: UISplitViewControllerDelegate {
 // MARK: - TransformersList support
 
 protocol ListFlowControllerProtocol: class {
-    func startBattle()
+    func startBattle(withCustomCombatants customCombatants: [Transformer]?)
     func editTransformer(withId id: String)
     func addTransformer()
     func deleteTransformer(withId id: String)
@@ -316,9 +319,9 @@ protocol ListFlowControllerProtocol: class {
 
 extension FlowController: ListFlowControllerProtocol {
     
-    func startBattle() {
-        print("FlowController.startBattle")
-        presentFightViewController()
+    func startBattle(withCustomCombatants customCombatants: [Transformer]?) {
+        print("FlowController.startBattle" + (customCombatants == nil ? "" : " with \(customCombatants!.count) custom combatants"))
+        presentFightViewController(withCustomCombatants: customCombatants)
     }
     
     func editTransformer(withId id: String) {
