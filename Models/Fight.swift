@@ -182,6 +182,8 @@ extension Transformer {
     
 }
 
+// MARK: - Automated data creation
+
 extension Transformer {
     
     // take string with newline-separated lines like these examples and build an array of Transformers
