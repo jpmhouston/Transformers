@@ -117,7 +117,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		8F09571C24AF1E280022A4E2 /* Controllers */ = {
+		8FA23E4524B50DBF00413DD3 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				8FA9560924A3D5D900990BD7 /* FlowController.swift */,
@@ -127,8 +127,7 @@
 				8F69D05E24AAF40F00D2CCA5 /* ListViewModel.swift */,
 				8F69D06124AAF42E00D2CCA5 /* EditViewModel.swift */,
 			);
-			name = Controllers;
-			path = Transformers/Controllers;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		8FA9560724A3D58300990BD7 /* Models */ = {
@@ -164,7 +163,7 @@
 			children = (
 				8FA9561124A5573200990BD7 /* Aequilibrium_-_Mobile_Developer_Technical_Test.pdf */,
 				8FDBB6C824A2FF720015E182 /* Transformers */,
-				8F09571C24AF1E280022A4E2 /* Controllers */,
+				8FA23E4524B50DBF00413DD3 /* Controllers */,
 				8FA9560724A3D58300990BD7 /* Models */,
 				8FA9560824A3D58E00990BD7 /* Views */,
 				8FDBB6DF24A2FF760015E182 /* TransformersTests */,
